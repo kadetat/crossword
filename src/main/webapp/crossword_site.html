@@ -16,6 +16,7 @@
          -->
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cosmo/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="crossword_css.css">
     <style>
         text {
             font-size: 12px;
@@ -30,22 +31,25 @@
 
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Simpson College</a>
+    <a class="navbar-brand" href="#">Crossword Creator</a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">Home</a>
-            </li>
             <li class="nav-item active">
-                <a class="nav-link" href="crossword_site.html">Crossword
-                    <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="index.html">Home </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="crossword_browse.html">Play</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="crossword_landing.html">Build</a>
             </li>
         </ul>
     </div>
 </nav>
 
 <!-- Our main page -->
-<div class="container">
+<section>
+    <article>
     <div class="toast" id="myToast">
         <div class="toast-header">
             <strong class="mr-auto"><i class="fa fa-grav"></i></strong>
@@ -55,6 +59,9 @@
             Record Inserted
         </div>
     </div>
+    </article>
+
+    <article>
     <!-- Table title -->
     <h1>Crossword #1</h1>
     <svg xmlns="http://www.w3.org/2000/svg"></svg>
@@ -99,7 +106,14 @@
             </table>
         </div>
     </div>
-</div>
+    </article>
+
+    <footer>
+        <p> Creators: Kade Tatkenhorst and Kurtis Tatkenhorst</p>
+        <p> March 23rd, 2021</p>
+        <p> Contact: kadetatkenhorst34@gmail.com</p>
+    </footer>
+</section>
 
 
 <!-- Load JavaScript -->
