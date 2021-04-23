@@ -19,8 +19,8 @@ public class PuzzleInfoDAO {
      * Get a list of the people in the database.
      * @return Returns a list of instances of the People class.
      */
-    public static List<PuzzleInfo> getPeople() {
-        log.log(Level.FINE, "Get people");
+    public static List<PuzzleInfo> getPuzzleInfo(String id) {
+        log.log(Level.FINE, "Get Puzzle Info");
 
         // Create an empty linked list to put the people we get from the
         // database into.
@@ -39,17 +39,13 @@ public class PuzzleInfoDAO {
             // This is a string that is our SQL query.
             // Update for all our fields
 
-            String sql = "select id, first, last, phone, birthday, email from person";
+            //String sql = "select word, clue, from person";
 
-
+            System.out.println(id);
             // If you had parameters, it would look something like
-            // String sql = "select id, first, last, phone from person where id = ?";
-
-            // Create an object with all the info about our SQL statement to run.
+            String sql = "select word, clue from wordList where id = ?";
             stmt = conn.prepareStatement(sql);
-
-            // If you had parameters, they would be set wit something like:
-            // stmt.setString(1, "1");
+            stmt.setString(1, String.valueOf(id));
 
             // Execute the SQL and get the results
             rs = stmt.executeQuery();
@@ -63,8 +59,8 @@ public class PuzzleInfoDAO {
 
                 // Get the data from the result set, and copy it to the Person
                 // object.
-//                puzzle.setClues(rs.getString("id"));
-//                puzzle.setWords(rs.getString("first"));
+                puzzle.setOneWord(rs.getString("word"));
+                puzzle.setOneClue(rs.getString("clue"));
 
                 // Add this person to the list so we can return it.
                 list.add(puzzle);

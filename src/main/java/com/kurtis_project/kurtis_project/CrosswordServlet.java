@@ -26,19 +26,6 @@ import java.util.logging.Logger;
 public class CrosswordServlet extends HttpServlet {
     ArrayList<Word> list = new ArrayList<>();
 
-    public static ArrayList matrix(String filename) throws IOException {
-        ArrayList<String> table = new ArrayList<>();
-        File reader = new File(filename);
-        Scanner in = new Scanner(reader);
-        while(in.hasNextLine()) {
-            String question = in.nextLine();
-            table.add(question);
-        }
-        in.close();
-        return table;
-    }
-
-
 
     private final static Logger log = Logger.getLogger(CrosswordServlet.class.getName());
 
@@ -59,9 +46,20 @@ public class CrosswordServlet extends HttpServlet {
         Gson gson = new Gson();
 
         PuzzleInfo puzzleInfo = gson.fromJson(requestString, PuzzleInfo.class);
+        System.out.println(puzzleInfo.getId());
 
-        for (int i = 0; i < puzzleInfo.getwords().size(); i++) {
-            list.add(new Word(puzzleInfo.getwords().get(i), puzzleInfo.getclues().get(i)));
+        if (!puzzleInfo.getId().equals("null2") ) {
+            List <PuzzleInfo> puzzleInfoList = PuzzleInfoDAO.getPuzzleInfo(puzzleInfo.getId());
+            for (int i = 0; i < puzzleInfoList.size(); i++) {
+                System.out.println(puzzleInfoList.get(i).toString());
+                System.out.println(puzzleInfoList.get(i).getOneWord());
+                list.add(new Word(puzzleInfoList.get(i).getOneWord(), puzzleInfoList.get(i).getOneClue()));
+            }
+        }else {
+            System.out.println("here");
+            for (int i = 0; i < puzzleInfo.getwords().size(); i++) {
+                list.add(new Word(puzzleInfo.getwords().get(i), puzzleInfo.getclues().get(i)));
+            }
         }
 
         // Just print the data out to confirm we got it.
