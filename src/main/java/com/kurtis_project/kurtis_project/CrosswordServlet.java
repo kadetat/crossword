@@ -47,6 +47,7 @@ public class CrosswordServlet extends HttpServlet {
 
         PuzzleInfo puzzleInfo = gson.fromJson(requestString, PuzzleInfo.class);
         System.out.println(puzzleInfo.getId());
+        list.clear();
 
         if (!puzzleInfo.getId().equals("null2") ) {
             List <PuzzleInfo> puzzleInfoList = PuzzleInfoDAO.getPuzzleInfo(puzzleInfo.getId());
@@ -106,7 +107,7 @@ public class CrosswordServlet extends HttpServlet {
 //        list.add(new Word("sammy", "Kade's roommate"));
 //        list.add(new Word("tatkenhorst", "Kade's lastname"));
 
-        CrosswordCreator puzzle1 = new CrosswordCreator(40, 40, "empty", 2000, list);
+        CrosswordCreator puzzle1 = new CrosswordCreator(50, 80, "empty", 2000, list);
         int spins = 10;
         int x = 1;
         boolean complete = false;
@@ -134,7 +135,6 @@ public class CrosswordServlet extends HttpServlet {
                 }
             }
         }
-        list = new ArrayList<>();
 
 
         // Write out that string

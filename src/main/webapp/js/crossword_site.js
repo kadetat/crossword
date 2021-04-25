@@ -120,17 +120,8 @@ updateTable();
 function myUpdateFunction(event) {
     let correct = false;
     let playerGuess = $("#guessForm").val();
-    console.log(playerGuess)
-    console.log(questionObjectArray);
-    // console.log(questionObjectArray[1]);
-    // console.log(questionObjectArray[1].word);
     for (let index = 0; index < questionObjectArray.length; index++) {
-        // console.log(index);
-        // console.log(questionObjectArray[index].word)
-        // console.log("for: " + playerGuess);
-        // console.log("for: " + index);
-        // console.log("for: " + questionObjectArray[index].word)
-        if (questionObjectArray[index].word === playerGuess) {
+        if (questionObjectArray[index].word.toLowerCase() === playerGuess.toLowerCase()) {
             correct = true;
             $("#toast-body").html("Correct!");
             // Set the delay in ms. Defaults to 500.
@@ -144,10 +135,6 @@ function myUpdateFunction(event) {
             if (questionObjectArray[index].vertical === 0) {
                 for (let wordindex = 0; wordindex < questionObjectArray[index].word.length; wordindex++) {
                     let txt = document.createElementNS(svgns, "text");
-                    console.log("index a: " + index)
-                    console.log(gridObjectArray)
-                    console.log(questionObjectArray[index].row + " " +questionObjectArray[index].col + wordindex)
-                    console.log(gridObjectArray[questionObjectArray[index].row][questionObjectArray[index].col + wordindex - 1])
                     txt.textContent = gridObjectArray[questionObjectArray[index].row][questionObjectArray[index].col + wordindex - 1];
                     svg.appendChild(txt);
                     gsap.set(txt, {
@@ -158,11 +145,6 @@ function myUpdateFunction(event) {
             } else {
                 for (let wordindex = 0; wordindex < questionObjectArray[index].word.length; wordindex++) {
                     let txt = document.createElementNS(svgns, "text");
-                    console.log("index b: " + index)
-                    console.log(questionObjectArray[index].row + " " +questionObjectArray[index].col + wordindex)
-
-                    console.log(gridObjectArray[questionObjectArray[index].row + wordindex][questionObjectArray[index].col - 1])
-                    console.log(gridObjectArray)
                     txt.textContent = gridObjectArray[questionObjectArray[index].row + wordindex][questionObjectArray[index].col - 1];
                     svg.appendChild(txt);
                     gsap.set(txt, {
