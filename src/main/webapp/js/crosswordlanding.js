@@ -56,6 +56,11 @@ let newClueButton = $('#addClue');
 newClueButton.on("click", addClue);
 
 function submit() {
+    let title = $('#title').val();
+    let author = $('#author').val();
+    let dateObject = new Date;
+    let date = dateObject.getFullYear() + '-' + (dateObject.getMonth()+1) + '-' + dateObject.getDate();
+
     let clueArray = []
     for (let index = 0; index < i; index++) {
         let want = index + 1
@@ -72,8 +77,12 @@ function submit() {
     console.log(wordArray)
 
     let dataToServer = {id     : "null2",
-                        words  : wordArray,
-                        clues  : clueArray,};
+        title  : title,
+        author   : author,
+        date     : date  ,
+        words  : wordArray,
+        clues  : clueArray,};
+
     console.log(dataToServer);
     let url = "api/crossword";
     $.ajax({
@@ -89,6 +98,24 @@ function submit() {
         contentType: "application/json",
         dataType: 'text', // Could be JSON or whatever too
     });
+
+    let url2 = "api/puzzle_add";
+    $.ajax({
+        type: 'POST',
+        url: url2,
+        data: JSON.stringify(dataToServer),
+        success: function(dataFromServer) {
+            console.log(dataFromServer);
+            let result = JSON.parse(dataFromServer);
+            if ('error' in result) {
+                // JavaScript alert the error.
+                alert(result.error);
+            }
+        },
+        contentType: "application/json",
+        dataType: 'text', // Could be JSON or whatever too
+    });
+
 }
 
 let newSubmitButton = $('#submit');
