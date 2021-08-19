@@ -14,8 +14,8 @@ function playItem(e) {
         success: function(dataFromServer) {
             console.log(dataFromServer);
             let result = JSON.parse(dataFromServer)
-            window.location.href = 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_site.html';
-            //window.location.href = 'http://crosswordcreators.com/crossword_site.html'
+            //window.location.href = 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_site.html';
+            window.location.href = 'http://crosswordcreators.com/crossword_site.html'
         },
         contentType: "application/json",
         dataType: 'text', // Could be JSON or whatever too

@@ -9,7 +9,9 @@ function addWord() {
         html += '<div id=inputFormRow2>'
         html += '<label For="word"' + j + '>Word #' +j+ ':</label>';
         html += '<input type="text" id="word'+j+'" name="word" class="form-control">';
+        html += '<div class="input-group-append" style="margin: 20px;">';
         html += '<button id="removeRow2" type="button" class="btn btn-danger">Remove</button>';
+        html += '</div>';
         html += '</div>'
 
         $('#newRow1').append(html);
@@ -26,7 +28,7 @@ function addClue(){
         html2 += '<div id=inputFormRow>'
         html2 += '<label For="clue"' + i + '>Clue #'+i+':</label>';
         html2 += '<input type="text" id="clue'+i+'" name="clue" class="form-control">';
-        html2 += '<div class="input-group-append">';
+        html2 += '<div class="input-group-append" style="margin: 20px;">';
         html2 += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
         html2 += '</div>';
         html2 += '</div>'
@@ -56,6 +58,7 @@ let newClueButton = $('#addClue');
 newClueButton.on("click", addClue);
 
 function submit() {
+    if (i ==j) {
     let title = $('#title').val();
     let author = $('#author').val();
     let dateObject = new Date;
@@ -92,8 +95,8 @@ function submit() {
         success: function(dataFromServer) {
             console.log(dataFromServer);
             let result = JSON.parse(dataFromServer)
-            window.location.href = 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_site.html';
-            //window.location.href = 'http://crosswordcreators.com/crossword_site.html'
+            //window.location.href = 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_site.html';
+            window.location.href = 'http://crosswordcreators.com/crossword_site.html'
         },
         contentType: "application/json",
         dataType: 'text', // Could be JSON or whatever too
@@ -116,6 +119,9 @@ function submit() {
         dataType: 'text', // Could be JSON or whatever too
     });
 
+} else {
+        alert("Word count must equal Clue count.");
+    }
 }
 
 let newSubmitButton = $('#submit');

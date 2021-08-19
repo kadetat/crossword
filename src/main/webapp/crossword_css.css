@@ -21,6 +21,8 @@ body {
 
 section {
     background-color: #F0F1F2;
+    margin-left: 4%;
+    margin-right: 4%;
     padding-left: 15px;
     padding-right: 15px;
     padding-bottom: 0px;
@@ -39,33 +41,60 @@ article {
 }
 
 .top{
-    border: none;
-    font-size: 21px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
     padding: 30px;
     text-align: center;
     margin-top: 0px;
-
-
 }
 
-footer {
-    margin-bottom: 20px;
-    margin-top: 100px;
+.footer {
     border: 2px solid black;
-    padding: 15px;
-    margin-left: 50px;
-    margin-right: 50px;
     background-color: white;
 
 }
 
+@media (max-width: 800px) {
+    section {
+        /*background-color: green;*/
+        display: inline-block;
+        width: 100%;
+        padding-left: 2%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    article {
+        display: inline-block;
+        width: 100%;
+        padding-left: 0;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .pain {
+        margin-top: 25px;
+    }
+    p {
+        width: 100%;
+        font-size: 20px;
+        font-family: arial,sans-serif;
+    }
+    h2{
+        font-size: 26px;
+        font-family: arial,sans-serif;
+    }
+}
+
 p {
-    width: 1150px;
-    font-size: 16px;
+    font-size: 150%;
     font-family: arial,sans-serif;
 }
 
 h2{
-    font-size: 22px;
+    font-size: 200%;
     font-family: arial,sans-serif;
+}
+h1{
+    font-size: 250%;
 }

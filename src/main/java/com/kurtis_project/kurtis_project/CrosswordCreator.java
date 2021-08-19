@@ -119,7 +119,7 @@ public class CrosswordCreator {
         int count = 0;
         while (!fit && count < maxLoops) {
             if (currentWordList.size() == 0) {
-                int col = (this.cols / 2) - (word.length / 2);
+                int col = 4; //this is what i changed
                 int row = this.rows / 2;
                 int vertical = 0;
                 fit = true;

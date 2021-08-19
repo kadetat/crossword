@@ -3,8 +3,8 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--    <meta http-equiv="x-ua-compatible" content="ie=edge">-->
 
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -21,20 +21,20 @@
 
 
 
-    <title>Browse Puzzles</title>
+    <title>Play Online Crossword Puzzles</title>
 </head>
 
 <body>
 
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Crossword Creator</a>
+    <a class="navbar-brand" href="#">Crossword Creators</a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="index.html">Home </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="crossword_browse.html">Play</a>
             </li>
             <li class="nav-item">
@@ -49,10 +49,13 @@
     <h1>Play Online Crosswords!</h1>
     <h2>Here you can browse crosswords created by other users!</h2>
     <h2>Or type the ID of a crossword you are looking for!</h2>
+        <p>To create your own Crossword Puzzle, click on
+            <a href="http://crosswordcreators.com/crossword_landing.html">Build</a> here or in the navigation bar.</p>
     </article>
 
-    <article style="margin-bottom: 300px">
+    <article>
         <!-- Table to hold our data -->
+        <div class="table-responsive-sm">
         <table id="datatable" class="table table-hover">
             <!-- Header Lines-->
             <thead>
@@ -78,13 +81,14 @@
 <!--    <p>MLB Teams</p>-->
 <!--    <p>ID: 2</p>-->
 <!--    <button id="oldCrossword2" type="button" class="btn btn-info">Play</button>-->
+        </div>
     </article>
 
-    <footer>
+    <article class= "footer">
         <p> Creators: Kade Tatkenhorst and Kurtis Tatkenhorst</p>
         <p> March 23rd, 2021</p>
         <p> Contact: kadetatkenhorst34@gmail.com</p>
-    </footer>
+    </article>
 
 </section>
 

@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+<!--    <meta http-equiv="x-ua-compatible" content="ie=edge">-->
 
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -18,23 +18,23 @@
           href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cosmo/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="crossword_css.css">
 
-    <title>Build Crossword</title>
+    <title>Crossword Creator: Generate Your Own Crossword!</title>
 </head>
 
 <body>
 
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Crossword Creator</a>
+    <a class="navbar-brand" href="#">Crossword Creators</a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="index.html">Home </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="crossword_browse.html">Play</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="crossword_landing.html">Build</a>
             </li>
         </ul>
@@ -42,10 +42,24 @@
 </nav>
 
 <section>
-    <article>
-    <h1>Crossword Creator</h1>
-    <h2>Create your own crossword, then play your crossword!</h2>
-    <h3>Put in your own clues and words and hit GO!</h3>
+    <article class= "top">
+    <h1>Crossword Creator!</h1>
+    <h2>Create random puzzles using your own words and your own clues, then play your crossword!</h2>
+    </article>
+    <article style="border: none;">
+    <h3><b>How to create your own crossword:</b></h3>
+        <p>
+        <ol style="font-size: 1.5em;">
+            <li>Enter the title and author of your Crossword Puzzle</li>
+            <li>Enter a word in the Word section</li>
+            <li>Enter a clue in the Clue section</li>
+            <li>Click the "Add Word" button to add additional words (Up to 30 words)</li>
+            <li>Click the "Add Clue" button to add corresponding clues </li>
+            <li>Click "Go!" to generate your crossword!</li>
+        </ol>
+        </p>
+        <p>To see and play existing Crossword Puzzles, click on
+            <a href="http://crosswordcreators.com/crossword_browse.html">Play</a> here or in the navigation bar.</p>
     </article>
     <article>
     <form id="my-form" name="my-form">
@@ -91,18 +105,18 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" style="margin-top: 5% ;">
             <div class="col-sm-offset-2 col-sm-10">
                 <button id="submit" type="button" class="btn btn-primary">GO!</button>
             </div>
         </div>
     </form>
     </article>
-    <footer>
+    <article class= "footer">
         <p> Creators: Kade Tatkenhorst and Kurtis Tatkenhorst</p>
         <p> March 23rd, 2021</p>
         <p> Contact: kadetatkenhorst34@gmail.com</p>
-    </footer>
+    </article>
 </section>
 
 <!-- Load JavaScript -->
