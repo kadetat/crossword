@@ -84,6 +84,73 @@ public class PuzzleInfoDAO {
         return list;
     }
 
+    public static List<PuzzleInfo> getPuzzledetails(String id) {
+        log.log(Level.FINE, "Get Puzzle Info");
+
+        // Create an empty linked list to put the people we get from the
+        // database into.
+        List<PuzzleInfo> list = new LinkedList<PuzzleInfo>();
+
+        // Declare our variables
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        // Databases are unreliable. Use some exception handling
+        try {
+            // Get our database connection
+            conn = DBHelper.getConnection();
+
+            // This is a string that is our SQL query.
+            // Update for all our fields
+
+            //String sql = "select word, clue, from person";
+
+            System.out.println(id);
+            // If you had parameters, it would look something like
+            String sql = "select id, title, author, date from puzzle where id = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, String.valueOf(id));
+
+            // Execute the SQL and get the results
+            rs = stmt.executeQuery();
+
+            // Loop through each record
+            while(rs.next()) {
+                // Create a new instance of the Person object.
+                // You'll need to define that somewhere. Just a simple class
+                // with getters and setters on the fields.
+                PuzzleInfo puzzle = new PuzzleInfo();
+
+                // Get the data from the result set, and copy it to the Person
+                // object.
+                puzzle.setId(rs.getString("id"));
+                puzzle.setTitle(rs.getString("title"));
+                puzzle.setAuthor(rs.getString("author"));
+                puzzle.setDate(rs.getString("date"));
+
+                // Add this person to the list so we can return it.
+                list.add(puzzle);
+            }
+        } catch (SQLException se) {
+            log.log(Level.SEVERE, "SQL Error", se );
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Error", e );
+        } finally {
+            // Ok, close our result set, statement, and connection
+            try { if (rs != null) rs.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+
+            try { if(stmt != null) stmt.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+
+            try { if(conn != null) conn.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+        }
+        // Done! Return the results
+        return list;
+    }
+
     public static List<PuzzleInfo> getPuzzleList() {
         log.log(Level.FINE, "Get people");
 

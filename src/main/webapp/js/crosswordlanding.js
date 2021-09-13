@@ -58,66 +58,121 @@ let newClueButton = $('#addClue');
 newClueButton.on("click", addClue);
 
 function submit() {
-    if (i ==j) {
-    let title = $('#title').val();
-    let author = $('#author').val();
-    let dateObject = new Date;
-    let date = dateObject.getFullYear() + '-' + (dateObject.getMonth()+1) + '-' + dateObject.getDate();
-
-    let clueArray = []
-    for (let index = 0; index < i; index++) {
-        let want = index + 1
-        let clue = $('#clue'+ want).val();
-        clueArray.push(clue);
+    let reg = /^[A-Za-z]{1,20}$/;
+    let regClue = /^\D+/;
+    let title = $('#title');
+    let author = $('#author');
+    let validatedFirst = true;
+    if (i ===j) {
+    if (regClue.test(title.val())) {
+        title.removeClass("is-invalid");
+        title.addClass("is-valid");
+    } else {
+        title.removeClass("is-valid");
+        title.addClass("is-invalid");
+        validatedFirst = false;
     }
-    console.log(clueArray)
-    let wordArray = []
-    for (let index = 0; index < j; index++) {
-        let want2 = index + 1
-        let word = $('#word'+ want2).val();
-        wordArray.push(word);
+    if (regClue.test(author.val())) {
+        author.removeClass("is-invalid");
+        author.addClass("is-valid");
+    } else {
+        author.removeClass("is-valid");
+        author.addClass("is-invalid");
+        validatedFirst = false;
     }
-    console.log(wordArray)
+    for (let iClue = 0; iClue <= i; iClue++){
+        let want = iClue + 1
+        let clueChecking = $('#clue'+ want)
+        let clueCheck = clueChecking.val();
+        let clueField = clueChecking;
+        if (regClue.test(clueCheck)) {
+            clueField.removeClass("is-invalid");
+            clueField.addClass("is-valid");
+        } else {
+            clueField.removeClass("is-valid");
+            clueField.addClass("is-invalid");
+            validatedFirst = false;
+        }
+    }
+    for (let iWord = 0; iWord <= i; iWord++){
+        let want = iWord + 1
+        let wordChecking = $('#word'+ want)
+        let wordCheck = wordChecking.val();
+        let wordField = wordChecking;
+        if (reg.test(wordCheck)) {
+            wordField.removeClass("is-invalid");
+            wordField.addClass("is-valid");
+        } else {
+            wordField.removeClass("is-valid");
+            wordField.addClass("is-invalid");
+            validatedFirst = false;
+        }
+    }
+    if (validatedFirst) {
+        let title = $('#title').val();
+        let author = $('#author').val();
+        let dateObject = new Date;
+        let date = dateObject.getFullYear() + '-' + (dateObject.getMonth() + 1) + '-' + dateObject.getDate();
 
-    let dataToServer = {id     : "null2",
-        title  : title,
-        author   : author,
-        date     : date  ,
-        words  : wordArray,
-        clues  : clueArray,};
+        let clueArray = []
+        for (let index = 0; index < i; index++) {
+            let want = index + 1
+            let clue = $('#clue' + want).val();
+            clueArray.push(clue);
+        }
+        console.log(clueArray)
+        let wordArray = []
+        for (let index = 0; index < j; index++) {
+            let want2 = index + 1
+            let word = $('#word' + want2).val();
+            wordArray.push(word);
+        }
+        console.log(wordArray)
 
-    console.log(dataToServer);
-    let url = "api/crossword";
-    $.ajax({
-        type: 'POST',
-        url: url,
-        data: JSON.stringify(dataToServer),
-        success: function(dataFromServer) {
-            console.log(dataFromServer);
-            let result = JSON.parse(dataFromServer)
-            //window.location.href = 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_site.html';
-            window.location.href = 'http://crosswordcreators.com/crossword_site.html'
-        },
-        contentType: "application/json",
-        dataType: 'text', // Could be JSON or whatever too
-    });
+        let dataToServer = {
+            id: "null2",
+            title: title,
+            author: author,
+            date: date,
+            words: wordArray,
+            clues: clueArray,
+        };
 
-    let url2 = "api/puzzle_add";
-    $.ajax({
-        type: 'POST',
-        url: url2,
-        data: JSON.stringify(dataToServer),
-        success: function(dataFromServer) {
-            console.log(dataFromServer);
-            let result = JSON.parse(dataFromServer);
-            if ('error' in result) {
-                // JavaScript alert the error.
-                alert(result.error);
-            }
-        },
-        contentType: "application/json",
-        dataType: 'text', // Could be JSON or whatever too
-    });
+        console.log(dataToServer);
+        let url = "api/crossword";
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: JSON.stringify(dataToServer),
+            success: function (dataFromServer) {
+                console.log(dataFromServer);
+                let result = JSON.parse(dataFromServer)
+                //window.location.href = 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_site.html';
+                window.location.href = 'http://crosswordcreators.com/crossword_site.html'
+            },
+            contentType: "application/json",
+            dataType: 'text', // Could be JSON or whatever too
+        });
+
+        let url2 = "api/puzzle_add";
+        $.ajax({
+            type: 'POST',
+            url: url2,
+            data: JSON.stringify(dataToServer),
+            success: function (dataFromServer) {
+                console.log(dataFromServer);
+                let result = JSON.parse(dataFromServer);
+                if ('error' in result) {
+                    // JavaScript alert the error.
+                    alert(result.error);
+                }
+            },
+            contentType: "application/json",
+            dataType: 'text', // Could be JSON or whatever too
+        });
+    }else {
+        alert("Clue or Word has character not allowed.");
+    }
 
 } else {
         alert("Word count must equal Clue count.");

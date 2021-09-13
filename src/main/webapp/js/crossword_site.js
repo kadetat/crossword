@@ -35,6 +35,7 @@ function updateTable() {
         questionObjectArray = json_result.jsonArray2;
         gridObjectArray = json_result.jsonArray1;
         console.log(questionObjectArray)
+        $('#getTitleResult').html(json_result.jsonArray3[1]);
         const svg = document.querySelector("svg");
 
         const svgns = "http://www.w3.org/2000/svg";

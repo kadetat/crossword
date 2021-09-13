@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 @WebServlet(name = "CrosswordServlet", value = "/api/crossword")
 public class CrosswordServlet extends HttpServlet {
     ArrayList<Word> list = new ArrayList<>();
+    ArrayList<String> infolist = new ArrayList<>();
 
 
     private final static Logger log = Logger.getLogger(CrosswordServlet.class.getName());
@@ -48,6 +49,7 @@ public class CrosswordServlet extends HttpServlet {
         PuzzleInfo puzzleInfo = gson.fromJson(requestString, PuzzleInfo.class);
         System.out.println(puzzleInfo.getId());
         list.clear();
+        infolist.clear();
 
         if (!puzzleInfo.getId().equals("null2") ) {
             List <PuzzleInfo> puzzleInfoList = PuzzleInfoDAO.getPuzzleInfo(puzzleInfo.getId());
@@ -56,11 +58,30 @@ public class CrosswordServlet extends HttpServlet {
                 System.out.println(puzzleInfoList.get(i).getOneWord());
                 list.add(new Word(puzzleInfoList.get(i).getOneWord(), puzzleInfoList.get(i).getOneClue()));
             }
+            System.out.println("herekade");
+            List <PuzzleInfo> puzzleInfoDetails = PuzzleInfoDAO.getPuzzledetails(puzzleInfo.getId());
+            System.out.println("here2");
+            System.out.println(puzzleInfoDetails);
+            System.out.println(puzzleInfoDetails.toString());
+            System.out.println(puzzleInfoDetails.get(0).getId());
+            infolist.add(puzzleInfoDetails.get(0).getId());
+            System.out.println("here3");
+            System.out.println(puzzleInfoDetails.get(0).getTitle());
+            infolist.add(puzzleInfoDetails.get(0).getTitle());
+            System.out.println("here4");
+            infolist.add(puzzleInfoDetails.get(0).getAuthor());
+            infolist.add(puzzleInfoDetails.get(0).getDate());
+            System.out.println("here5");
+
         }else {
             System.out.println("here");
             for (int i = 0; i < puzzleInfo.getwords().size(); i++) {
                 list.add(new Word(puzzleInfo.getwords().get(i), puzzleInfo.getclues().get(i)));
             }
+            infolist.add(puzzleInfo.getId());
+            infolist.add(puzzleInfo.getTitle());
+            infolist.add(puzzleInfo.getAuthor());
+            infolist.add(puzzleInfo.getDate());
         }
 
         // Just print the data out to confirm we got it.
@@ -117,12 +138,15 @@ public class CrosswordServlet extends HttpServlet {
                 JsonObject jsonObj = new JsonObject();
                 Gson jsonString = new Gson();
                 Gson jsonStringWords = new Gson();
+                Gson jsonStringDetails = new Gson();
 
                 puzzle1.display(puzzle);
                 JsonArray jsonString1 = jsonString.toJsonTree(puzzle).getAsJsonArray();;
                 JsonArray jsonString2 = jsonStringWords.toJsonTree(list).getAsJsonArray();;
+                JsonArray jsonString3 = jsonStringDetails.toJsonTree(infolist).getAsJsonArray();;
                 jsonObj.add("jsonArray1", jsonString1);
                 jsonObj.add("jsonArray2", jsonString2);
+                jsonObj.add("jsonArray3", jsonString3);
                 out.println(jsonObj.toString());
                 System.out.println(jsonString1);
                 System.out.println("Number of Spins: " + x);
