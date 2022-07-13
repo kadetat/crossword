@@ -84,7 +84,7 @@ public class CrosswordServlet extends HttpServlet {
             infolist.add(puzzleInfo.getDate());
         }
 
-        // Just print the data out to confirm we got it.
+        // Just print t--x-he data out to confirm we got it.
         out.println("{\"success\": \"Successful insert.\"}");
 
     }
@@ -129,7 +129,7 @@ public class CrosswordServlet extends HttpServlet {
 //        list.add(new Word("tatkenhorst", "Kade's lastname"));
 
         CrosswordCreator puzzle1 = new CrosswordCreator(50, 80, "empty", 2000, list);
-        int spins = 10;
+        int spins = 100;
         int x = 1;
         boolean complete = false;
         while (x < spins && !complete){

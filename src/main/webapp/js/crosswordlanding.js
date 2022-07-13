@@ -1,4 +1,7 @@
 
+let width = 30;
+let height = 30;
+
 let i = 5;
 let j = 5;
 
@@ -182,3 +185,120 @@ function submit() {
 let newSubmitButton = $('#submit');
 newSubmitButton.on("click", submit);
 
+
+let newPreviewButton = $('#preview');
+newPreviewButton.on("click", previewClick);
+
+function previewClick() {
+    console.log("preview clicked");
+    // Here's where your code is going to go.
+    let clueArray = []
+    for (let index = 0; index < i; index++) {
+        let want = index + 1
+        let clue = $('#clue' + want).val();
+        clueArray.push(clue);
+    }
+    console.log(clueArray)
+    let wordArray = []
+    for (let index = 0; index < j; index++) {
+        let want2 = index + 1
+        let word = $('#word' + want2).val();
+        wordArray.push(word);
+    }
+    console.log(wordArray)
+
+    let dataToServer = {
+        words: wordArray,
+        clues: clueArray,
+    };
+
+    console.log(dataToServer);
+    let url = "api/previewcrossword";
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: JSON.stringify(dataToServer),
+        success: function (dataFromServer) {
+            console.log(dataFromServer);
+            let result = JSON.parse(dataFromServer)
+            if ('error' in result) {
+                // JavaScript alert the error.
+                alert(result.error);
+            }else {
+                postPreview()
+            }
+        },
+        contentType: "application/json",
+        dataType: 'text', // Could be JSON or whatever too
+    });
+}
+
+function postPreview(){
+
+// Define a URL
+    let url2 = "api/previewcrossword";
+
+    console.log("call updateTable")
+
+    // Start a web call. Specify:
+    // URL
+    // Data to pass (nothing in this case)
+    // Function to call when we are done
+    $.getJSON(url2, null, function(json_result) {
+        console.log(json_result);
+        console.log(json_result.jsonArray2);
+        console.log(json_result.jsonArray1);
+        questionObjectArray = json_result.jsonArray2;
+        gridObjectArray = json_result.jsonArray1;
+        console.log(questionObjectArray)
+        const svg = document.querySelector("svg");
+
+        const svgns = "http://www.w3.org/2000/svg";
+
+// change any value
+        let columns = json_result.jsonArray1[1].length;
+        let rows = json_result.jsonArray1.length;
+        let counter = 0;
+        const colorArray = ["#121212", "#46a4cc", "#a63e4b"];
+
+// figure the new svg width/height
+        const svgWidth = width * columns;
+        const svgHeight = height * rows;
+
+        gsap.set(svg, {
+            attr: {
+                width: svgWidth,
+                height: svgHeight,
+                viewBox: "0 0 " + svgWidth + " " + svgHeight
+            }
+        });
+        for (let jaxis = 1; jaxis < json_result.jsonArray1.length; jaxis++) {
+            for (let iaxis = 0; iaxis < json_result.jsonArray1[jaxis].length; iaxis++) {
+                counter++;
+                let newRect = document.createElementNS(svgns, "rect");
+                if (json_result.jsonArray1[jaxis][iaxis] !== " ") {
+                    gsap.set(newRect, {
+                        attr: {
+                            x: iaxis * width,
+                            y: jaxis * height,
+                            width: width,
+                            height: height,
+                            fill: "#FFFFFF",
+                            stroke: colorArray[0]
+                        }
+                    });
+
+                    console.log(newRect.x + " " + newRect.y + " " + newRect.width + " " + newRect.height + " " + newRect.fill + " " + newRect.stroke)
+                    svg.appendChild(newRect);
+                    let txt = document.createElementNS(svgns, "text");
+                    txt.textContent = json_result.jsonArray1[jaxis][iaxis];
+                    svg.appendChild(txt);
+                    gsap.set(txt, {
+                         x: iaxis * width + width / 2,
+                         y: jaxis * height + height / 2,
+                    });
+                }
+            }
+        }
+    });
+}
