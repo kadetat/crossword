@@ -8,7 +8,7 @@ const svg = document.querySelector("svg");
 
 const svgns = "http://www.w3.org/2000/svg";
 
-let width = 30;
+let width = 8;
 let height = 30;
 
 function htmlSafe(data) {

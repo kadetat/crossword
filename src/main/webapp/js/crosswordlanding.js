@@ -1,23 +1,30 @@
+let clueArray = [];
+let wordArray = [];
+let letterCount = 0;
 
 let width = 30;
 let height = 30;
 
 let i = 5;
-let j = 5;
+let j = 0;
 
 function addWord() {
     j++;
     if (j <= 30) {
-        let html = '';
-        html += '<div id=inputFormRow2>'
-        html += '<label For="word"' + j + '>Word #' +j+ ':</label>';
-        html += '<input type="text" id="word'+j+'" name="word" class="form-control">';
-        html += '<div class="input-group-append" style="margin: 20px;">';
-        html += '<button id="removeRow2" type="button" class="btn btn-danger">Remove</button>';
-        html += '</div>';
-        html += '</div>'
-
-        $('#newRow1').append(html);
+        let clue = $('#clue1').val();
+        clueArray.push(clue);
+        $('#clue1').val("");
+        console.log(clueArray)
+        let word = $('#word1').val();
+        wordArray.push(word);
+        $('#word1').val("");
+        console.log(wordArray)
+        previewClick();
+        $("#wordTable tbody").append("<tr><td>" + j + ". " + word + ": " + clue + "</td>" +
+            "<td>" +
+            "<button type='button' name='edit' class='playButton btn btn-primary' value=\"j\"> Edit </button>" +
+            "<button type='button' name='delete' class='playButton btn btn-danger' value=\"j\" style='margin-left: 5px'> Delete </button>" +
+            "</td></tr>");
     } else {
         alert("Max word count :(")
     }
@@ -56,17 +63,13 @@ $(document).on('click', '#removeRow2', function () {
 let newWordButton = $('#addWord');
 newWordButton.on("click", addWord);
 
-
-let newClueButton = $('#addClue');
-newClueButton.on("click", addClue);
-
 function submit() {
     let reg = /^[A-Za-z]{1,20}$/;
     let regClue = /^\D+/;
     let title = $('#title');
     let author = $('#author');
     let validatedFirst = true;
-    if (i ===j) {
+    if (true) {
     if (regClue.test(title.val())) {
         title.removeClass("is-invalid");
         title.addClass("is-valid");
@@ -83,54 +86,44 @@ function submit() {
         author.addClass("is-invalid");
         validatedFirst = false;
     }
-    for (let iClue = 0; iClue <= i; iClue++){
-        let want = iClue + 1
-        let clueChecking = $('#clue'+ want)
-        let clueCheck = clueChecking.val();
-        let clueField = clueChecking;
-        if (regClue.test(clueCheck)) {
-            clueField.removeClass("is-invalid");
-            clueField.addClass("is-valid");
-        } else {
-            clueField.removeClass("is-valid");
-            clueField.addClass("is-invalid");
-            validatedFirst = false;
-        }
-    }
-    for (let iWord = 0; iWord <= i; iWord++){
-        let want = iWord + 1
-        let wordChecking = $('#word'+ want)
-        let wordCheck = wordChecking.val();
-        let wordField = wordChecking;
-        if (reg.test(wordCheck)) {
-            wordField.removeClass("is-invalid");
-            wordField.addClass("is-valid");
-        } else {
-            wordField.removeClass("is-valid");
-            wordField.addClass("is-invalid");
-            validatedFirst = false;
-        }
-    }
-    if (validatedFirst) {
+    // for (let iClue = 0; iClue <= i; iClue++){
+    //     let want = iClue + 1
+    //     let clueChecking = $('#clue'+ want)
+    //     let clueCheck = clueChecking.val();
+    //     let clueField = clueChecking;
+    //     if (regClue.test(clueCheck)) {
+    //         clueField.removeClass("is-invalid");
+    //         clueField.addClass("is-valid");
+    //     } else {
+    //         clueField.removeClass("is-valid");
+    //         clueField.addClass("is-invalid");
+    //         validatedFirst = false;
+    //     }
+    // }
+    // for (let iWord = 0; iWord <= i; iWord++){
+    //     let want = iWord + 1
+    //     let wordChecking = $('#word'+ want)
+    //     let wordCheck = wordChecking.val();
+    //     let wordField = wordChecking;
+    //     if (reg.test(wordCheck)) {
+    //         wordField.removeClass("is-invalid");
+    //         wordField.addClass("is-valid");
+    //     } else {
+    //         wordField.removeClass("is-valid");
+    //         wordField.addClass("is-invalid");
+    //         validatedFirst = false;
+    //     }
+    // }
+     if (validatedFirst) {
         let title = $('#title').val();
         let author = $('#author').val();
         let dateObject = new Date;
         let date = dateObject.getFullYear() + '-' + (dateObject.getMonth() + 1) + '-' + dateObject.getDate();
 
-        let clueArray = []
-        for (let index = 0; index < i; index++) {
-            let want = index + 1
-            let clue = $('#clue' + want).val();
-            clueArray.push(clue);
-        }
-        console.log(clueArray)
-        let wordArray = []
-        for (let index = 0; index < j; index++) {
-            let want2 = index + 1
-            let word = $('#word' + want2).val();
-            wordArray.push(word);
-        }
-        console.log(wordArray)
+
+
+        console.log(clueArray);
+        console.log(wordArray);
 
         let dataToServer = {
             id: "null2",
@@ -150,8 +143,8 @@ function submit() {
             success: function (dataFromServer) {
                 console.log(dataFromServer);
                 let result = JSON.parse(dataFromServer)
-                //window.location.href = 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_site.html';
-                window.location.href = 'http://crosswordcreators.com/crossword_site.html'
+                window.location.href = 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_site.html';
+                //window.location.href = 'http://crosswordcreators.com/crossword_site.html'
             },
             contentType: "application/json",
             dataType: 'text', // Could be JSON or whatever too
@@ -192,20 +185,6 @@ newPreviewButton.on("click", previewClick);
 function previewClick() {
     console.log("preview clicked");
     // Here's where your code is going to go.
-    let clueArray = []
-    for (let index = 0; index < i; index++) {
-        let want = index + 1
-        let clue = $('#clue' + want).val();
-        clueArray.push(clue);
-    }
-    console.log(clueArray)
-    let wordArray = []
-    for (let index = 0; index < j; index++) {
-        let want2 = index + 1
-        let word = $('#word' + want2).val();
-        wordArray.push(word);
-    }
-    console.log(wordArray)
 
     let dataToServer = {
         words: wordArray,
@@ -239,6 +218,7 @@ function postPreview(){
     let url2 = "api/previewcrossword";
 
     console.log("call updateTable")
+    let reg = /^[A-Za-z]$/;
 
     // Start a web call. Specify:
     // URL
@@ -265,6 +245,7 @@ function postPreview(){
         const svgWidth = width * columns;
         const svgHeight = height * rows;
 
+
         gsap.set(svg, {
             attr: {
                 width: svgWidth,
@@ -272,33 +253,71 @@ function postPreview(){
                 viewBox: "0 0 " + svgWidth + " " + svgHeight
             }
         });
+
         for (let jaxis = 1; jaxis < json_result.jsonArray1.length; jaxis++) {
             for (let iaxis = 0; iaxis < json_result.jsonArray1[jaxis].length; iaxis++) {
-                counter++;
-                let newRect = document.createElementNS(svgns, "rect");
-                if (json_result.jsonArray1[jaxis][iaxis] !== " ") {
-                    gsap.set(newRect, {
-                        attr: {
-                            x: iaxis * width,
-                            y: jaxis * height,
-                            width: width,
-                            height: height,
-                            fill: "#FFFFFF",
-                            stroke: colorArray[0]
-                        }
-                    });
 
-                    console.log(newRect.x + " " + newRect.y + " " + newRect.width + " " + newRect.height + " " + newRect.fill + " " + newRect.stroke)
-                    svg.appendChild(newRect);
-                    let txt = document.createElementNS(svgns, "text");
-                    txt.textContent = json_result.jsonArray1[jaxis][iaxis];
-                    svg.appendChild(txt);
-                    gsap.set(txt, {
-                         x: iaxis * width + width / 2,
-                         y: jaxis * height + height / 2,
-                    });
+                if (reg.test(json_result.jsonArray1[jaxis][iaxis])) {
+                    if (counter < letterCount) {
+                        console.log("here" + letterCount.toString() + counter.toString());
+                        gsap.to(svg.childNodes.item(2 * counter),1,{
+                            attr: {
+                                x: iaxis * width,
+                                y: jaxis * height,
+                                width: width,
+                                height: height,
+                                fill: "#FFFFFF",
+                                stroke: colorArray[0]
+                            }
+                        });
+
+                        // let txt = document.createElementNS(svgns, "text");
+                        svg.childNodes.item((2*counter)+1).textContent = json_result.jsonArray1[jaxis][iaxis];
+                        // svg.appendChild(txt);
+                        gsap.to(svg.childNodes.item((2 * counter) + 1), 1, {
+                            x: iaxis * width + width / 3,
+                            y: (jaxis * height) + (height*2 /3) ,
+                        });
+                        counter++;
+                    } else {
+                        console.log("here_new" + letterCount.toString() + counter.toString());
+
+                        let newRect = document.createElementNS(svgns, "rect");
+                        letterCount++;
+                        counter++;
+                        gsap.to(newRect, 1,{
+                            attr: {
+                                x: iaxis * width,
+                                y: jaxis * height,
+                                width: width,
+                                height: height,
+                                fill: "#FFFFFF",
+                                stroke: colorArray[0]
+                            }
+                        });
+
+                        svg.appendChild(newRect);
+
+                        let txt = document.createElementNS(svgns, "text");
+                        txt.textContent = json_result.jsonArray1[jaxis][iaxis];
+                        svg.appendChild(txt);
+                        gsap.to(txt, 1, {
+                            x: iaxis * width + width / 3,
+                            y: (jaxis * height) + (height*2 /3) ,
+                        });
+                    }
+
                 }
             }
         }
     });
+}
+
+function removeElement(element){
+    if(typeof(element) === "string"){
+        element = document.querySelector(element);
+    }
+    return function() {
+        element.parentNode.removeChild(element);
+    };
 }

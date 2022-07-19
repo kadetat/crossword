@@ -100,6 +100,26 @@ public class CrosswordCreator {
                 }
             }
         }
+
+        int maxIndex = 0;
+        for (int i = 0; i < this.rows; i++) {
+            for (int j = 0; j < this.cols; j++) {
+                if (!crossword.grid[i][j].equals(" ") && !crossword.grid[i][j].equals("")) {
+                    if (j > maxIndex){
+                        maxIndex = j;
+                        //System.out.println("j= " + maxIndex);
+                    }
+                }
+            }
+        }
+        //System.out.println(trimmedGrid.length);
+        String[][] trimmedGrid2 = new String[trimmedGrid.length][maxIndex + 1];
+        for (int i = 0; i < trimmedGrid.length; i++){
+            for (int j = 0; j <= maxIndex; j++){
+                trimmedGrid2[i][j] = trimmedGrid[i][j];
+            }
+        }
+
         for (Word word : crossword.currentWordList) {
             System.out.println(word.row);
             word.row = word.row - startRows;
@@ -111,7 +131,7 @@ public class CrosswordCreator {
 //        String[] hack = new String[1];
 //        hack[0] = "";
 //        trimmedGrid[0] = hack;
-        return trimmedGrid;
+        return trimmedGrid2;
     }
 
     public void fitAndAdd(Word word) {
@@ -441,28 +461,28 @@ public class CrosswordCreator {
         list.add(new Word("those", "6"));
         list.add(new Word("kid", "7"));
         list.add(new Word("ball", "8"));
-        list.add(new Word("lie", "9"));
-        list.add(new Word("goat", "10"));
-        list.add(new Word("kurtis", "11"));
-        list.add(new Word("golf", "12"));
-        list.add(new Word("dad", "13"));
-        list.add(new Word("money", "14"));
-        list.add(new Word("mom", "15"));
-        list.add(new Word("hello", "16"));
-        list.add(new Word("bedtime", "17"));
-        list.add(new Word("numbers", "18"));
-        list.add(new Word("words", "19"));
-        list.add(new Word("baseball", "20"));
-        list.add(new Word("ballboy", "21"));
-        list.add(new Word("softball", "22"));
-        list.add(new Word("account", "23"));
-        list.add(new Word("october", "24"));
-        list.add(new Word("company", "25"));
-        list.add(new Word("horse", "26"));
-        list.add(new Word("company", "27"));
-        list.add(new Word("teacher", "28"));
-        list.add(new Word("sammy", "29"));
-        list.add(new Word("tatkenhorst", "30"));
+//        list.add(new Word("lie", "9"));
+//        list.add(new Word("goat", "10"));
+//        list.add(new Word("kurtis", "11"));
+//        list.add(new Word("golf", "12"));
+//        list.add(new Word("dad", "13"));
+//        list.add(new Word("money", "14"));
+//        list.add(new Word("mom", "15"));
+//        list.add(new Word("hello", "16"));
+//        list.add(new Word("bedtime", "17"));
+//        list.add(new Word("numbers", "18"));
+//        list.add(new Word("words", "19"));
+//        list.add(new Word("baseball", "20"));
+//        list.add(new Word("ballboy", "21"));
+//        list.add(new Word("softball", "22"));
+//        list.add(new Word("account", "23"));
+//        list.add(new Word("october", "24"));
+//        list.add(new Word("company", "25"));
+//        list.add(new Word("horse", "26"));
+//        list.add(new Word("company", "27"));
+//        list.add(new Word("teacher", "28"));
+//        list.add(new Word("sammy", "29"));
+//        list.add(new Word("tatkenhorst", "30"));
 
 
         CrosswordCreator puzzle1 = new CrosswordCreator(40, 40, "empty", 2000, list);

@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 @WebServlet(name = "PreviewCrosswordServlet", value = "/api/previewcrossword")
 public class PreviewCrosswordServlet extends HttpServlet {
     ArrayList<Word> list = new ArrayList<>();
-    String[][] puzzle = new String[50][80];
+    String[][] puzzle;
     //ArrayList<String> infolist = new ArrayList<>();
 
 
@@ -66,7 +66,7 @@ public class PreviewCrosswordServlet extends HttpServlet {
         boolean complete = false;
         while (x < spins && !complete){
             try {
-                String[][] puzzle = puzzle1.computeCrossword();
+                puzzle = puzzle1.computeCrossword();
 
                 puzzle1.display(puzzle);
                 System.out.println("Number of Spins: " + x);
@@ -92,7 +92,6 @@ public class PreviewCrosswordServlet extends HttpServlet {
 
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-
         JsonObject jsonObj = new JsonObject();
         Gson jsonString = new Gson();
         Gson jsonStringWords = new Gson();
@@ -104,6 +103,7 @@ public class PreviewCrosswordServlet extends HttpServlet {
         jsonObj.add("jsonArray2", jsonString2);
         //jsonObj.add("jsonArray3", jsonString3);
         out.println(jsonObj.toString());
+        list.clear();
 
 
 
