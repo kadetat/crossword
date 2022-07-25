@@ -8,7 +8,7 @@ const svg = document.querySelector("svg");
 
 const svgns = "http://www.w3.org/2000/svg";
 
-let width = 8;
+let width = 30;
 let height = 30;
 
 function htmlSafe(data) {
@@ -54,7 +54,7 @@ function updateTable() {
             attr: {
                 width: svgWidth,
                 height: svgHeight,
-                viewBox: "0 0 " + svgWidth + " " + svgHeight
+                //viewBox: "0 0 " + svgWidth + " " + svgHeight
             }
         });
         for (let j = 1; j < json_result.jsonArray1.length; j++) {
@@ -178,3 +178,20 @@ $(document).keydown(function(e){
         myUpdateFunction();
     }
 });
+
+
+let printButton1 = $("#Print");
+printButton1.on("click", printDiv);
+
+function printDiv() {
+    var divContents = document.getElementById("printPart").innerHTML;
+    var divContents2 = document.getElementById("printPart2").innerHTML;
+    var a = window.open('', '', 'height=900, width=1300');
+    a.document.write('<html>');
+    a.document.write('<body >');
+    a.document.write(divContents);
+    a.document.write(divContents2);
+    a.document.write('</body><h4>Brought to you by CrosswordCreators.com</h4></html>');
+    a.document.close();
+    a.print();
+}

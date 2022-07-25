@@ -55,6 +55,12 @@ article {
 
 }
 
+.svgelem {
+    margin-left:auto;
+    margin-right:auto;
+    display:block;
+}
+
 @media (max-width: 800px) {
     section {
         /*background-color: green;*/

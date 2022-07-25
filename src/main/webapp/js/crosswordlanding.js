@@ -1,6 +1,10 @@
 let clueArray = [];
 let wordArray = [];
 let letterCount = 0;
+let letterCountMax = 0;
+let errorEdit = false;
+let validCrossword = false;
+let originalWord = 0;
 
 let width = 30;
 let height = 30;
@@ -8,57 +12,200 @@ let height = 30;
 let i = 5;
 let j = 0;
 
+const svg = document.querySelector("svg");
+
+const svgns = "http://www.w3.org/2000/svg";
+
 function addWord() {
-    j++;
-    if (j <= 30) {
-        let clue = $('#clue1').val();
-        clueArray.push(clue);
-        $('#clue1').val("");
-        console.log(clueArray)
-        let word = $('#word1').val();
-        wordArray.push(word);
-        $('#word1').val("");
-        console.log(wordArray)
-        previewClick();
-        $("#wordTable tbody").append("<tr><td>" + j + ". " + word + ": " + clue + "</td>" +
-            "<td>" +
-            "<button type='button' name='edit' class='playButton btn btn-primary' value=\"j\"> Edit </button>" +
-            "<button type='button' name='delete' class='playButton btn btn-danger' value=\"j\" style='margin-left: 5px'> Delete </button>" +
-            "</td></tr>");
+    let wordField1 = $('#word1');
+    let clueField1 = $('#clue1');
+    if (j < 30) {
+        let validatedWord = false;
+        let validatedClue = false;
+        let wordTemp1 = wordField1.val();
+        //word
+        let reg = /^[A-Za-z]{1,20}$/;
+        if (reg.test(wordTemp1)) {
+            wordField1.removeClass("is-invalid");
+            wordField1.addClass("is-valid");
+            validatedWord = true;
+        } else {
+            wordField1.removeClass("is-valid");
+            wordField1.addClass("is-invalid");
+            validatedWord = false;
+        }
+        //clue
+        let clueTemp1 = clueField1.val();
+        let regClue = /^\D+/;
+        if (regClue.test(clueTemp1)) {
+            clueField1.removeClass("is-invalid");
+            clueField1.addClass("is-valid");
+            validatedClue = true;
+        } else {
+            clueField1.removeClass("is-valid");
+            clueField1.addClass("is-invalid");
+            validatedClue = false;
+        }
+        if (validatedWord && validatedClue){
+            j++;
+            let clue = clueField1.val();
+            clueArray.push(clue);
+            clueField1.val("");
+            console.log(clueArray)
+            let word = wordField1.val();
+            wordArray.push(word);
+            wordField1.val("");
+            console.log(wordArray)
+            $("#wordTable tbody").append("<tr><td>" + j + ". " + word + ": " + clue + "</td>" +
+                "<td>" +
+                "<button type='button' name='edit' class='editButton btn btn-primary' value= " + j + "> Edit </button>" +
+                "<button type='button' name='delete' class='deleteButton btn btn-danger' value= " + j + " style='margin-left: 5px'> Delete </button>" +
+                "</td></tr>");
+
+            let editButton = $(".editButton");
+            editButton.on("click", editItem);
+
+            let deleteButtons = $(".deleteButton");
+            deleteButtons.on("click", deleteItem);
+
+            wordField1.removeClass("is-invalid");
+            wordField1.removeClass("is-valid");
+            clueField1.removeClass("is-invalid");
+            clueField1.removeClass("is-valid");
+            previewClick();
+        }
     } else {
         alert("Max word count :(")
     }
+
+    return false;
 }
 
-function addClue(){
-    i++;
-    if (i <= 30) {
-        let html2 = '';
-        //html2 += '<div id="inputFormRow"' + i + '>';
-        html2 += '<div id=inputFormRow>'
-        html2 += '<label For="clue"' + i + '>Clue #'+i+':</label>';
-        html2 += '<input type="text" id="clue'+i+'" name="clue" class="form-control">';
-        html2 += '<div class="input-group-append" style="margin: 20px;">';
-        html2 += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
-        html2 += '</div>';
-        html2 += '</div>'
+function editItem(e) {
+    let id = e.target.value;
+    $('#id').val(id);
+    let wordField = $('#wordEdit');
+    let clueField = $('#clueEdit');
+    let word = wordArray[id - 1];
+    originalWord = word;
+    console.log(word);
+    // repeat line above for all the fields we need
+    let clue = clueArray[id - 1];
+    console.log(clue);
+    wordField.val(word);
+    clueField.val(clue);
+    wordField.removeClass("is-invalid");
+    wordField.removeClass("is-valid");
+    clueField.removeClass("is-invalid");
+    clueField.removeClass("is-valid");
 
-        $('#newRow2').append(html2);
+    // Show the window
+    $('#myModal').modal('show');
+}
+let saveChangesButton = $('#saveChanges');
+saveChangesButton.on("click", saveChanges);
+
+function saveChanges() {
+    let id = $('#id').val();
+    let wordField = $('#wordEdit');
+    let clueField = $('#clueEdit');
+    let validatedWord;
+    let validatedClue;
+
+    let wordTemp = wordField.val();
+    //word
+    let reg = /^[A-Za-z]{1,20}$/;
+    if (reg.test(wordTemp)) {
+        wordField.removeClass("is-invalid");
+        wordField.addClass("is-valid");
+        validatedWord = true;
     } else {
-        alert("Max clue count :(")
+        wordField.removeClass("is-valid");
+        wordField.addClass("is-invalid");
+        validatedWord = false;
+    }
+    //clue
+    let clueTemp = clueField.val();
+    let regClue = /^\D+/;
+    if (regClue.test(clueTemp)) {
+        clueField.removeClass("is-invalid");
+        clueField.addClass("is-valid");
+        validatedClue = true;
+    } else {
+        clueField.removeClass("is-valid");
+        clueField.addClass("is-invalid");
+        validatedClue = false;
+    }
+
+    if (validatedWord && validatedClue) {
+        wordArray[id - 1] = wordField.val();
+        console.log("here1 " + wordField.val() + " " + originalWord);
+        if (wordTemp !== originalWord){
+            if (wordTemp.length < originalWord.length){
+                letterCount = letterCount - (originalWord.length - wordTemp.length);
+                let ugh = (originalWord.length - wordTemp.length)
+                console.log("here2 " + ugh);
+            }
+            console.log("here3");
+            previewClick();
+        }
+        if (!errorEdit){
+            clueArray[id - 1] = clueField.val();
+            let place = 2 + parseInt(id);
+            document.getElementById("wordTable").childNodes[7].childNodes[place].childNodes[0].innerHTML =
+                id + ". "  + wordField.val() + ": " + clueField.val();
+            $('#myModal').modal('hide');
+        } else{
+            wordArray[id - 1] = originalWord
+        }
+        errorEdit = false;
     }
 }
 
-// remove row
-$(document).on('click', '#removeRow', function () {
-    $(this).closest('#inputFormRow').remove();
-    i--;
-});
+let confirmDeleteButton = $('#confirm');
+confirmDeleteButton.on("click", confirm);
 
-$(document).on('click', '#removeRow2', function () {
-    $(this).closest('#inputFormRow2').remove();
+function confirm(e){
+    console.log("Hiiii");
+    let targetID = $('#idDelete').val();
+    //let targetID = e.target.value;
+    //console.log("ugh " + wordArray[targetID - 1].length);
+    //letterCount = letterCount - wordArray[targetID - 1].length;
+    //letterCountMax++;
+    letterCount = 0;
+    //console.log("letterCount " + letterCount);
+    wordArray.splice(targetID - 1, 1);
+    clueArray.splice(targetID - 1, 1);
+    // if (j > 1){
+    //     previewClick();
+    // } else{
+    //     for (i = 0; i <= letterCountMax; i++){
+    //         svg.childNodes.item(svg.childNodes.length - 1).remove();
+    //         svg.childNodes.item(svg.childNodes.length - 1).remove();
+    //     }
+    // }
+    for (i = 0; i < letterCountMax; i++){
+        svg.childNodes.item(svg.childNodes.length - 1).remove();
+        svg.childNodes.item(svg.childNodes.length - 1).remove();
+    }
+    letterCountMax = 0;
     j--;
-});
+    for (i = parseInt(targetID); i <= j; i++){
+        let place = 2 + i;
+        document.getElementById("wordTable").childNodes[7].childNodes[place].childNodes[0].innerHTML =
+            i + ". "  + wordArray[i-1] + ": " + clueArray[i-1];
+    };
+    document.getElementById("wordTable").childNodes[7].childNodes[3+j].remove();
+    $('#myModalDelete').modal('hide');
+    if (j > 0){
+        previewClick()
+    }
+}
+function deleteItem(e) {
+    $('#myModalDelete').modal('show');
+    let targetID = e.target.value;
+    $('#idDelete').val(targetID);
+}
 
 let newWordButton = $('#addWord');
 newWordButton.on("click", addWord);
@@ -114,7 +261,7 @@ function submit() {
     //         validatedFirst = false;
     //     }
     // }
-     if (validatedFirst) {
+     if (validatedFirst && validCrossword) {
         let title = $('#title').val();
         let author = $('#author').val();
         let dateObject = new Date;
@@ -143,8 +290,8 @@ function submit() {
             success: function (dataFromServer) {
                 console.log(dataFromServer);
                 let result = JSON.parse(dataFromServer)
-                window.location.href = 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_site.html';
-                //window.location.href = 'http://crosswordcreators.com/crossword_site.html'
+                //window.location.href = 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_site.html';
+                window.location.href = 'http://crosswordcreators.com/crossword_site.html'
             },
             contentType: "application/json",
             dataType: 'text', // Could be JSON or whatever too
@@ -161,12 +308,16 @@ function submit() {
                 if ('error' in result) {
                     // JavaScript alert the error.
                     alert(result.error);
+
                 }
             },
             contentType: "application/json",
             dataType: 'text', // Could be JSON or whatever too
         });
-    }else {
+    } else if (!validCrossword){
+         alert("The crossword is not buildable. Add or delete words until crossword is buildable.")
+     }
+     else {
         alert("Clue or Word has character not allowed.");
     }
 
@@ -202,9 +353,12 @@ function previewClick() {
             let result = JSON.parse(dataFromServer)
             if ('error' in result) {
                 // JavaScript alert the error.
+                errorEdit = true;
+                validCrossword = false;
                 alert(result.error);
             }else {
                 postPreview()
+                validCrossword = true;
             }
         },
         contentType: "application/json",
@@ -231,12 +385,10 @@ function postPreview(){
         questionObjectArray = json_result.jsonArray2;
         gridObjectArray = json_result.jsonArray1;
         console.log(questionObjectArray)
-        const svg = document.querySelector("svg");
 
-        const svgns = "http://www.w3.org/2000/svg";
 
 // change any value
-        let columns = json_result.jsonArray1[1].length;
+        let columns = json_result.jsonArray1[0].length;
         let rows = json_result.jsonArray1.length;
         let counter = 0;
         const colorArray = ["#121212", "#46a4cc", "#a63e4b"];
@@ -250,13 +402,12 @@ function postPreview(){
             attr: {
                 width: svgWidth,
                 height: svgHeight,
-                viewBox: "0 0 " + svgWidth + " " + svgHeight
+                //viewBox: "0 0 " + svgWidth + " " + svgHeight
             }
         });
 
         for (let jaxis = 1; jaxis < json_result.jsonArray1.length; jaxis++) {
             for (let iaxis = 0; iaxis < json_result.jsonArray1[jaxis].length; iaxis++) {
-
                 if (reg.test(json_result.jsonArray1[jaxis][iaxis])) {
                     if (counter < letterCount) {
                         console.log("here" + letterCount.toString() + counter.toString());
@@ -309,15 +460,17 @@ function postPreview(){
 
                 }
             }
+        } if(letterCount < letterCountMax){
+            for (i = letterCount; i < letterCountMax; i++){
+                svg.childNodes.item(svg.childNodes.length - 1).remove();
+                svg.childNodes.item(svg.childNodes.length - 1).remove();
+            }
         }
+        console.log("letterCount= " + letterCount);
+        console.log("letterCountMax= " + letterCountMax);
+        letterCountMax = letterCount;
+        console.log("letterCount= " + letterCount);
+        console.log("letterCountMax= " + letterCountMax);
     });
 }
 
-function removeElement(element){
-    if(typeof(element) === "string"){
-        element = document.querySelector(element);
-    }
-    return function() {
-        element.parentNode.removeChild(element);
-    };
-}
