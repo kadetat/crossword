@@ -13,3 +13,5 @@ playCrosswordButton.on("click", playCrossword);
 
 let buildCrosswordButton = $('#buildCrossword');
 buildCrosswordButton.on("click", buildCrossword);
+
+

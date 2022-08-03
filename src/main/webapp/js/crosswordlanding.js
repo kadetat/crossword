@@ -474,3 +474,12 @@ function postPreview(){
     });
 }
 
+$(document).keydown(function(e){
+    // Log the key
+    console.log(e.keyCode);
+    if(e.keyCode === 13) {
+        event.preventDefault();
+        addWord();
+    }
+});
+
