@@ -22,7 +22,20 @@
 </head>
 
 <body>
+<div id="amazon-root"></div>
+<script type="text/javascript">
 
+    window.onAmazonLoginReady = function() {
+        amazon.Login.setClientId('amzn1.application-oa2-client.502697efea7f490fb123f130c00bd2cf');
+    };
+    (function(d) {
+        var a = d.createElement('script'); a.type = 'text/javascript';
+        a.async = true; a.id = 'amazon-login-sdk';
+        a.src = 'https://assets.loginwithamazon.com/sdk/na/login1.js';
+        d.getElementById('amazon-root').appendChild(a);
+    })(document);
+
+</script>
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="#">Crossword Creators</a>
@@ -38,9 +51,54 @@
                 <a class="nav-link" href="crossword_landing.html">Build</a>
             </li>
         </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <a id="LoginWithAmazon" onClick={loginWithAmazon} style="cursor:pointer; display: none;">
+                <img border="0" alt="Login with Amazon"
+                     src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
+                     width="156" height="32" />
+            </a>
+            <button id="Logout" type="button" class="btn btn-light" style="display: none;">Logout</button>
+        </ul>
     </div>
 </nav>
+<script type="text/javascript">
+    document.getElementById('LoginWithAmazon').onclick = function() {
+        options = {scope: 'profile', response_type: 'code', state: 'abcdefghijklmnop', popup: 'False', redirect_uri: 'https://crosswordcreators.com'}
+        amazon.Login.authorize(options, function(response) {
+            if ( response.error ) {
+                alert('oauth error ' + response.error);
+                return;
+            }
+            let dataToServer = {code    : response.code};
+            let url = "api/amazonHelp";
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: JSON.stringify(dataToServer),
+                success: function(dataFromServer) {
+                    $('#LoginWithAmazon').hide();
+                    $('#Logout').show();
+                },
+                contentType: "application/json",
+                dataType: 'text', // Could be JSON or whatever too
+            });
+            // options = {scope: 'profile', response_type: 'code'};
+            // amazon.Login.authorize(options, "https://crosswordcreators.com")
+        })};
+</script>
+<script type="text/javascript">
+    document.getElementById('Logout').onclick = function() {
+        amazon.Login.logout();
+        var url = "api/invalidate_session_servlet";
 
+        $.post(url, null, function (dataFromServer) {
+            console.log("Finished calling servlet.");
+            setSessionJava();
+        });
+        $('#Logout').hide();
+        $('#LoginWithAmazon').show();
+    };
+</script>
 <section>
     <article class= "top">
     <h1>Crossword Creator!</h1>
@@ -193,5 +251,21 @@
         crossorigin="anonymous"></script>
 <script src="js/crosswordlanding.js"></script>
 <script src="js/session.js"></script>
+<script>
+    var url = "api/check_session_attribute_servlet";
+    $.post(url, null, function (dataFromServer) {
+        console.log("Finished calling servlet.");
+        console.log(dataFromServer);
+        if ('noLogin' in result) {
+            // JavaScript alert the error.
+            $('#Logout').hide();
+            $('#LoginWithAmazon').show();
+        }else {
+            $('#LoginWithAmazon').hide();
+            $('#Logout').show();
+        }
+
+    });
+</script>
 </body>
 </html>
