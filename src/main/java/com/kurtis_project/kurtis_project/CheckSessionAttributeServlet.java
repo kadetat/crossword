@@ -19,7 +19,9 @@ public class CheckSessionAttributeServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String loginObject = (String)session.getAttribute("loggedIn");
         if (loginObject!=null) {
-            out.println("{\"name\":\"" + (String)session.getAttribute("loginName") +"\"}");
+            out.println("{\"name\":\"" + (String)session.getAttribute("loginName") +"\",");
+            out.println("\"email\":\"" + (String)session.getAttribute("userEmail") +"\",");
+            out.println("\"amazonID\":\"" + (String)session.getAttribute("loginID") +"\"}");
         } else {
             out.println("{\"noLogin\": \"Not logged in.\"}");
         }

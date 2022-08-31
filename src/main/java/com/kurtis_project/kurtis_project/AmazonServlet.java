@@ -112,26 +112,23 @@ public class AmazonServlet extends HttpServlet {
                     .execute()
                     .returnContent();
             Map m2 = new ObjectMapper().readValue(c.toString(), new TypeReference<Map>(){});
-            out.println("{\"success\":" + m2.get("name") + " " + m2.get("email") + " " + m2.get("user_id"));
-            //System.out.println(String.format("%s %s %s", m.get("name"), m.get("email"), m.get("user_id")));
-            // Just print t--x-he data out to confirm we got it.
-//            JsonObject jsonObj = new JsonObject();
-//            Gson jsonStringName = new Gson();
-//            Gson jsonStringEmail = new Gson();
-//            Gson jsonStringUserID = new Gson();
-//            JsonArray jsonString1 = jsonStringName.toJsonTree(m2.get("name")).getAsJsonArray();;
-//            JsonArray jsonString2 = jsonStringEmail.toJsonTree(m2.get("email")).getAsJsonArray();;
-//            JsonArray jsonString3 = jsonStringUserID.toJsonTree(m2.get("user_id")).getAsJsonArray();;
-//            jsonObj.add("name", jsonString1);
-//            jsonObj.add("email", jsonString2);
-//            jsonObj.add("user_id", jsonString3);
-//            out.println(jsonObj.toString());
-//            out.println("{\"success\": \"Successful insert.\"}");
+            //out.println("{\"success\":" + m2.get("name") + " " + m2.get("email") + " " + m2.get("user_id"));
             HttpSession session = request.getSession();
             session.setAttribute("loggedIn", "true");
             session.setAttribute("loginID", m2.get("user_id"));
             session.setAttribute("loginName", m2.get("name"));
+            session.setAttribute("userEmail", m2.get("email"));
+            Boolean exists = PuzzleInfoDAO.checkIfUserExists((String) m2.get("user_id"));
 
+            if (!exists){
+                Boolean added = PuzzleInfoDAO.addUser((String) m2.get("user_id"), (String) m2.get("name"), (String) m2.get("email"));
+                if (added) {
+                    out.println("{\"added\": \"good insert.\",");
+                    out.println("\"email\": \"" + m2.get("email") +"\"}");
+                }
+            }else {
+                out.println("{\"exists\": \"good exists.\"}");
+            }
         }
         else {
             out.println("{\"error\": \"bad insert.\"}");

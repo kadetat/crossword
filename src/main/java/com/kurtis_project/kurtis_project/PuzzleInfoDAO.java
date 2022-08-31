@@ -307,59 +307,50 @@ public class PuzzleInfoDAO {
         }
     }
 
-//    public static void updatePerson(Person personObject) {
-//        log.log(Level.FINE, "Add Person");
-//
-//        // Create an empty linked list to put the people we get from the
-//        // database into.
-//
-//        // Declare our variables
-//        Connection conn = null;
-//        PreparedStatement stmt = null;
-//
-//        // Databases are unreliable. Use some exception handling
-//        try {
-//            // Get our database connection
-//            conn = DBHelper.getConnection();
-//
-//            // This is a string that is our SQL query.
-//            // Update for all our fields
-//
-//            String sql = "update person set first=?, last=?, phone=?, birthday=?, email=? where id=?;";
-//            // If you had parameters, it would look something like
-//            // String sql = "select id, first, last, phone from person where id = ?";
-//
-//            // Create an object with all the info about our SQL statement to run.
-//            stmt = conn.prepareStatement(sql);
-//            stmt.setString(1, personObject.getFirst());
-//            stmt.setString(2, personObject.getLast());
-//            stmt.setString(3, personObject.getPhone());
-//            stmt.setString(4, personObject.getBirthday());
-//            stmt.setString(5, personObject.getEmail());
-//            stmt.setString(6, String.valueOf(personObject.getId()));
-//
-//
-//            // If you had parameters, they would be set wit something like:
-//            // stmt.setString(1, "1");
-//
-//            // Execute the SQL and get the results
-//            stmt.executeUpdate();
-//
-//
-//        } catch (SQLException se) {
-//            log.log(Level.SEVERE, "SQL Error", se );
-//        } catch (Exception e) {
-//            log.log(Level.SEVERE, "Error", e );
-//        } finally {
-//            // Ok, close our result set, statement, and connection
-//            try { if(stmt != null) stmt.close(); }
-//            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
-//
-//            try { if(conn != null) conn.close(); }
-//            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
-//        }
-//    }
-//
+    public static void allowEmail(String amazonID) {
+        log.log(Level.FINE, "Allow Email called");
+
+        // Create an empty linked list to put the people we get from the
+        // database into.
+
+        // Declare our variables
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        // Databases are unreliable. Use some exception handling
+        try {
+            // Get our database connection
+            conn = DBHelper.getConnection();
+
+            // This is a string that is our SQL query.
+            // Update for all our fields
+
+            String sql = "update userList set allowEmail=1 where amazonID=?;";
+            // If you had parameters, it would look something like
+            // String sql = "select id, first, last, phone from person where id = ?";
+
+            // Create an object with all the info about our SQL statement to run.
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, amazonID);
+
+            // Execute the SQL and get the results
+            stmt.executeUpdate();
+
+
+        } catch (SQLException se) {
+            log.log(Level.SEVERE, "SQL Error", se );
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Error", e );
+        } finally {
+            // Ok, close our result set, statement, and connection
+            try { if(stmt != null) stmt.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+
+            try { if(conn != null) conn.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+        }
+    }
+
 //    public static void deletePerson(Person personObject) {
 //        log.log(Level.FINE, "Delete Person");
 //
@@ -403,4 +394,107 @@ public class PuzzleInfoDAO {
 //            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
 //        }
 //    }
+
+    public static Boolean checkIfUserExists(String AmazonID) {
+        log.log(Level.FINE, "Check User Existing");
+
+        // Create an empty linked list to put the people we get from the
+        // database into.
+        Boolean exists = false;
+
+        // Declare our variables
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        // Databases are unreliable. Use some exception handling
+        try {
+            // Get our database connection
+            conn = DBHelper.getConnection();
+
+            // This is a string that is our SQL query.
+            // Update for all our fields
+
+            //String sql = "select word, clue, from person";
+
+            // If you had parameters, it would look something like
+            String sql = "select username from userList where amazonID = ?;";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, AmazonID);
+
+            // Execute the SQL and get the results
+            rs = stmt.executeQuery();
+
+            // Loop through each record
+            while(rs.next()) {
+                if (rs.getString("username") != null){
+                    exists = true;
+                }
+            }
+        } catch (SQLException se) {
+            log.log(Level.SEVERE, "SQL Error", se );
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Error", e );
+        } finally {
+            // Ok, close our result set, statement, and connection
+            try { if (rs != null) rs.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+
+            try { if(stmt != null) stmt.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+
+            try { if(conn != null) conn.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+        }
+        // Done! Return the results
+        return exists;
+    }
+
+    public static Boolean addUser(String AmazonID, String username, String email) {
+        log.log(Level.FINE, "Add User");
+
+        // Create an empty linked list to put the people we get from the
+        // database into.
+        Boolean added = false;
+
+        // Declare our variables
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        // Databases are unreliable. Use some exception handling
+        try {
+            // Get our database connection
+            conn = DBHelper.getConnection();
+
+            // This is a string that is our SQL query.
+            // Update for all our fields
+
+            //String sql = "select word, clue, from person";
+
+            // If you had parameters, it would look something like
+            String sql = "INSERT INTO userList (username, email, amazonID) " +
+                    "VALUES (?, ?, ?);";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, username);
+            stmt.setString(2, email);
+            stmt.setString(3, AmazonID);
+            // Execute the SQL and get the results
+            stmt.executeUpdate();
+            added = true;
+
+        } catch (SQLException se) {
+            log.log(Level.SEVERE, "SQL Error", se );
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Error", e );
+        } finally {
+            // Ok, close our result set, statement, and connection
+            try { if(stmt != null) stmt.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+
+            try { if(conn != null) conn.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+        }
+        // Done! Return the results
+        return added;
+    }
 }

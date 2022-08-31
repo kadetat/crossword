@@ -4,6 +4,7 @@ public class AmazonInfo {
     private String code;
     private String access_token;
     private String refresh_token;
+    private String amazonID;
 
     public String getCode() {return code; }
     public void setCode(String code) { this.code = code; }
@@ -13,4 +14,7 @@ public class AmazonInfo {
 
     public String getRefresh_token() {return refresh_token; }
     public void setRefresh_token(String refresh_token) { this.refresh_token = refresh_token; }
+
+    public String getAmazonID() {return amazonID; }
+    public void setAmazonID(String refresh_token) { this.amazonID = amazonID; }
 }
