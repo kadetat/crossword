@@ -78,12 +78,19 @@
                 success: function(dataFromServer) {
                     $('#LoginWithAmazon').hide();
                     $('#Logout').show();
+                    let result = JSON.parse(dataFromServer)
+                    if ('added' in result) {
+                        document.getElementById("modalEmail").innerHTML = " " + result.email;
+                        console.log(result);
+                        console.log(result.email)
+                        $('#myLetEmailModal').modal('show');
+                    } else {
+                        window.location.href = 'https://crosswordcreators.com/crossword_landing.html'
+                    }
                 },
                 contentType: "application/json",
                 dataType: 'text', // Could be JSON or whatever too
             });
-            // options = {scope: 'profile', response_type: 'code'};
-            // amazon.Login.authorize(options, "https://crosswordcreators.com")
         })};
 </script>
 <script type="text/javascript">
@@ -97,6 +104,7 @@
         });
         $('#Logout').hide();
         $('#LoginWithAmazon').show();
+        window.location.href = 'https://crosswordcreators.com/crossword_landing.html'
     };
 </script>
 <section>
@@ -117,7 +125,7 @@
         </ol>
         </p>
         <p style="text-align: center">To see and play existing Crossword Puzzles built by others, click on
-            <a href="http://crosswordcreators.com/crossword_browse.html">Play</a>.</p>
+            <a href="https://crosswordcreators.com/crossword_browse.html">Play</a>.</p>
     </article>
     <h3 style="padding-left: 50px">Crossword Creator Software 1.0</h3>
     <article style="background-color: white">
@@ -173,12 +181,42 @@
         </div>
     </form>
     </article>
-    <article class= "footer">
-        <p> Creators: Kade Tatkenhorst and Kurtis Tatkenhorst</p>
+    <article class="footer">
+        <p> Creators: Kade and Kurtis Tatkenhorst</p>
         <p> March 23rd, 2021</p>
         <p> Contact: kadetatkenhorst34@gmail.com</p>
+        <p style="font-size: small"> View our privacy policy here: <a href="https://crosswordcreators.com/privacy.html" target="_blank">Privacy Policy</a></p>
+        <p id="unsubscribeEmail" style="font-size: small"> Unsubscribe to emails here: <a href="https://crosswordcreators.com/change_email_settings.html">Unsubscribe</a></p>
     </article>
 </section>
+
+<!-- This is a hidden "pop up" window that we'll use to enter new data -->
+<div class="modal fade" tabindex="-1" role="dialog" id="myLetEmailModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- Window Title -->
+                <h4 class="modal-title">Thanks for signing in!</h4>
+                <!-- Close button -->
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>CrosswordCreators.com would like to know if we can send you emails at:</p>
+                <p id="modalEmail"></p>
+                <p style="font-size: small">You will not receive more than one email per day from CrosswordCreators.com, and can opt out at anytime.</p>
+                <p style="font-size: small">You can also view out privacy policy here: <a href="https://crosswordcreators.com/privacy.html" target="_blank">Privacy Policy</a></p>
+                <p style="font-size: medium">If you would like to receive emails from CrosswordCreators.com, click "Allow". Otherwise, click "Opt-out".</p>
+            </div>
+            <!-- Footer where we put our save/close buttons -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Opt-out</button>
+                <button id="allow" type="button" class="btn btn-primary">Allow</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <!-- This is a hidden "pop up" window that we'll use to enter new data -->
 <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
@@ -254,15 +292,17 @@
 <script>
     var url = "api/check_session_attribute_servlet";
     $.post(url, null, function (dataFromServer) {
-        console.log("Finished calling servlet.");
-        console.log(dataFromServer);
+        let result = JSON.parse(dataFromServer)
         if ('noLogin' in result) {
             // JavaScript alert the error.
             $('#Logout').hide();
             $('#LoginWithAmazon').show();
+            document.getElementById("modalEmail").innerHTML = "";
+            $('#unsubscribeEmail').hide();
         }else {
             $('#LoginWithAmazon').hide();
             $('#Logout').show();
+            $('#unsubscribeEmail').show();
         }
 
     });

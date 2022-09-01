@@ -1,11 +1,11 @@
 function playCrossword() {
     //window.location.href = 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_browse.html';
-    window.location.href = 'http://crosswordcreators.com/crossword_browse.html'
+    window.location.href = 'https://crosswordcreators.com/crossword_browse.html'
 }
 
 function buildCrossword() {
     //window.location.href = 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_landing.html';
-    window.location.href = 'http://crosswordcreators.com/crossword_landing.html'
+    window.location.href = 'https://crosswordcreators.com/crossword_landing.html'
 }
 
 let playCrosswordButton = $('#playCrossword');
@@ -18,6 +18,7 @@ let allowButton = $('#allow');
 allowButton.on("click", allowFunction);
 
 function allowFunction() {
+    let url = "api/check_session_attribute_servlet";
     $.post(url, null, function (dataFromServer) {
         let result = JSON.parse(dataFromServer)
         if ('noLogin' in result) {
@@ -42,7 +43,7 @@ function allowFunction() {
                     if (!'set' in result) {
                         alert('error setting user\'s email settings');
                     } else {
-                        window.location.href = 'http://crosswordcreators.com'
+                        window.location.href = 'https://crosswordcreators.com'
                     }
                 },
                 contentType: "application/json",

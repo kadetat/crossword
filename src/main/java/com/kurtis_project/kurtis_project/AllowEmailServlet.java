@@ -34,6 +34,10 @@ public class AllowEmailServlet extends HttpServlet {
             PuzzleInfoDAO.allowEmail(amazonID);
             out.println("{\"set\": \"good set.\"}");
         }
+        else if (emailInfo.getAmazonID().contains(" stop")){
+            PuzzleInfoDAO.declineEmail(emailInfo.getAmazonID().substring (0,emailInfo.getAmazonID().length () - 5));
+            out.println("{\"set\": \"good set.\"}");
+        }
 
 
     }

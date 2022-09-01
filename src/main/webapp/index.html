@@ -97,7 +97,7 @@
                         console.log(result.email)
                         $('#myLetEmailModal').modal('show');
                     } else {
-                        window.location.href = 'http://crosswordcreators.com'
+                        window.location.href = 'https://crosswordcreators.com'
                     }
                 },
                 contentType: "application/json",
@@ -115,7 +115,7 @@
         });
         $('#Logout').hide();
         $('#LoginWithAmazon').show();
-        window.location.href = 'http://crosswordcreators.com'
+        window.location.href = 'https://crosswordcreators.com'
     };
 </script>
 
@@ -158,6 +158,8 @@
             <p> Creators: Kade and Kurtis Tatkenhorst</p>
             <p> March 23rd, 2021</p>
             <p> Contact: kadetatkenhorst34@gmail.com</p>
+            <p style="font-size: small"> View our privacy policy here: <a href="https://crosswordcreators.com/privacy.html" target="_blank">Privacy Policy</a></p>
+            <p id="unsubscribeEmail" style="font-size: small"> Unsubscribe to emails here: <a href="https://crosswordcreators.com/change_email_settings.html">Unsubscribe</a></p>
     </article>
 </section>
 
@@ -176,7 +178,7 @@
             <div class="modal-body">
                 <p>CrosswordCreators.com would like to know if we can send you emails at:</p>
                 <p id="modalEmail"></p>
-                <p style="font-size: small">You will not receive more than one email per day from CrosswordCreators.com.</p>
+                <p style="font-size: small">You will not receive more than one email per day from CrosswordCreators.com, and can opt out at anytime.</p>
                 <p style="font-size: small">You can also view out privacy policy here: <a href="https://crosswordcreators.com/privacy.html" target="_blank">Privacy Policy</a></p>
                 <p style="font-size: medium">If you would like to receive emails from CrosswordCreators.com, click "Allow". Otherwise, click "Opt-out".</p>
             </div>
@@ -208,10 +210,12 @@
             $('#LoginWithAmazon').show();
             document.getElementById("profileName").innerHTML = "";
             document.getElementById("modalEmail").innerHTML = "";
+            $('#unsubscribeEmail').hide();
         }else {
             $('#LoginWithAmazon').hide();
             $('#Logout').show();
             document.getElementById("profileName").innerHTML = "Hi " + result.name;
+            $('#unsubscribeEmail').show();
         }
 
     });

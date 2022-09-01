@@ -127,7 +127,8 @@ public class AmazonServlet extends HttpServlet {
                     out.println("\"email\": \"" + m2.get("email") +"\"}");
                 }
             }else {
-                out.println("{\"exists\": \"good exists.\"}");
+                out.println("{\"exists\": \"good exists.\",");
+                out.println("\"email\": \"" + m2.get("email") +"\"}");
             }
         }
         else {
