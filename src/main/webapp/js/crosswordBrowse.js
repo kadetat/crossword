@@ -4,48 +4,33 @@ function htmlSafe(data) {
 
 function playItem(e) {
     let targetID = e.target.value;
-    let dataToServer = {id     : targetID};
-    console.log(dataToServer);
-    let url = "api/crossword";
-    $.ajax({
-        type: 'POST',
-        url: url,
-        data: JSON.stringify(dataToServer),
-        success: function(dataFromServer) {
-            console.log(dataFromServer);
-            let result = JSON.parse(dataFromServer)
-            //window.location.href = 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_site.html';
-            window.location.href = 'https://crosswordcreators.com/crossword_site.html'
-        },
-        contentType: "application/json",
-        dataType: 'text', // Could be JSON or whatever too
-    });
+    // let dataToServer = {id     : targetID};
+    // console.log(dataToServer);
+    // let url = "api/crossword";
+    // $.ajax({
+    //     type: 'POST',
+    //     url: url,
+    //     data: JSON.stringify(dataToServer),
+    //     success: function(dataFromServer) {
+    //         console.log(dataFromServer);
+    //         let result = JSON.parse(dataFromServer)
+    //         //window.location.href = 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_site.html';
+    //         window.location.href = 'https://crosswordcreators.com/crossword_site.html'
+    //     },
+    //     contentType: "application/json",
+    //     dataType: 'text', // Could be JSON or whatever too
+    // });
+    let data = {
+        //url: 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_site.html?',
+        url : 'https://crosswordcreators.com/crossword_site.html?',
+        params: {
+            'id': targetID,
+        }
+    }
+    let queryParam = encodeQuery(data);
+    window.location.href = queryParam;
 }
 
-// function goToOldCrossword2() {
-//     let dataToServer = {id     : "2"};
-//     console.log(dataToServer);
-//     let url = "api/crossword";
-//     $.ajax({
-//         type: 'POST',
-//         url: url,
-//         data: JSON.stringify(dataToServer),
-//         success: function(dataFromServer) {
-//             console.log(dataFromServer);
-//             let result = JSON.parse(dataFromServer)
-//             //window.location.href = 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_site.html';
-//             window.location.href = 'https://crosswordcreators.com/crossword_site.html'
-//         },
-//         contentType: "application/json",
-//         dataType: 'text', // Could be JSON or whatever too
-//     });
-// }
-
-// let oldCrosswordButton = $('#oldCrossword');
-// oldCrosswordButton.on("click", goToOldCrossword);
-//
-// let oldCrosswordButton2 = $('#oldCrossword2');
-// oldCrosswordButton2.on("click", goToOldCrossword2);
 
 function updateTable() {
     // Here's where your code is going to go.
@@ -115,6 +100,14 @@ function allowFunction() {
             });
         }
     });
+}
+
+function encodeQuery(data){
+    let query = data.url
+    for (let d in data.params)
+        query += encodeURIComponent(d) + '='
+            + encodeURIComponent(data.params[d]) + '&';
+    return query.slice(0, -1)
 }
 // Call your code.
 updateTable();

@@ -222,7 +222,7 @@ public class PuzzleInfoDAO {
         return list;
     }
 
-    public static void addPuzzle(PuzzleInfo puzzleInfo) {
+    public static String addPuzzle(PuzzleInfo puzzleInfo) {
         String neededID = null;
         log.log(Level.FINE, "Add Puzzle");
         System.out.println("At add puzzle");
@@ -293,6 +293,7 @@ public class PuzzleInfoDAO {
             }
             System.out.println("sql3");
 
+
         } catch (SQLException se) {
             log.log(Level.SEVERE, "SQL Error", se );
         } catch (Exception e) {
@@ -305,6 +306,7 @@ public class PuzzleInfoDAO {
             try { if(conn != null) conn.close(); }
             catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
         }
+        return neededID;
     }
 
     public static void allowEmail(String amazonID) {

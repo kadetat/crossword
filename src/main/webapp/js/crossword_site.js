@@ -15,102 +15,123 @@ function htmlSafe(data) {
     return data.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;")
 }
 
+function showLinkModel(e) {
+    $('#LinkModel').modal('show');
+}
+let linkModelButton = $('#Link');
+linkModelButton.on("click", showLinkModel);
+
+
 function updateTable() {
     // Here's where your code is going to go.
+    let currentURL = new URL(window.location.href);
+    const urlParams = new URLSearchParams(currentURL.search);
+    const id = urlParams.get('id');
+    let validatedID;
 
-    // Define a URL
-    let url2 = "api/crossword";
+    //word
+    let reg = /^[0-9]{1,20}$/;
+    if (reg.test(id)) {
+        validatedID = true;
+    }
+    if (!validatedID){
+        window.location.href = 'https://crosswordcreators.com/crossword_browse.html';
+        return;
+    }
+    let dataToServer = {id     : id};
+    console.log(dataToServer);
+    let url = "api/crossword";
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: JSON.stringify(dataToServer),
+        success: function(dataFromServer) {
+            let result = JSON.parse(dataFromServer)
+            $("#crosswordTable tbody tr:first-child").remove();
+            console.log(result);
+            console.log(result.jsonArray2);
+            console.log(result.jsonArray1);
+            questionObjectArray = result.jsonArray2;
+            gridObjectArray = result.jsonArray1;
+            console.log(questionObjectArray)
+            $('#getTitleResult').html(result.jsonArray3[1]);
+            const svg = document.querySelector("svg");
 
-    console.log("call updateTable")
-
-    // Start a web call. Specify:
-    // URL
-    // Data to pass (nothing in this case)
-    // Function to call when we are done
-    $.getJSON(url2, null, function(json_result) {
-        $("#crosswordTable tbody tr:first-child").remove();
-        console.log(json_result);
-        console.log(json_result.jsonArray2);
-        console.log(json_result.jsonArray1);
-        questionObjectArray = json_result.jsonArray2;
-        gridObjectArray = json_result.jsonArray1;
-        console.log(questionObjectArray)
-        $('#getTitleResult').html(json_result.jsonArray3[1]);
-        const svg = document.querySelector("svg");
-
-        const svgns = "http://www.w3.org/2000/svg";
+            const svgns = "http://www.w3.org/2000/svg";
 
 // change any value
-        let columns = json_result.jsonArray1[1].length;
-        let rows = json_result.jsonArray1.length;
-        let counter = 0;
-        const colorArray = ["#121212", "#46a4cc", "#a63e4b"];
+            let columns = result.jsonArray1[1].length;
+            let rows = result.jsonArray1.length;
+            let counter = 0;
+            const colorArray = ["#121212", "#46a4cc", "#a63e4b"];
 
 // figure the new svg width/height
-        const svgWidth = width * columns;
-        const svgHeight = height * rows;
+            const svgWidth = width * columns;
+            const svgHeight = height * rows;
 
-        gsap.set(svg, {
-            attr: {
-                width: svgWidth,
-                height: svgHeight,
-                //viewBox: "0 0 " + svgWidth + " " + svgHeight
+            gsap.set(svg, {
+                attr: {
+                    width: svgWidth,
+                    height: svgHeight,
+                    //viewBox: "0 0 " + svgWidth + " " + svgHeight
+                }
+            });
+            for (let j = 1; j < result.jsonArray1.length; j++) {
+                for (let i = 0; i < result.jsonArray1[j].length; i++) {
+                    counter++;
+                    let newRect = document.createElementNS(svgns, "rect");
+                    if (result.jsonArray1[j][i] !== " ") {
+                        gsap.set(newRect, {
+                            attr: {
+                                x: i * width,
+                                y: j * height,
+                                width: width,
+                                height: height,
+                                fill: "#FFFFFF",
+                                stroke: colorArray[0]
+                            }
+                        });
+                        svg.appendChild(newRect);
+                        // let txt = document.createElementNS(svgns, "text");
+                        // txt.textContent = json_result.jsonArray1[j][i];
+                        // svg.appendChild(txt);
+                        // gsap.set(txt, {
+                        //     x: i * width + width / 2,
+                        //     y: j * height + height / 2,
+                        // });
+                    }
+                }
             }
-        });
-        for (let j = 1; j < json_result.jsonArray1.length; j++) {
-            for (let i = 0; i < json_result.jsonArray1[j].length; i++) {
-                counter++;
-                let newRect = document.createElementNS(svgns, "rect");
-                if (json_result.jsonArray1[j][i] !== " ") {
-                    gsap.set(newRect, {
-                        attr: {
-                            x: i * width,
-                            y: j * height,
-                            width: width,
-                            height: height,
-                            fill: "#FFFFFF",
-                            stroke: colorArray[0]
+            for (let j = 1; j < result.jsonArray2.length + 1; j++) {
+                for (let k = 0; k < result.jsonArray2.length; k++)
+                    if (result.jsonArray2[k].number === j) {
+                        if (result.jsonArray2[k].vertical === 0){
+                            console.log(result.jsonArray2[k].word)
+                            $("#across tbody").append("<tr><td>" + j + ". " + result.jsonArray2[k].clue + "</td></tr>");
+                            let txt = document.createElementNS(svgns, "text");
+                            txt.textContent = result.jsonArray2[k].number;
+                            svg.appendChild(txt);
+                            gsap.set(txt, {
+                                x: (result.jsonArray2[k].col - 1) * width + 2,
+                                y: result.jsonArray2[k].row * height + height / 2,
+                            });
                         }
-                    });
-                    svg.appendChild(newRect);
-                    // let txt = document.createElementNS(svgns, "text");
-                    // txt.textContent = json_result.jsonArray1[j][i];
-                    // svg.appendChild(txt);
-                    // gsap.set(txt, {
-                    //     x: i * width + width / 2,
-                    //     y: j * height + height / 2,
-                    // });
-                }
+                        else {
+                            console.log(result.jsonArray2[k].word)
+                            $("#vertical tbody").append("<tr><td>" + j + ". " + result.jsonArray2[k].clue + "</td></tr>");
+                            let txt = document.createElementNS(svgns, "text");
+                            txt.textContent = result.jsonArray2[k].number;
+                            svg.appendChild(txt);
+                            gsap.set(txt, {
+                                x: (result.jsonArray2[k].col - 1) * width + 2,
+                                y: result.jsonArray2[k].row * height + height - 2,
+                            });
+                        }
+                    }
             }
-        }
-        for (let j = 1; j < json_result.jsonArray2.length + 1; j++) {
-            for (let k = 0; k < json_result.jsonArray2.length; k++)
-            if (json_result.jsonArray2[k].number === j) {
-                if (json_result.jsonArray2[k].vertical === 0){
-                    console.log(json_result.jsonArray2[k].word)
-                    $("#across tbody").append("<tr><td>" + j + ". " + json_result.jsonArray2[k].clue + "</td></tr>");
-                    let txt = document.createElementNS(svgns, "text");
-                    txt.textContent = json_result.jsonArray2[k].number;
-                    svg.appendChild(txt);
-                    gsap.set(txt, {
-                        x: (json_result.jsonArray2[k].col - 1) * width + 2,
-                        y: json_result.jsonArray2[k].row * height + height / 2,
-                    });
-                }
-                else {
-                    console.log(json_result.jsonArray2[k].word)
-                    $("#vertical tbody").append("<tr><td>" + j + ". " + json_result.jsonArray2[k].clue + "</td></tr>");
-                    let txt = document.createElementNS(svgns, "text");
-                    txt.textContent = json_result.jsonArray2[k].number;
-                    svg.appendChild(txt);
-                    gsap.set(txt, {
-                        x: (json_result.jsonArray2[k].col - 1) * width + 2,
-                        y: json_result.jsonArray2[k].row * height + height - 2,
-                    });
-                }
-            }
-        }
-
+        },
+        contentType: "application/json",
+        dataType: 'text', // Could be JSON or whatever too
     });
 }
 

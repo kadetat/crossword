@@ -280,22 +280,22 @@ function submit() {
             words: wordArray,
             clues: clueArray,
         };
-
-        console.log(dataToServer);
-        let url = "api/crossword";
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: JSON.stringify(dataToServer),
-            success: function (dataFromServer) {
-                console.log(dataFromServer);
-                let result = JSON.parse(dataFromServer)
-                //window.location.href = 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_site.html';
-                window.location.href = 'https://crosswordcreators.com/crossword_site.html'
-            },
-            contentType: "application/json",
-            dataType: 'text', // Could be JSON or whatever too
-        });
+        //
+        // console.log(dataToServer);
+        // let url = "api/crossword";
+        // $.ajax({
+        //     type: 'POST',
+        //     url: url,
+        //     data: JSON.stringify(dataToServer),
+        //     success: function (dataFromServer) {
+        //         console.log(dataFromServer);
+        //         let result = JSON.parse(dataFromServer)
+        //         //window.location.href = 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_site.html';
+        //         window.location.href = 'https://crosswordcreators.com/crossword_site.html'
+        //     },
+        //     contentType: "application/json",
+        //     dataType: 'text', // Could be JSON or whatever too
+        // });
 
         let url2 = "api/puzzle_add";
         $.ajax({
@@ -305,10 +305,20 @@ function submit() {
             success: function (dataFromServer) {
                 console.log(dataFromServer);
                 let result = JSON.parse(dataFromServer);
+                let data;
                 if ('error' in result) {
                     // JavaScript alert the error.
                     alert(result.error);
-
+                } else {
+                    data = {
+                        //url: 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_site.html?',
+                        url : 'https://crosswordcreators.com/crossword_site.html?',
+                        params: {
+                            'id': result.success,
+                        }
+                    }
+                    let queryParam = encodeQuery(data);
+                    window.location.href = queryParam;
                 }
             },
             contentType: "application/json",
@@ -520,5 +530,13 @@ function allowFunction() {
             });
         }
     });
+}
+
+function encodeQuery(data){
+    let query = data.url
+    for (let d in data.params)
+        query += encodeURIComponent(d) + '='
+            + encodeURIComponent(data.params[d]) + '&';
+    return query.slice(0, -1)
 }
 

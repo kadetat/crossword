@@ -18,7 +18,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 
@@ -26,6 +27,10 @@ import java.util.logging.Logger;
 public class CrosswordServlet extends HttpServlet {
     ArrayList<Word> list = new ArrayList<>();
     ArrayList<String> infolist = new ArrayList<>();
+    private Pattern idValidationPattern;
+    public CrosswordServlet() {
+        idValidationPattern = Pattern.compile("^[0-9]{0,10}$");
+    }
 
 
     private final static Logger log = Logger.getLogger(CrosswordServlet.class.getName());
@@ -47,6 +52,12 @@ public class CrosswordServlet extends HttpServlet {
         Gson gson = new Gson();
 
         PuzzleInfo puzzleInfo = gson.fromJson(requestString, PuzzleInfo.class);
+        Matcher mid = idValidationPattern.matcher(puzzleInfo.getId());
+
+        if (!mid.find()) {
+            out.println("{\"error\" : \"Error validating ID.\"}");
+            return;
+        }
         System.out.println(puzzleInfo.getId());
         list.clear();
         infolist.clear();
@@ -84,8 +95,39 @@ public class CrosswordServlet extends HttpServlet {
             infolist.add(puzzleInfo.getDate());
         }
 
+        CrosswordCreator puzzle1 = new CrosswordCreator(50, 80, "empty", 2000, list);
+        int spins = 100;
+        int x = 1;
+        boolean complete = false;
+        while (x < spins && !complete){
+            try {
+                String[][] puzzle = puzzle1.computeCrossword();
+                JsonObject jsonObj = new JsonObject();
+                Gson jsonString = new Gson();
+                Gson jsonStringWords = new Gson();
+                Gson jsonStringDetails = new Gson();
+
+                puzzle1.display(puzzle);
+                JsonArray jsonString1 = jsonString.toJsonTree(puzzle).getAsJsonArray();;
+                JsonArray jsonString2 = jsonStringWords.toJsonTree(list).getAsJsonArray();;
+                JsonArray jsonString3 = jsonStringDetails.toJsonTree(infolist).getAsJsonArray();;
+                jsonObj.add("jsonArray1", jsonString1);
+                jsonObj.add("jsonArray2", jsonString2);
+                jsonObj.add("jsonArray3", jsonString3);
+                out.println(jsonObj.toString());
+                System.out.println(jsonString1);
+                System.out.println("Number of Spins: " + x);
+                complete = true;
+            } catch (Exception NullPointerException){
+                x ++;
+                System.out.println("nowhere to put word");
+                if (x == spins) {
+                    System.out.println("Error: reached spins");
+                }
+            }
+        }
         // Just print t--x-he data out to confirm we got it.
-        out.println("{\"success\": \"Successful insert.\"}");
+        //out.println("{\"success\": \"Successful insert.\"}");
 
     }
 

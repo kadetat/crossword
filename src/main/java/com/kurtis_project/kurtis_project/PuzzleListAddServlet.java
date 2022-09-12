@@ -108,12 +108,12 @@ public class PuzzleListAddServlet extends HttpServlet {
 //        }
         System.out.println(formTestObject.toString());
         //if (formTestObject.getId().equals("")){
-        PuzzleInfoDAO.addPuzzle(formTestObject);
+        String newID = PuzzleInfoDAO.addPuzzle(formTestObject);
         //}else {
             //PersonDAO.updatePerson(formTestObject);
         //}
         // If we made it this far we have success.
-        out.println("{\"success\": \"Successful insert.\"}");
+        out.println("{\"success\": \"" + newID + "\"}");
 
         // Send something back to the client. Really, we should send a JSON, but
         // we'll keep things simple.
