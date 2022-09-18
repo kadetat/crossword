@@ -183,10 +183,12 @@
     </article>
     <article class="footer">
         <p> Creators: Kade and Kurtis Tatkenhorst</p>
-        <p> March 23rd, 2021</p>
+        <p> September 17th, 2022</p>
         <p> Contact: kadetatkenhorst34@gmail.com</p>
-        <p style="font-size: small"> View our privacy policy here: <a href="https://crosswordcreators.com/privacy.html" target="_blank">Privacy Policy</a></p>
-        <p id="unsubscribeEmail" style="font-size: small"> Unsubscribe to emails here: <a href="https://crosswordcreators.com/change_email_settings.html">Unsubscribe</a></p>
+        <div style="text-align: center">
+            <p style="font-size: small; display: inline-block"><a href="https://crosswordcreators.com/privacy.html" target="_blank">Privacy Policy</a></p>
+            <p id="unsubscribeEmail" style="font-size: small; display: inline-block">  <a href="https://crosswordcreators.com/change_email_settings.html">Unsubscribe</a></p>
+        </div>
     </article>
 </section>
 
@@ -298,11 +300,9 @@
             $('#Logout').hide();
             $('#LoginWithAmazon').show();
             document.getElementById("modalEmail").innerHTML = "";
-            $('#unsubscribeEmail').hide();
         }else {
             $('#LoginWithAmazon').hide();
             $('#Logout').show();
-            $('#unsubscribeEmail').show();
         }
 
     });
