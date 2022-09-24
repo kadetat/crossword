@@ -20,7 +20,7 @@ public class InvalidateSessionServlet extends HttpServlet {
 
         if (session!=null) {
             session.invalidate();
-            out.println("Invalidated Session");
+            out.println("{\"success\": \"Invalidated Session.\"}");
         }
     }
 

@@ -71,6 +71,7 @@
                  data-auto_prompt="false">
             </div>
             <div class="g_id_signin"
+                 id="googleButton"
                  data-type="standard"
                  data-size="medium"
                  data-theme="outline"
@@ -90,8 +91,6 @@
 </nav>
 <script>
     function handleCredentialResponse(response) {
-        console.log(response);
-        console.log(response.credential);
         let dataToServer = {code    : response.credential};
         let url = "api/googleHelp";
         $.ajax({
@@ -99,19 +98,16 @@
             url: url,
             data: JSON.stringify(dataToServer),
             success: function(dataFromServer) {
-                console.log(dataFromServer);
                 $('#LoginWithAmazon').hide();
-                $('#g_id_signin').hide();
+                $('#googleButton').hide();
                 $('#Logout').show();
-                // let result = JSON.parse(dataFromServer)
-                // if ('added' in result) {
-                //     document.getElementById("modalEmail").innerHTML = " " + result.email;
-                //     console.log(result);
-                //     console.log(result.email)
-                //     $('#myLetEmailModal').modal('show');
-                // } else {
-                //     window.location.href = 'https://crosswordcreators.com'
-                // }
+                let result = JSON.parse(dataFromServer)
+                if ('added' in result) {
+                    document.getElementById("modalEmail").innerHTML = " " + result.email;
+                    $('#myLetEmailModal').modal('show');
+                } else {
+                    window.location.href = 'https://crosswordcreators.com'
+                }
             },
             contentType: "application/json",
             dataType: 'text', // Could be JSON or whatever too
@@ -134,12 +130,11 @@
                 data: JSON.stringify(dataToServer),
                 success: function(dataFromServer) {
                     $('#LoginWithAmazon').hide();
+                    $('#googleButton').hide();
                     $('#Logout').show();
                     let result = JSON.parse(dataFromServer)
                     if ('added' in result) {
                         document.getElementById("modalEmail").innerHTML = " " + result.email;
-                        console.log(result);
-                        console.log(result.email)
                         $('#myLetEmailModal').modal('show');
                     } else {
                         window.location.href = 'https://crosswordcreators.com'
@@ -157,10 +152,11 @@
 
         $.post(url, null, function (dataFromServer) {
             setSessionJava();
+            $('#Logout').hide();
+            $('#LoginWithAmazon').show();
+            $('#googleButton').show();
+            window.location.href = 'https://crosswordcreators.com'
         });
-        $('#Logout').hide();
-        $('#LoginWithAmazon').show();
-        window.location.href = 'https://crosswordcreators.com'
     };
 </script>
 
@@ -255,10 +251,12 @@
             // JavaScript alert the error.
             $('#Logout').hide();
             $('#LoginWithAmazon').show();
+            $('#googleButton').show();
             document.getElementById("profileName").innerHTML = "";
             document.getElementById("modalEmail").innerHTML = "";
         }else {
             $('#LoginWithAmazon').hide();
+            $('#googleButton').hide();
             $('#Logout').show();
             document.getElementById("profileName").innerHTML = "Hi " + result.name;
         }

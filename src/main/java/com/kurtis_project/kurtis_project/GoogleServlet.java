@@ -71,22 +71,26 @@ public class GoogleServlet extends HttpServlet {
             String familyName = (String) payload.get("family_name");
             String givenName = (String) payload.get("given_name");
 
-            out.println("{\"User ID\": \"" + userId + "\",");
-            out.println("{\"email\": \"" + email + "\",");
-            out.println("{\"email verified\": \"" + emailVerified + "\",");
-            out.println("{\"name\": \"" + name + "\",");
-            out.println("{\"pictureUrl\": \"" + pictureUrl + "\",");
-            out.println("{\"locale\": \"" + locale + "\",");
-            out.println("{\"familyName\": \"" + familyName + "\",");
-            out.println("{\"givenName\": \"" + givenName + "\",");
-            out.println("\"token\": \"" + googleInfo.getCode() +"\"}");
-//
-//            // Use or store profile information
-//            // ...
+            HttpSession session = request.getSession();
+            session.setAttribute("loggedIn", "true");
+            session.setAttribute("loginID", userId);
+            session.setAttribute("loginName", name);
+            session.setAttribute("userEmail", email);
+            Boolean exists = PuzzleInfoDAO.checkIfUserExists(userId);
+
+            if (!exists){
+                Boolean added = PuzzleInfoDAO.addUser(userId, name, email);
+                if (added) {
+                    out.println("{\"added\": \"good insert.\",");
+                    out.println("\"email\": \"" + email +"\"}");
+                }
+            }else {
+                out.println("{\"exists\": \"good exists.\",");
+                out.println("\"email\": \"" + email +"\"}");
+            }
 
         } else {
-            out.println("{\"User ID\": \"bad.\",");
-            out.println("\"token\": \"" + googleInfo.getCode() +"\"}");
+            out.println("{\"error\": \"bad insert.\"}");
         }
 
     }

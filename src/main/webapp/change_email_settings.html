@@ -29,6 +29,7 @@
     </script>
 
     <script data-ad-client="ca-pub-7753103577514139" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <title>Crossword Creator: Build or Play Online Crosswords!</title>
 </head>
@@ -64,7 +65,22 @@
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <a id="LoginWithAmazon" onClick={loginWithAmazon} style="cursor:pointer; display: none;">
+            <div id="g_id_onload"
+                 data-client_id="161771154815-4t5i72diha2hkfl0nb2pjgv547e276hc.apps.googleusercontent.com"
+                 data-callback="handleCredentialResponse"
+                 data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin"
+                 id="googleButton"
+                 data-type="standard"
+                 data-size="medium"
+                 data-theme="outline"
+                 data-text="sign_in_with"
+                 data-shape="rectangular"
+                 data-logo_alignment="left">
+            </div>
+            <div id="buttonDiv" style="display: inline-block; margin-right: 4px;"></div>
+            <a id="LoginWithAmazon" onClick={loginWithAmazon} style="cursor:pointer; display: inline-block;">
                 <img border="0" alt="Login with Amazon"
                      src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
                      width="156" height="32" />
@@ -73,6 +89,31 @@
         </ul>
     </div>
 </nav>
+<script>
+    function handleCredentialResponse(response) {
+        let dataToServer = {code    : response.credential};
+        let url = "api/googleHelp";
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: JSON.stringify(dataToServer),
+            success: function(dataFromServer) {
+                $('#LoginWithAmazon').hide();
+                $('#googleButton').hide();
+                $('#Logout').show();
+                let result = JSON.parse(dataFromServer)
+                if ('added' in result) {
+                    document.getElementById("modalEmail").innerHTML = " " + result.email;
+                    $('#myLetEmailModal').modal('show');
+                } else {
+                    window.location.href = 'https://crosswordcreators.com/change_email_settings.html'
+                }
+            },
+            contentType: "application/json",
+            dataType: 'text', // Could be JSON or whatever too
+        });
+    }
+</script>
 <script type="text/javascript">
     document.getElementById('LoginWithAmazon').onclick = function() {
         options = {scope: 'profile', response_type: 'code', state: 'abcdefghijklmnop', popup: 'False', redirect_uri: 'https://crosswordcreators.com'}
@@ -89,13 +130,14 @@
                 data: JSON.stringify(dataToServer),
                 success: function(dataFromServer) {
                     $('#LoginWithAmazon').hide();
+                    $('#googleButton').hide();
                     $('#Logout').show();
                     let result = JSON.parse(dataFromServer)
                     if ('added' in result) {
                         document.getElementById("modalEmail").innerHTML = " " + result.email;
                         $('#myLetEmailModal').modal('show');
                     } else {
-                        window.location.href = 'https://crosswordcreators.com'
+                        window.location.href = 'https://crosswordcreators.com/change_email_settings.html'
                     }
                 },
                 contentType: "application/json",
@@ -110,10 +152,11 @@
 
         $.post(url, null, function (dataFromServer) {
             setSessionJava();
+            $('#Logout').hide();
+            $('#LoginWithAmazon').show();
+            $('#googleButton').show();
+            window.location.href = 'https://crosswordcreators.com/change_email_settings.html'
         });
-        $('#Logout').hide();
-        $('#LoginWithAmazon').show();
-        window.location.href = 'https://crosswordcreators.com'
     };
 </script>
 
@@ -204,38 +247,14 @@
             // JavaScript alert the error.
             $('#Logout').hide();
             $('#LoginWithAmazon').show();
-            options = {scope: 'profile', response_type: 'code', state: 'abcdefghijklmnop', popup: 'False', redirect_uri: 'https://crosswordcreators.com'}
-            amazon.Login.authorize(options, function(response) {
-                if ( response.error ) {
-                    alert('oauth error ' + response.error);
-                    return;
-                }
-                let dataToServer = {code    : response.code};
-                let url = "api/amazonHelp";
-                $.ajax({
-                    type: 'POST',
-                    url: url,
-                    data: JSON.stringify(dataToServer),
-                    success: function(dataFromServer) {
-                        $('#LoginWithAmazon').hide();
-                        $('#Logout').show();
-                        let result2 = JSON.parse(dataFromServer)
-                        if ('added' in result2) {
-                            document.getElementById("modalEmail").innerHTML = " " + result2.email;
-                            $('#myLetEmailModal').modal('show');
-                        } else {
-                            document.getElementById("modalEmail2").innerHTML = " " + result2.email;
-                            $('#changeEmailModal').modal('show');
-                        }
-                    },
-                    contentType: "application/json",
-                    dataType: 'text', // Could be JSON or whatever too
-                });
-            });
+            $('#googleButton').show();
+            document.getElementById("modalEmail").innerHTML = "";
         }else {
+            $('#LoginWithAmazon').hide();
+            $('#googleButton').hide();
+            $('#Logout').show();
             $('#changeEmailModal').modal('show');
         }
-
     });
 </script>
 </body>

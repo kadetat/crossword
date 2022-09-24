@@ -12,7 +12,7 @@ function allowFunction() {
             return;
         }
         let validatedWord = false;
-        let reg = /^[A-Za-z.1-9]{1,50}$/;
+        let reg = /^[A-Za-z.0-9]{1,50}$/;
         if (reg.test(result.amazonID)) {
             validatedWord = true;
         }
@@ -51,7 +51,7 @@ function changeFunction() {
             return;
         }
         let validatedWord = false;
-        let reg = /^[A-Za-z.1-9]{1,50}$/;
+        let reg = /^[A-Za-z.0-9]{1,50}$/;
         if (reg.test(result.amazonID)) {
             validatedWord = true;
         }
