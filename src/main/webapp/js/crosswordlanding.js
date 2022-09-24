@@ -88,10 +88,8 @@ function editItem(e) {
     let clueField = $('#clueEdit');
     let word = wordArray[id - 1];
     originalWord = word;
-    console.log(word);
     // repeat line above for all the fields we need
     let clue = clueArray[id - 1];
-    console.log(clue);
     wordField.val(word);
     clueField.val(clue);
     wordField.removeClass("is-invalid");
@@ -139,14 +137,10 @@ function saveChanges() {
 
     if (validatedWord && validatedClue) {
         wordArray[id - 1] = wordField.val();
-        console.log("here1 " + wordField.val() + " " + originalWord);
         if (wordTemp !== originalWord){
             if (wordTemp.length < originalWord.length){
                 letterCount = letterCount - (originalWord.length - wordTemp.length);
-                let ugh = (originalWord.length - wordTemp.length)
-                console.log("here2 " + ugh);
             }
-            console.log("here3");
             previewClick();
         }
         if (!errorEdit){
@@ -166,7 +160,6 @@ let confirmDeleteButton = $('#confirm');
 confirmDeleteButton.on("click", confirm);
 
 function confirm(e){
-    console.log("Hiiii");
     let targetID = $('#idDelete').val();
     //let targetID = e.target.value;
     //console.log("ugh " + wordArray[targetID - 1].length);
@@ -199,6 +192,8 @@ function confirm(e){
     $('#myModalDelete').modal('hide');
     if (j > 0){
         previewClick()
+    } else{
+        validCrossword = false;
     }
 }
 function deleteItem(e) {
@@ -216,7 +211,6 @@ function submit() {
     let title = $('#title');
     let author = $('#author');
     let validatedFirst = true;
-    if (true) {
     if (regClue.test(title.val())) {
         title.removeClass("is-invalid");
         title.addClass("is-valid");
@@ -233,40 +227,11 @@ function submit() {
         author.addClass("is-invalid");
         validatedFirst = false;
     }
-    // for (let iClue = 0; iClue <= i; iClue++){
-    //     let want = iClue + 1
-    //     let clueChecking = $('#clue'+ want)
-    //     let clueCheck = clueChecking.val();
-    //     let clueField = clueChecking;
-    //     if (regClue.test(clueCheck)) {
-    //         clueField.removeClass("is-invalid");
-    //         clueField.addClass("is-valid");
-    //     } else {
-    //         clueField.removeClass("is-valid");
-    //         clueField.addClass("is-invalid");
-    //         validatedFirst = false;
-    //     }
-    // }
-    // for (let iWord = 0; iWord <= i; iWord++){
-    //     let want = iWord + 1
-    //     let wordChecking = $('#word'+ want)
-    //     let wordCheck = wordChecking.val();
-    //     let wordField = wordChecking;
-    //     if (reg.test(wordCheck)) {
-    //         wordField.removeClass("is-invalid");
-    //         wordField.addClass("is-valid");
-    //     } else {
-    //         wordField.removeClass("is-valid");
-    //         wordField.addClass("is-invalid");
-    //         validatedFirst = false;
-    //     }
-    // }
-     if (validatedFirst && validCrossword) {
+    if (validatedFirst && validCrossword) {
         let title = $('#title').val();
         let author = $('#author').val();
         let dateObject = new Date;
         let date = dateObject.getFullYear() + '-' + (dateObject.getMonth() + 1) + '-' + dateObject.getDate();
-
 
 
         console.log(clueArray);
@@ -280,22 +245,6 @@ function submit() {
             words: wordArray,
             clues: clueArray,
         };
-        //
-        // console.log(dataToServer);
-        // let url = "api/crossword";
-        // $.ajax({
-        //     type: 'POST',
-        //     url: url,
-        //     data: JSON.stringify(dataToServer),
-        //     success: function (dataFromServer) {
-        //         console.log(dataFromServer);
-        //         let result = JSON.parse(dataFromServer)
-        //         //window.location.href = 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_site.html';
-        //         window.location.href = 'https://crosswordcreators.com/crossword_site.html'
-        //     },
-        //     contentType: "application/json",
-        //     dataType: 'text', // Could be JSON or whatever too
-        // });
 
         let url2 = "api/puzzle_add";
         $.ajax({
@@ -312,7 +261,7 @@ function submit() {
                 } else {
                     data = {
                         //url: 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_site.html?',
-                        url : 'https://crosswordcreators.com/crossword_site.html?',
+                        url: 'https://crosswordcreators.com/crossword_site.html?',
                         params: {
                             'id': result.success,
                         }
@@ -324,15 +273,10 @@ function submit() {
             contentType: "application/json",
             dataType: 'text', // Could be JSON or whatever too
         });
-    } else if (!validCrossword){
-         alert("The crossword is not buildable. Add or delete words until crossword is buildable.")
-     }
-     else {
-        alert("Clue or Word has character not allowed.");
-    }
-
-} else {
-        alert("Word count must equal Clue count.");
+    } else if (!validCrossword) {
+        alert("The crossword is not buildable. Add or delete words until crossword is buildable.")
+    } else {
+        alert("Title or Author field(s) need fixed.");
     }
 }
 
