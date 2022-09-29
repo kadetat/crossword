@@ -61,6 +61,21 @@ article {
     display:block;
 }
 
+.OutlineText {
+    font-size: 64px;
+    color: black;
+    text-shadow:
+        /* Outline */
+            -1px -1px 0 aquamarine,
+            1px -1px 0 #000000,
+            -1px 1px 0 #000000,
+            1px 1px 0 #000000,
+            -2px 0 0 #000000,
+            2px 0 0 #000000,
+            0 2px 0 #000000,
+            0 -2px 0 #000000; /* Terminate with a semi-colon */
+}
+
 @media (max-width: 800px) {
     section {
         /*background-color: green;*/

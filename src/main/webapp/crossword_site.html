@@ -16,32 +16,32 @@
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cosmo/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="crossword_css.css">
+
     <style>
         text {
             font-size: 12px;
         }
-
     </style>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-
+<!--    <script src="https://accounts.google.com/gsi/client" async defer></script>-->
     <title>Crossword Puzzle</title>
 </head>
 
 <body>
 <div id="amazon-root"></div>
-<script type="text/javascript">
 
-    window.onAmazonLoginReady = function() {
-        amazon.Login.setClientId('amzn1.application-oa2-client.502697efea7f490fb123f130c00bd2cf');
-    };
-    (function(d) {
-        var a = d.createElement('script'); a.type = 'text/javascript';
-        a.async = true; a.id = 'amazon-login-sdk';
-        a.src = 'https://assets.loginwithamazon.com/sdk/na/login1.js';
-        d.getElementById('amazon-root').appendChild(a);
-    })(document);
+<!--<script type="text/javascript">-->
 
-</script>
+<!--    window.onAmazonLoginReady = function() {-->
+<!--        amazon.Login.setClientId('amzn1.application-oa2-client.502697efea7f490fb123f130c00bd2cf');-->
+<!--    };-->
+<!--    (function(d) {-->
+<!--        var a = d.createElement('script'); a.type = 'text/javascript';-->
+<!--        a.async = true; a.id = 'amazon-login-sdk';-->
+<!--        a.src = 'https://assets.loginwithamazon.com/sdk/na/login1.js';-->
+<!--        d.getElementById('amazon-root').appendChild(a);-->
+<!--    })(document);-->
+
+<!--</script>-->
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="#">Crossword Creators</a>
@@ -58,86 +58,95 @@
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <div id="g_id_onload"
-                 data-client_id="161771154815-4t5i72diha2hkfl0nb2pjgv547e276hc.apps.googleusercontent.com"
-                 data-callback="handleCredentialResponse"
-                 data-auto_prompt="false">
+<!--            <div id="g_id_onload"-->
+<!--                 data-client_id="161771154815-4t5i72diha2hkfl0nb2pjgv547e276hc.apps.googleusercontent.com"-->
+<!--                 data-callback="handleCredentialResponse"-->
+<!--                 data-auto_prompt="false">-->
+<!--            </div>-->
+<!--            <div class="g_id_signin"-->
+<!--                 id="googleButton"-->
+<!--                 data-type="standard"-->
+<!--                 data-size="medium"-->
+<!--                 data-theme="outline"-->
+<!--                 data-text="sign_in_with"-->
+<!--                 data-shape="rectangular"-->
+<!--                 data-logo_alignment="left">-->
+<!--            </div>-->
+<!--            <div id="buttonDiv" style="display: inline-block; margin-right: 4px;"></div>-->
+<!--            <a id="LoginWithAmazon" onClick={loginWithAmazon} style="cursor:pointer; display: inline-block;">-->
+<!--                <img border="0" alt="Login with Amazon"-->
+<!--                     src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"-->
+<!--                     width="156" height="32" />-->
+<!--            </a>-->
+            <div id="profileSection" style="display: inline-block">
+                <li class="nav-item" style="display: inline-block;">
+                    <a class="nav-link" id="profileNameRibbon" style="color: white;" href="profile.html"></a>
+                </li>
+                <button id="Logout" type="button" class="btn btn-light">Logout</button>
             </div>
-            <div class="g_id_signin"
-                 id="googleButton"
-                 data-type="standard"
-                 data-size="medium"
-                 data-theme="outline"
-                 data-text="sign_in_with"
-                 data-shape="rectangular"
-                 data-logo_alignment="left">
-            </div>
-            <div id="buttonDiv" style="display: inline-block; margin-right: 4px;"></div>
-            <a id="LoginWithAmazon" onClick={loginWithAmazon} style="cursor:pointer; display: inline-block;">
-                <img border="0" alt="Login with Amazon"
-                     src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
-                     width="156" height="32" />
-            </a>
-            <button id="Logout" type="button" class="btn btn-light" style="display: none;">Logout</button>
         </ul>
     </div>
 </nav>
-<script>
-    function handleCredentialResponse(response) {
-        let dataToServer = {code    : response.credential};
-        let url = "api/googleHelp";
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: JSON.stringify(dataToServer),
-            success: function(dataFromServer) {
-                $('#LoginWithAmazon').hide();
-                $('#googleButton').hide();
-                $('#Logout').show();
-                let result = JSON.parse(dataFromServer)
-                if ('added' in result) {
-                    document.getElementById("modalEmail").innerHTML = " " + result.email;
-                    $('#myLetEmailModal').modal('show');
-                } else {
-                    window.location.href = 'https://crosswordcreators.com'
-                }
-            },
-            contentType: "application/json",
-            dataType: 'text', // Could be JSON or whatever too
-        });
-    }
-</script>
-<script type="text/javascript">
-    document.getElementById('LoginWithAmazon').onclick = function() {
-        options = {scope: 'profile', response_type: 'code', state: 'abcdefghijklmnop', popup: 'False', redirect_uri: 'https://crosswordcreators.com'}
-        amazon.Login.authorize(options, function(response) {
-            if ( response.error ) {
-                alert('oauth error ' + response.error);
-                return;
-            }
-            let dataToServer = {code    : response.code};
-            let url = "api/amazonHelp";
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: JSON.stringify(dataToServer),
-                success: function(dataFromServer) {
-                    $('#LoginWithAmazon').hide();
-                    $('#googleButton').hide();
-                    $('#Logout').show();
-                    let result = JSON.parse(dataFromServer)
-                    if ('added' in result) {
-                        document.getElementById("modalEmail").innerHTML = " " + result.email;
-                        $('#myLetEmailModal').modal('show');
-                    } else {
-                        //window.location.href = 'https://crosswordcreators.com/crossword_site.html'
-                    }
-                },
-                contentType: "application/json",
-                dataType: 'text', // Could be JSON or whatever too
-            });
-        })};
-</script>
+<!--<script>-->
+<!--    function handleCredentialResponse(response) {-->
+<!--        let dataToServer = {code    : response.credential};-->
+<!--        let url = "api/googleHelp";-->
+<!--        $.ajax({-->
+<!--            type: 'POST',-->
+<!--            url: url,-->
+<!--            data: JSON.stringify(dataToServer),-->
+<!--            success: function(dataFromServer) {-->
+<!--                $('#LoginWithAmazon').hide();-->
+<!--                $('#googleButton').hide();-->
+<!--                $('#profileSection').show();-->
+<!--                let result = JSON.parse(dataFromServer)-->
+<!--                if ('added' in result) {-->
+<!--                    document.getElementById("modalEmail").innerHTML = " " + result.email;-->
+<!--                    document.getElementById("profileNameRibbon").innerHTML = result.name;-->
+<!--                    $('#myLetEmailModal').modal('show');-->
+<!--                } else {-->
+<!--                    document.getElementById("profileNameRibbon").innerHTML = result.name;-->
+<!--                    //window.location.href = 'https://crosswordcreators.com'-->
+<!--                }-->
+<!--            },-->
+<!--            contentType: "application/json",-->
+<!--            dataType: 'text', // Could be JSON or whatever too-->
+<!--        });-->
+<!--    }-->
+<!--</script>-->
+<!--<script type="text/javascript">-->
+<!--    document.getElementById('LoginWithAmazon').onclick = function() {-->
+<!--        options = {scope: 'profile', response_type: 'code', state: 'abcdefghijklmnop', popup: 'False', redirect_uri: 'https://crosswordcreators.com'}-->
+<!--        amazon.Login.authorize(options, function(response) {-->
+<!--            if ( response.error ) {-->
+<!--                alert('oauth error ' + response.error);-->
+<!--                return;-->
+<!--            }-->
+<!--            let dataToServer = {code    : response.code};-->
+<!--            let url = "api/amazonHelp";-->
+<!--            $.ajax({-->
+<!--                type: 'POST',-->
+<!--                url: url,-->
+<!--                data: JSON.stringify(dataToServer),-->
+<!--                success: function(dataFromServer) {-->
+<!--                    $('#LoginWithAmazon').hide();-->
+<!--                    $('#googleButton').hide();-->
+<!--                    $('#profileSection').show();-->
+<!--                    let result = JSON.parse(dataFromServer)-->
+<!--                    if ('added' in result) {-->
+<!--                        document.getElementById("modalEmail").innerHTML = " " + result.email;-->
+<!--                        document.getElementById("profileNameRibbon").innerHTML = result.name;-->
+<!--                        $('#myLetEmailModal').modal('show');-->
+<!--                    } else {-->
+<!--                        document.getElementById("profileNameRibbon").innerHTML = result.name;-->
+<!--                        //window.location.href = 'https://crosswordcreators.com/crossword_site.html'-->
+<!--                    }-->
+<!--                },-->
+<!--                contentType: "application/json",-->
+<!--                dataType: 'text', // Could be JSON or whatever too-->
+<!--            });-->
+<!--        })};-->
+<!--</script>-->
 <script type="text/javascript">
     document.getElementById('Logout').onclick = function() {
         amazon.Login.logout();
@@ -145,9 +154,10 @@
 
         $.post(url, null, function (dataFromServer) {
             setSessionJava();
-            $('#Logout').hide();
-            $('#LoginWithAmazon').show();
-            $('#googleButton').show();
+            $('#profileSection').hide();
+            document.getElementById("profileNameRibbon").innerHTML = "";
+            //$('#LoginWithAmazon').show();
+            //$('#googleButton').show();
         });
     };
 </script>
@@ -183,6 +193,12 @@
                 <svg id = "svgelem" xmlns="http://www.w3.org/2000/svg"></svg>
             </div>
         </div>
+<!--        <div id="printPart">-->
+<!--            &lt;!&ndash; Table title &ndash;&gt;-->
+<!--            &lt;!&ndash;            <h1>Crossword #1</h1>&ndash;&gt;-->
+<!--            <h1><pre id="getTitleResult"></pre></h1>-->
+<!--            <svg id = "svgelem" xmlns="http://www.w3.org/2000/svg"></svg>-->
+<!--        </div>-->
         <form>
             <label for="guessForm">Enter a guess:</label>
             <input type="text" name="Guess" class="form-control col-md-4" id="guessForm" placeholder="Enter here"><br/>
@@ -251,7 +267,7 @@
                 <p>CrosswordCreators.com would like to know if we can send you emails at:</p>
                 <p id="modalEmail"></p>
                 <p style="font-size: small">You will not receive more than one email per day from CrosswordCreators.com, and can opt out at anytime.</p>
-                <p style="font-size: small">You can also view out privacy policy here: <a href="https://crosswordcreators.com/privacy.html" target="_blank">Privacy Policy</a></p>
+                <p style="font-size: small">You can also view our privacy policy here: <a href="https://crosswordcreators.com/privacy.html" target="_blank">Privacy Policy</a></p>
                 <p style="font-size: medium">If you would like to receive emails from CrosswordCreators.com, click "Allow". Otherwise, click "Opt-out".</p>
             </div>
             <!-- Footer where we put our save/close buttons -->
@@ -298,19 +314,22 @@
 <script src="js/crossword_site.js"></script>
 <script src="js/session.js"></script>
 <script>
+    document.getElementById("modalShareLink").innerHTML = window.location.href;
     var url = "api/check_session_attribute_servlet";
     $.post(url, null, function (dataFromServer) {
         let result = JSON.parse(dataFromServer)
         if ('noLogin' in result) {
             // JavaScript alert the error.
-            $('#Logout').hide();
+            $('#profileSection').hide();
             $('#LoginWithAmazon').show();
             $('#googleButton').show();
             document.getElementById("modalEmail").innerHTML = "";
+            document.getElementById("profileNameRibbon").innerHTML = "";
         }else {
             $('#LoginWithAmazon').hide();
             $('#googleButton').hide();
-            $('#Logout').show();
+            $('#profileSection').show();
+            document.getElementById("profileNameRibbon").innerHTML = result.name;
         }
 
     });

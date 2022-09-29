@@ -81,12 +81,14 @@ public class GoogleServlet extends HttpServlet {
             if (!exists){
                 Boolean added = PuzzleInfoDAO.addUser(userId, name, email);
                 if (added) {
-                    out.println("{\"added\": \"good insert.\",");
-                    out.println("\"email\": \"" + email +"\"}");
+                    out.println("{\"added\":\"good insert.\",");
+                    out.println("\"name\":\"" + name + "\",");
+                    out.println("\"email\":\"" + email + "\"}");
                 }
             }else {
-                out.println("{\"exists\": \"good exists.\",");
-                out.println("\"email\": \"" + email +"\"}");
+                out.println("{\"exists\":\"good exists.\",");
+                out.println("\"name\":\"" + name +"\",");
+                out.println("\"email\":\"" + email +"\"}");
             }
 
         } else {

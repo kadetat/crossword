@@ -34,7 +34,6 @@ function getSessionJava() {
 
     $.post(url, null, function (dataFromServer) {
         console.log("Finished calling servlet.");
-        console.log(dataFromServer);
         if (dataFromServer === ""){
             setSessionJava();
             getSessionJava();
@@ -43,5 +42,13 @@ function getSessionJava() {
         //sessionStorage.setItem("id", dataFromServer)
     });
 }
+
+// function profile() {
+//     //window.location.href = 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_landing.html';
+//     window.location.href = 'https://crosswordcreators.com/profile.html'
+// }
+//
+// let profileLinkButton = $('#profileButton');
+// profileLinkButton.on("click", profile);
 
 getSessionJava();

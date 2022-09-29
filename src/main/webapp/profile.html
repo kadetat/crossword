@@ -3,8 +3,8 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-<!--    <meta http-equiv="x-ua-compatible" content="ie=edge">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--    <meta http-equiv="x-ua-compatible" content="ie=edge">-->
 
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -16,13 +16,22 @@
          -->
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cosmo/bootstrap.min.css">
-
     <link rel="stylesheet" type="text/css" href="crossword_css.css">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KRZ35V7G92"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-KRZ35V7G92');
+    </script>
+
+    <script data-ad-client="ca-pub-7753103577514139" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-
-
-    <title>Play Online Crossword Puzzles</title>
+    <title>Profile: Crossword Creator</title>
 </head>
 
 <body>
@@ -45,10 +54,10 @@
     <a class="navbar-brand" href="#">Crossword Creators</a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">Home </a>
-            </li>
             <li class="nav-item active">
+                <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="crossword_browse.html">Play</a>
             </li>
             <li class="nav-item">
@@ -104,7 +113,7 @@
                     $('#myLetEmailModal').modal('show');
                 } else {
                     document.getElementById("profileNameRibbon").innerHTML = result.name;
-                    window.location.href = 'https://crosswordcreators.com/crossword_browse.html'
+                    window.location.href = 'https://crosswordcreators.com'
                 }
             },
             contentType: "application/json",
@@ -137,7 +146,7 @@
                         $('#myLetEmailModal').modal('show');
                     } else {
                         document.getElementById("profileNameRibbon").innerHTML = result.name;
-                        window.location.href = 'https://crosswordcreators.com/crossword_browse.html'
+                        window.location.href = 'https://crosswordcreators.com'
                     }
                 },
                 contentType: "application/json",
@@ -156,179 +165,25 @@
             document.getElementById("profileNameRibbon").innerHTML = "";
             $('#LoginWithAmazon').show();
             $('#googleButton').show();
-            window.location.href = 'https://crosswordcreators.com/crossword_browse.html'
+            window.location.href = 'https://crosswordcreators.com'
         });
     };
 </script>
+
 <section>
     <article class= "top">
-    <h1>Play Online Crosswords!</h1>
-    <h2>Here you can browse crosswords created by other users!</h2>
-    <h2>Or type the ID of a crossword you are looking for!</h2>
-        <p>To create your own Crossword Puzzle, click on
-            <a href="https://crosswordcreators.com/crossword_landing.html">Build</a> here or in the navigation bar.</p>
+        <h1>Profile in progress</h1>
     </article>
-    <h2 style="padding-left: 50px; padding-top: 15px">Featured:</h2>
-    <article>
-        <div class="row">
-            <div class="col-md-4">
-                <div style="text-align: center; vertical-align: middle;"><h2 style="text-align: center; display: inline-block";>Movies</h2>
-                    <img src="images/cd.jpg" class="img-fluid" alt = "intro" style="text-align: center; height: 50px; display: inline-block">
-                </div>
-                <div class="table-responsive-sm">
-                    <table class="table table-hover">
-                        <!-- Header Lines-->
-                        <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Author</th>
-                            <th>Date</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <!-- Data -->
-                        <tbody>
-                        <tr>
-                            <td>Disney Trivia</td>
-                            <td>Madi</td>
-                            <td>2022-07-24</td>
-                            <td><button type='button' name='play' class='playButton btn btn-danger' value=10> Play </button></td>
-                        </tr>
-                        <tr>
-                            <td>Star Wars Trivia</td>
-                            <td>Jake</td>
-                            <td>2022-07-24</td>
-                            <td><button type='button' name='play' class='playButton btn btn-danger' value=11> Play </button></td>
-                        </tr>
-                        <tr>
-                            <td>Famous Actors</td>
-                            <td>Sarah</td>
-                            <td>2022-09-26</td>
-                            <td><button type='button' name='play' class='playButton btn btn-danger' value=41> Play </button></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div style="text-align: center; vertical-align: middle;"><h2 style="text-align: center; display: inline-block";>Sports</h2>
-                    <img src="images/football.jpg" class="img-fluid" alt = "intro" style="text-align: center; height: 50px; display: inline-block">
-                </div>
-                <div class="table-responsive-sm">
-                    <table class="table table-hover">
-                        <!-- Header Lines-->
-                        <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Author</th>
-                            <th>Date</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <!-- Data -->
-                        <tbody>
-                        <tr>
-                            <td>MLB Teams</td>
-                            <td>kadetat</td>
-                            <td>2022-07-10</td>
-                            <td><button type='button' name='play' class='playButton btn btn-danger' value=2> Play </button></td>
-                        </tr>
-                        <tr>
-                            <td>Royals</td>
-                            <td>Stacy Anne</td>
-                            <td>2022-07-29</td>
-                            <td><button type='button' name='play' class='playButton btn btn-danger' value=15> Play </button></td>
-                        </tr>
-                        <tr>
-                            <td>NBA Teams</td>
-                            <td>Tat</td>
-                            <td>2022-07-24</td>
-                            <td><button type='button' name='play' class='playButton btn btn-danger' value=9> Play </button></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div style="text-align: center; vertical-align: middle;"><h2 style="text-align: center; display: inline-block";>For Kids</h2>
-                    <img src="images/kids.jpg" class="img-fluid" alt = "intro" style="text-align: center; height: 50px; display: inline-block">
-                </div>
-                <div class="table-responsive-sm">
-                    <table class="table table-hover">
-                        <!-- Header Lines-->
-                        <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Author</th>
-                            <th>Date</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <!-- Data -->
-                        <tbody>
-                        <tr>
-                            <td>Fruit</td>
-                            <td>Chris</td>
-                            <td>2022-07-24</td>
-                            <td><button type='button' name='play' class='playButton btn btn-danger' value=13> Play </button></td>
-                        </tr>
-                        <tr>
-                            <td>Animals</td>
-                            <td>Kadetat</td>
-                            <td>2022-07-10</td>
-                            <td><button type='button' name='play' class='playButton btn btn-danger' value=3> Play </button></td>
-                        </tr>
-                        <tr>
-                            <td>Fruit by Color</td>
-                            <td>Stacy</td>
-                            <td>2022-07-24</td>
-                            <td><button type='button' name='play' class='playButton btn btn-danger' value=12> Play </button></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </article>
-    <h2 style="padding-left: 50px; padding-top: 15px">All Crosswords:</h2>
-    <article>
-        <!-- Table to hold our data -->
-        <div class="table-responsive-sm">
-        <table id="datatable" class="table table-hover">
-            <!-- Header Lines-->
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Date</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <!-- Data -->
-            <tbody>
-            <tr>
-                <td>No data</td>
-            </tr>
-            </tbody>
-        </table>
-        </div>
-    </article>
-
     <article class="footer">
         <p> Creators: Kade and Kurtis Tatkenhorst</p>
         <p> September 17th, 2022</p>
         <p> Contact: kadetatkenhorst34@gmail.com</p>
         <div style="text-align: center">
             <p style="font-size: small; display: inline-block"><a href="https://crosswordcreators.com/privacy.html" target="_blank">Privacy Policy</a></p>
-            <p id="unsubscribeEmail" style="font-size: small; display: inline-block">  <a href="https://crosswordcreators.com/change_email_settings.html">Unsubscribe</a></p>
         </div>
     </article>
-
 </section>
-<!-- This is a hidden "pop up" window that we'll use to enter new data -->
+
 <div class="modal fade" tabindex="-1" role="dialog" id="myLetEmailModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -343,8 +198,8 @@
             <div class="modal-body">
                 <p>CrosswordCreators.com would like to know if we can send you emails at:</p>
                 <p id="modalEmail"></p>
-                <p style="font-size: small">You will not receive more than one email per day from CrosswordCreators.com, and can opt out at anytime.</p>
-                <p style="font-size: small">You can also view our privacy policy here: <a href="https://crosswordcreators.com/privacy.html" target="_blank">Privacy Policy</a></p>
+                <p style="font-size: small">You will not receive more than one email per day from CrosswordCreators.com.</p>
+                <p style="font-size: small">You can also view out privacy policy here: <a href="https://crosswordcreators.com/privacy.html" target="_blank">Privacy Policy</a></p>
                 <p style="font-size: medium">If you would like to receive emails from CrosswordCreators.com, click "Allow". Otherwise, click "Opt-out".</p>
             </div>
             <!-- Footer where we put our save/close buttons -->
@@ -355,6 +210,7 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
 <!-- Load JavaScript -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
         integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
@@ -362,7 +218,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
-<script src="js/crosswordBrowse.js"></script>
+<script src="js/profile.js"></script>
 <script src="js/session.js"></script>
 <script>
     var url = "api/check_session_attribute_servlet";
@@ -381,7 +237,6 @@
             $('#profileSection').show();
             document.getElementById("profileNameRibbon").innerHTML = result.name;
         }
-
     });
 </script>
 </body>

@@ -4,6 +4,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Play or Build Online Crosswords">
+    <meta name="keywords" content="crosswords, crossword creator, online crosswords" />
 <!--    <meta http-equiv="x-ua-compatible" content="ie=edge">-->
 
     <link rel="stylesheet"
@@ -85,7 +87,12 @@
                      src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
                      width="156" height="32" />
             </a>
-            <button id="Logout" type="button" class="btn btn-light" style="display: none;">Logout</button>
+            <div id="profileSection" style="display: inline-block">
+                <li class="nav-item" style="display: inline-block;">
+                <a class="nav-link" id="profileNameRibbon" style="color: white;" href="profile.html"></a>
+                </li>
+                <button id="Logout" type="button" class="btn btn-light">Logout</button>
+            </div>
         </ul>
     </div>
 </nav>
@@ -100,12 +107,14 @@
             success: function(dataFromServer) {
                 $('#LoginWithAmazon').hide();
                 $('#googleButton').hide();
-                $('#Logout').show();
+                $('#profileSection').show();
                 let result = JSON.parse(dataFromServer)
                 if ('added' in result) {
                     document.getElementById("modalEmail").innerHTML = " " + result.email;
+                    document.getElementById("profileNameRibbon").innerHTML = result.name;
                     $('#myLetEmailModal').modal('show');
                 } else {
+                    document.getElementById("profileNameRibbon").innerHTML = result.name;
                     window.location.href = 'https://crosswordcreators.com'
                 }
             },
@@ -131,12 +140,14 @@
                 success: function(dataFromServer) {
                     $('#LoginWithAmazon').hide();
                     $('#googleButton').hide();
-                    $('#Logout').show();
+                    $('#profileSection').show();
                     let result = JSON.parse(dataFromServer)
                     if ('added' in result) {
                         document.getElementById("modalEmail").innerHTML = " " + result.email;
+                        document.getElementById("profileNameRibbon").innerHTML = result.name;
                         $('#myLetEmailModal').modal('show');
                     } else {
+                        document.getElementById("profileNameRibbon").innerHTML = result.name;
                         window.location.href = 'https://crosswordcreators.com'
                     }
                 },
@@ -152,7 +163,8 @@
 
         $.post(url, null, function (dataFromServer) {
             setSessionJava();
-            $('#Logout').hide();
+            $('#profileSection').hide();
+            document.getElementById("profileNameRibbon").innerHTML = "";
             $('#LoginWithAmazon').show();
             $('#googleButton').show();
             window.location.href = 'https://crosswordcreators.com'
@@ -162,24 +174,24 @@
 
 <section>
     <article class= "top">
-        <h1>Welcome to Crossword Creators!</h1>
+        <h1 class="OutlineText">Welcome to Crossword Creators!</h1>
         <h2>Play Online Crosswords Created By Other Users Like You!</h2>
-        <h2>Build Your Own Crossword! Then Play Your Crossword Online! You can even share it with your friends!</h2>
-        <h2 id="profileName"></h2>
-    </article>
-    <article style="border: none;">
-    <img src="images/indexpic.JPG" class="img-fluid" alt = "intro">
+        <h2>Create your own Crossword! Then Play Your Crossword Online or send it to friends to play!</h2>
     </article>
     <article style="margin-bottom: 5%; border: none;">
+        <div style="background-color: aquamarine; padding-inline: 2%; padding-top: 2%; padding-bottom: 1%;  border-radius: 25px; margin: 1%;" >
+        <h2 id="profileName" style="text-align: center;"><b>New:</b> Create a profile through trusted accounts like Google or Amazon!</h2>
+        <p style="text-align: center;">When logged in, crosswords built by you can be saved and edited. Plus see all crosswords you've played in the past. To login: just click one of the buttons in the top right corner of the page.</p>
+        </div>
         <h2 style="text-align: center"><u>What do you want to do?</u></h2>
     <div class="row" style="padding: 1em;">
         <div class="col-sm-3 col-md-6" style="text-align: center; border: solid; padding: 2.5em;">
             <h2><b>Play Online Interactive Crosswords?</b></h2>
             <div style="text-align: left;">
-            <p>Browse through crosswords made by other users and posted here for you to play. Tons of
+                <p>Play Online Crosswords here!</p>
+                <p>Browse through crosswords made by other users and posted here for you to play. Tons of
              online crosswords here for you!</p>
-            <p>Did your friend or teacher want you to play their crossword? Search for it here!</p>
-            <p>Sports crosswords, Educational crosswords, Geography Crosswords, and more!</p>
+                <p>Sports crosswords, Movie crosswords, Kids Crosswords, and more!</p>
             </div>
             <button id="playCrossword" type="button" class="btn btn-info">Play</button>
         </div>
@@ -194,6 +206,10 @@
             <button id="buildCrossword" type="button" class="btn btn-info">Build</button>
         </div>
     </div>
+    </article>
+    <h2 style="text-align: center"><u>How to Play Online Crosswords:</u></h2>
+    <article style="border: none;">
+        <img src="images/indexpic.JPG" class="img-fluid" alt = "intro">
     </article>
     <article class="footer">
         <p> Creators: Kade and Kurtis Tatkenhorst</p>
@@ -222,7 +238,7 @@
                 <p>CrosswordCreators.com would like to know if we can send you emails at:</p>
                 <p id="modalEmail"></p>
                 <p style="font-size: small">You will not receive more than one email per day from CrosswordCreators.com, and can opt out at anytime.</p>
-                <p style="font-size: small">You can also view out privacy policy here: <a href="https://crosswordcreators.com/privacy.html" target="_blank">Privacy Policy</a></p>
+                <p style="font-size: small">You can also view our privacy policy here: <a href="https://crosswordcreators.com/privacy.html" target="_blank">Privacy Policy</a></p>
                 <p style="font-size: medium">If you would like to receive emails from CrosswordCreators.com, click "Allow". Otherwise, click "Opt-out".</p>
             </div>
             <!-- Footer where we put our save/close buttons -->
@@ -249,16 +265,18 @@
         let result = JSON.parse(dataFromServer)
         if ('noLogin' in result) {
             // JavaScript alert the error.
-            $('#Logout').hide();
+            $('#profileSection').hide();
             $('#LoginWithAmazon').show();
             $('#googleButton').show();
-            document.getElementById("profileName").innerHTML = "";
+            document.getElementById("profileName").innerHTML = "<b>New:</b> Create a profile through trusted accounts like Google or Amazon!";
             document.getElementById("modalEmail").innerHTML = "";
+            document.getElementById("profileNameRibbon").innerHTML = "";
         }else {
             $('#LoginWithAmazon').hide();
             $('#googleButton').hide();
-            $('#Logout').show();
+            $('#profileSection').show();
             document.getElementById("profileName").innerHTML = "Hi " + result.name;
+            document.getElementById("profileNameRibbon").innerHTML = result.name;
         }
 
     });

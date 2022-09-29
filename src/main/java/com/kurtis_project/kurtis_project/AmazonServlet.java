@@ -124,10 +124,12 @@ public class AmazonServlet extends HttpServlet {
                 Boolean added = PuzzleInfoDAO.addUser((String) m2.get("user_id"), (String) m2.get("name"), (String) m2.get("email"));
                 if (added) {
                     out.println("{\"added\": \"good insert.\",");
+                    out.println("\"name\": \"" + m2.get("name") +"\",");
                     out.println("\"email\": \"" + m2.get("email") +"\"}");
                 }
             }else {
                 out.println("{\"exists\": \"good exists.\",");
+                out.println("\"name\": \"" + m2.get("name") +"\",");
                 out.println("\"email\": \"" + m2.get("email") +"\"}");
             }
         }
