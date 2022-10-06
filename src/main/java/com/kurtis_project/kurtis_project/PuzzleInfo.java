@@ -12,6 +12,7 @@ public class PuzzleInfo {
     private String title;
     private String author;
     private String date;
+    private String completed;
 
 
     public ArrayList<String> getclues() {return clues; }
@@ -38,4 +39,6 @@ public class PuzzleInfo {
     public String getDate() {return date; }
     public void setDate(String date) { this.date = date; }
 
+    public String getCompleted() {return completed; }
+    public void setCompleted(String completed) { this.completed = completed; }
 }

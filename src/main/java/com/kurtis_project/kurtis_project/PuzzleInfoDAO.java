@@ -543,4 +543,129 @@ public class PuzzleInfoDAO {
         // Done! Return the results
         return added;
     }
+
+    public static List<PuzzleInfo> getPlayedList(String userID) {
+        log.log(Level.FINE, "Get people");
+
+        // Create an empty linked list to put the people we get from the
+        // database into.
+        List<PuzzleInfo> list = new LinkedList<PuzzleInfo>();
+
+        // Declare our variables
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        // Databases are unreliable. Use some exception handling
+        try {
+            // Get our database connection
+            conn = DBHelper.getConnection();
+
+            // This is a string that is our SQL query.
+            // Update for all our fields
+
+            //String sql = "select id, title, author, date from puzzle";
+            String sql = "SELECT title, author, completed FROM cis320.puzzle AS A RIGHT JOIN cis320.playedList AS B ON A.id = B.puzzleID WHERE B.userID = ?";
+
+            // If you had parameters, it would look something like
+            // String sql = "select id, first, last, phone from person where id = ?";
+
+            // Create an object with all the info about our SQL statement to run.
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, userID);
+            // If you had parameters, they would be set wit something like:
+            // stmt.setString(1, "1");
+
+            // Execute the SQL and get the results
+            rs = stmt.executeQuery();
+
+            // Loop through each record
+            while(rs.next()) {
+                // Create a new instance of the Person object.
+                // You'll need to define that somewhere. Just a simple class
+                // with getters and setters on the fields.
+                PuzzleInfo puzzle = new PuzzleInfo();
+
+                // Get the data from the result set, and copy it to the Person
+                // object.
+                puzzle.setTitle(rs.getString("title"));
+                puzzle.setAuthor(rs.getString("author"));
+                puzzle.setCompleted(rs.getString("completed"));
+
+                // Add this person to the list so we can return it.
+                list.add(puzzle);
+            }
+        } catch (SQLException se) {
+            log.log(Level.SEVERE, "SQL Error", se );
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Error", e );
+        } finally {
+            // Ok, close our result set, statement, and connection
+            try { if (rs != null) rs.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+
+            try { if(stmt != null) stmt.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+
+            try { if(conn != null) conn.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+        }
+        // Done! Return the results
+        return list;
+    }
+
+    public static String getUserID(String AmazonID) {
+        log.log(Level.FINE, "Check User Existing");
+
+        // Create an empty linked list to put the people we get from the
+        // database into.
+        String IDnumber = "0";
+
+        // Declare our variables
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        // Databases are unreliable. Use some exception handling
+        try {
+            // Get our database connection
+            conn = DBHelper.getConnection();
+
+            // This is a string that is our SQL query.
+            // Update for all our fields
+
+            //String sql = "select word, clue, from person";
+
+            // If you had parameters, it would look something like
+            String sql = "select userID from userList where amazonID = ?;";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, AmazonID);
+
+            // Execute the SQL and get the results
+            rs = stmt.executeQuery();
+
+            // Loop through each record
+            while(rs.next()) {
+                if (rs.getString("userID") != null){
+                    IDnumber = rs.getString("userID");
+                }
+            }
+        } catch (SQLException se) {
+            log.log(Level.SEVERE, "SQL Error", se );
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Error", e );
+        } finally {
+            // Ok, close our result set, statement, and connection
+            try { if (rs != null) rs.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+
+            try { if(stmt != null) stmt.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+
+            try { if(conn != null) conn.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+        }
+        // Done! Return the results
+        return IDnumber;
+    }
 }
