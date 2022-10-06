@@ -171,9 +171,60 @@
 </script>
 
 <section>
-    <article class= "top">
-        <h1>Profile in progress</h1>
-    </article>
+        <article class= "top">
+            <h1>Profile</h1>
+        </article>
+        <article>
+            <div class="row">
+                <div class="col-md-6">
+                    <div style="text-align: center; vertical-align: middle;">
+                        <h2 style="text-align: center; display: inline-block";>Crosswords Played:</h2>
+                    </div>
+                    <div class="table-responsive-sm">
+                        <table class="table table-hover">
+                            <!-- Header Lines-->
+                            <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <!-- Data -->
+                            <tbody>
+                            <tr>
+                                <td>No data</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div style="text-align: center; vertical-align: middle;">
+                        <h2 style="text-align: center; display: inline-block";>Crosswords Created:</h2>
+                    </div>
+                    <div class="table-responsive-sm">
+                        <table class="table table-hover">
+                            <!-- Header Lines-->
+                            <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <!-- Data -->
+                            <tbody>
+                            <tr>
+                                <td>No data</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </article>
     <article class="footer">
         <p> Creators: Kade and Kurtis Tatkenhorst</p>
         <p> September 17th, 2022</p>
@@ -183,7 +234,27 @@
         </div>
     </article>
 </section>
-
+<div class="modal fade" tabindex="-1" role="dialog" id="redirectProfile">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- Window Title -->
+                <h4 class="modal-title">Error</h4>
+                <!-- Close button -->
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p> Error: You must be logged in to view profile page.</p>
+            </div>
+            <!-- Footer where we put our save/close buttons -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="redirectClose" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <div class="modal fade" tabindex="-1" role="dialog" id="myLetEmailModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -218,7 +289,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
-<script src="js/profile.js"></script>
 <script src="js/session.js"></script>
 <script>
     var url = "api/check_session_attribute_servlet";
@@ -229,6 +299,7 @@
             $('#profileSection').hide();
             $('#LoginWithAmazon').show();
             $('#googleButton').show();
+            $('#redirectProfile').modal('show');
             document.getElementById("modalEmail").innerHTML = "";
             document.getElementById("profileNameRibbon").innerHTML = "";
         }else {
@@ -236,8 +307,10 @@
             $('#googleButton').hide();
             $('#profileSection').show();
             document.getElementById("profileNameRibbon").innerHTML = result.name;
+            //Check login is correct
         }
     });
 </script>
+<script src="js/profile.js"></script>
 </body>
 </html>
