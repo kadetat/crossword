@@ -69,14 +69,16 @@ public class ProfileListsServlet extends HttpServlet {
                 String userID = PuzzleInfoDAO.getUserID(loginID);
                 if (!userID.equals("0")){
                     List <PuzzleInfo> puzzleList = PuzzleInfoDAO.getPlayedList(userID);
-
-                    Jsonb jsonb = JsonbBuilder.create();
-                    String jsonString = jsonb.toJson(puzzleList);
-                    Jsonb jsonb2 = JsonbBuilder.create();
-                    //String jsonString2 = jsonb2.toJson(puzzleList);
-
+                    List <PuzzleInfo> puzzleList2 = PuzzleInfoDAO.getBuiltList(userID);
+                    JsonObject jsonObj = new JsonObject();
+                    Gson jsonString1 = new Gson();
+                    Gson jsonString2 = new Gson();
+                    JsonArray json1 = jsonString1.toJsonTree(puzzleList).getAsJsonArray();;
+                    JsonArray json2 = jsonString2.toJsonTree(puzzleList2).getAsJsonArray();;
+                    jsonObj.add("jsonArray1", json1);
+                    jsonObj.add("jsonArray2", json2);
+                    out.println(jsonObj.toString());
                     // Write out that string
-                    out.println(jsonString);
                     //out.println("{\"playedList\":\"" + jsonString +"\",");
                     //out.println("\"builtList\":\"" + jsonString2 +"\"}");
                 }
