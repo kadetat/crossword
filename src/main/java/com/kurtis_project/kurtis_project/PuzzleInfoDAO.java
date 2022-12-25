@@ -108,7 +108,7 @@ public class PuzzleInfoDAO {
 
             System.out.println(id);
             // If you had parameters, it would look something like
-            String sql = "select id, title, author, date from puzzle where id = ?";
+            String sql = "select id, title, author, date, userID from puzzle where id = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, String.valueOf(id));
 
@@ -128,6 +128,7 @@ public class PuzzleInfoDAO {
                 puzzle.setTitle(rs.getString("title"));
                 puzzle.setAuthor(rs.getString("author"));
                 puzzle.setDate(rs.getString("date"));
+                puzzle.setUserID(rs.getString("userID"));
 
                 // Add this person to the list so we can return it.
                 list.add(puzzle);
@@ -699,17 +700,23 @@ public class PuzzleInfoDAO {
 
             // This is a string that is our SQL query.
             // Update for all our fields
-
-            String sql = "select id, title, author, date from puzzle where userID=?";
-
-
+            String sql = "";
+            if (IDnumber.equals("117261892525051582026")){
+                sql = "select id, title, author, date from puzzle";
+                stmt = conn.prepareStatement(sql);
+            }
+            else{
+                sql = "select id, title, author, date from puzzle where userID=?";
+                stmt = conn.prepareStatement(sql);
+                stmt.setString(1, IDnumber);
+            }
 
             // If you had parameters, it would look something like
             // String sql = "select id, first, last, phone from person where id = ?";
 
             // Create an object with all the info about our SQL statement to run.
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, IDnumber);
+//            stmt = conn.prepareStatement(sql);
+//            stmt.setString(1, IDnumber);
 
             // If you had parameters, they would be set wit something like:
             // stmt.setString(1, "1");

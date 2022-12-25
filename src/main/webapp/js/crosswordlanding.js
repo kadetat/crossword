@@ -233,20 +233,47 @@ function submit() {
         let dateObject = new Date;
         let date = dateObject.getFullYear() + '-' + (dateObject.getMonth() + 1) + '-' + dateObject.getDate();
 
+        let currentURL = new URL(window.location.href);
+        const urlParams = new URLSearchParams(currentURL.search);
+        const edit = urlParams.get('edit');
+        let dataToServer = {};
+        let url2 = "";
+        if (edit === "true"){
+            const puzzleID = urlParams.get('puzzleID');
+            let validatedID;
 
-        console.log(clueArray);
-        console.log(wordArray);
+            //ID
+            let reg = /^[0-9]{1,20}$/;
+            if (reg.test(puzzleID)) {
+                validatedID = true;
+            }
+            if (validatedID && edit === "true") {
+                dataToServer = {
+                    id: puzzleID,
+                    title: title,
+                    author: author,
+                    date: date,
+                    words: wordArray,
+                    clues: clueArray,
+                };
+                url2 = "api/puzzle_edit";
+            }
+            else {
+                alert("Error: Not able to update.")
+            }
 
-        let dataToServer = {
-            id: "null2",
-            title: title,
-            author: author,
-            date: date,
-            words: wordArray,
-            clues: clueArray,
-        };
+        } else {
+                dataToServer = {
+                    id: "null2",
+                    title: title,
+                    author: author,
+                    date: date,
+                    words: wordArray,
+                    clues: clueArray,
+                };
+                let url2 = "api/puzzle_add";
+        }
 
-        let url2 = "api/puzzle_add";
         $.ajax({
             type: 'POST',
             url: url2,
@@ -484,3 +511,64 @@ function encodeQuery(data){
     return query.slice(0, -1)
 }
 
+function tryEdit(){
+    let currentURL = new URL(window.location.href);
+    const urlParams = new URLSearchParams(currentURL.search);
+    const edit = urlParams.get('edit');
+    if (edit !== "true"){
+        return;
+    }
+    const puzzleID = urlParams.get('puzzleID');
+    let validatedID;
+
+    //ID
+    let reg = /^[0-9]{1,20}$/;
+    if (reg.test(puzzleID)) {
+        validatedID = true;
+    }
+    if (validatedID && edit === "true"){
+        let dataToServer = {id     : puzzleID};
+        console.log(dataToServer);
+        let url = "api/edit_Crossword";
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: JSON.stringify(dataToServer),
+            success: function(dataFromServer) {
+                let result = JSON.parse(dataFromServer)
+                if ('error' in result) {
+                    alert('error, not correctly logged in to edit selected crossword.');
+                    return;
+                }
+                console.log(result);
+                $('#title').val(result.jsonArray3[1].toString());
+                $('#author').val(result.jsonArray3[2].toString());
+                for (let editIndex = 0; editIndex < result.jsonArray2.length; editIndex++){
+                    wordArray.push(result.jsonArray2[editIndex].word);
+                    clueArray.push(result.jsonArray2[editIndex].clue);
+                    let number = editIndex+1
+                    $("#wordTable tbody").append("<tr><td>" + number + ". " + result.jsonArray2[editIndex].word + ": " + result.jsonArray2[editIndex].clue + "</td>" +
+                        "<td>" +
+                        "<button type='button' name='edit' class='editButton btn btn-primary' value= " + number + "> Edit </button>" +
+                        "<button type='button' name='delete' class='deleteButton btn btn-danger' value= " + number + " style='margin-left: 5px'> Delete </button>" +
+                        "</td></tr>");
+
+                    let editButton = $(".editButton");
+                    editButton.on("click", editItem);
+
+                    let deleteButtons = $(".deleteButton");
+                    deleteButtons.on("click", deleteItem);
+                    j = editIndex;
+                }
+                previewClick();
+                $('#submit').text("Save Changes");
+            },
+            contentType: "application/json",
+            dataType: 'text', // Could be JSON or whatever too
+        });
+    } else {
+        window.location.href = 'https://crosswordcreators.com/crossword_browse.html';
+    }
+}
+
+tryEdit();

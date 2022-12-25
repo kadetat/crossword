@@ -13,6 +13,7 @@ public class PuzzleInfo {
     private String author;
     private String date;
     private String completed;
+    private String userID;
 
 
     public ArrayList<String> getclues() {return clues; }
@@ -41,4 +42,7 @@ public class PuzzleInfo {
 
     public String getCompleted() {return completed; }
     public void setCompleted(String completed) { this.completed = completed; }
+
+    public String getUserID() {return userID; }
+    public void setUserID(String userID) { this.userID = userID; }
 }

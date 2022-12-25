@@ -77,7 +77,6 @@ function ListFillFunction() {
                             $("#completedTable tbody").append("<tr><td>" + result.jsonArray1[i].id + "</td>" +
                                 "<td>" + htmlSafe(result.jsonArray1[i].title) + "</td>" +
                                 "<td>" + htmlSafe(result.jsonArray1[i].author) + "</td>" +
-                                "<td>" + htmlSafe(result.jsonArray1[i].completed) + "</td>" +
                                 "<td>" +
                                 "<button type='button' name='play' class='playButton btn btn-danger' value=" + result.jsonArray1[i].id + "> Play </button>" +
                                 "</td></tr>");
@@ -94,11 +93,14 @@ function ListFillFunction() {
                                 "<td>" + htmlSafe(result.jsonArray2[i].date) + "</td>" +
                                 "<td>" +
                                 "<button type='button' name='play' class='playButton btn btn-danger' value=" + result.jsonArray2[i].id + "> Play </button>" +
+                                "<button type='button' name='edit' class='editButton btn btn-primary' value=" + result.jsonArray2[i].id + " style='margin-left: 5px'> Edit </button>" +
                                 "</td></tr>");
 
                         }
                         let buttons = $(".playButton");
                         buttons.on("click", playItem);
+                        let buttons2 = $(".editButton");
+                        buttons2.on("click", editItem);
                     }
                 }
             });
@@ -125,5 +127,32 @@ function encodeQuery(data){
         query += encodeURIComponent(d) + '='
             + encodeURIComponent(data.params[d]) + '&';
     return query.slice(0, -1)
+}
+function editItem(e) {
+    let targetID = e.target.value;
+    let url = "api/check_session_attribute_servlet";
+    $.post(url, null, function (dataFromServer) {
+        let result = JSON.parse(dataFromServer)
+        if ('noLogin' in result) {
+            alert('error setting user\'s email settings');
+            return;
+        }
+        let validatedWord = false;
+        let reg = /^[A-Za-z.0-9]{1,50}$/;
+        if (reg.test(result.amazonID)) {
+            validatedWord = true;
+        }
+        if (validatedWord) {
+            let data = {
+                url: 'https://crosswordcreators.com/crossword_landing.html?',
+                params: {
+                    'edit': true,
+                    'puzzleID': targetID,
+                }
+            }
+            let queryParam = encodeQuery(data);
+            window.location.href = queryParam;
+        }
+    });
 }
 ListFillFunction();

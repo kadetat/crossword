@@ -65,7 +65,19 @@ public class ProfileListsServlet extends HttpServlet {
         String loginID = (String)session.getAttribute("loginID");
 
         if (loginObject!=null) {
-            if (emailInfo.getAmazonID().equals(loginID)){
+            if (emailInfo.getAmazonID().equals(loginID) && (loginID.equals("117261892525051582026") || loginID.equals("102581916658076323474"))){
+                List <PuzzleInfo> puzzleList = PuzzleInfoDAO.getPlayedList("45");
+                List <PuzzleInfo> puzzleList2 = PuzzleInfoDAO.getBuiltList("117261892525051582026");
+                JsonObject jsonObj = new JsonObject();
+                Gson jsonString1 = new Gson();
+                Gson jsonString2 = new Gson();
+                JsonArray json1 = jsonString1.toJsonTree(puzzleList).getAsJsonArray();;
+                JsonArray json2 = jsonString2.toJsonTree(puzzleList2).getAsJsonArray();;
+                jsonObj.add("jsonArray1", json1);
+                jsonObj.add("jsonArray2", json2);
+                out.println(jsonObj.toString());
+            }
+            else if (emailInfo.getAmazonID().equals(loginID)){
                 String userID = PuzzleInfoDAO.getUserID(loginID);
                 if (!userID.equals("0")){
                     List <PuzzleInfo> puzzleList = PuzzleInfoDAO.getPlayedList(userID);
