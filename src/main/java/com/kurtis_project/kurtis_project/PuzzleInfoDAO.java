@@ -282,26 +282,7 @@ public class PuzzleInfoDAO {
             }
             System.out.println("sql2");
 
-            for (int i = 0; i < puzzleInfo.getwords().size(); i++) {
-
-                String sql = "INSERT INTO wordList (word, clue, id) " +
-                        "VALUES (?, ?, ?);";
-                // If you had parameters, it would look something like
-                // String sql = "select id, first, last, phone from person where id = ?";
-
-                // Create an object with all the info about our SQL statement to run.
-                stmt = conn.prepareStatement(sql);
-                stmt.setString(1, puzzleInfo.getwords().get(i));
-                stmt.setString(2, puzzleInfo.getclues().get(i));
-                stmt.setString(3, neededID);
-
-
-                // If you had parameters, they would be set wit something like:
-                // stmt.setString(1, "1");
-
-                // Execute the SQL and get the results
-                stmt.executeUpdate();
-            }
+            neededID = insertPuzzleContent(puzzleInfo, neededID);
             System.out.println("sql3");
 
 
@@ -320,6 +301,59 @@ public class PuzzleInfoDAO {
         return neededID;
     }
 
+    public static String insertPuzzleContent(PuzzleInfo puzzleInfo, String puzzleID) {
+        log.log(Level.FINE, "Insert Puzzle Contents");
+        System.out.println("At insert puzzle");
+
+        // Create an empty linked list to put the people we get from the
+        // database into.
+
+        // Declare our variables
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        // Databases are unreliable. Use some exception handling
+        try {
+            // Get our database connection
+            conn = DBHelper.getConnection();
+
+            for (int i = 0; i < puzzleInfo.getwords().size(); i++) {
+
+                String sql = "INSERT INTO wordList (word, clue, id) " +
+                        "VALUES (?, ?, ?);";
+                // If you had parameters, it would look something like
+                // String sql = "select id, first, last, phone from person where id = ?";
+
+                // Create an object with all the info about our SQL statement to run.
+                stmt = conn.prepareStatement(sql);
+                stmt.setString(1, puzzleInfo.getwords().get(i));
+                stmt.setString(2, puzzleInfo.getclues().get(i));
+                stmt.setString(3, puzzleID);
+
+
+                // If you had parameters, they would be set wit something like:
+                // stmt.setString(1, "1");
+
+                // Execute the SQL and get the results
+                stmt.executeUpdate();
+            }
+
+
+        } catch (SQLException se) {
+            log.log(Level.SEVERE, "SQL Error", se );
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Error", e );
+        } finally {
+            // Ok, close our result set, statement, and connection
+            try { if(stmt != null) stmt.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+
+            try { if(conn != null) conn.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+        }
+        return puzzleID;
+    }
     public static void allowEmail(String amazonID) {
         log.log(Level.FINE, "Allow Email called");
 
@@ -345,6 +379,100 @@ public class PuzzleInfoDAO {
             // Create an object with all the info about our SQL statement to run.
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, amazonID);
+
+            // Execute the SQL and get the results
+            stmt.executeUpdate();
+
+
+        } catch (SQLException se) {
+            log.log(Level.SEVERE, "SQL Error", se );
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Error", e );
+        } finally {
+            // Ok, close our result set, statement, and connection
+            try { if(stmt != null) stmt.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+
+            try { if(conn != null) conn.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+        }
+    }
+
+    public static void updatePuzzleInfo(PuzzleInfo puzzleInfo, String puzzleID) {
+        log.log(Level.FINE, "Allow Email called");
+
+        // Create an empty linked list to put the people we get from the
+        // database into.
+
+        // Declare our variables
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        // Databases are unreliable. Use some exception handling
+        try {
+            // Get our database connection
+            conn = DBHelper.getConnection();
+
+            // This is a string that is our SQL query.
+            // Update for all our fields
+            String title = puzzleInfo.getTitle();
+            String author = puzzleInfo.getAuthor();
+            String date = puzzleInfo.getDate();
+            String userID = puzzleInfo.getUserID();
+            String sql = "update puzzle set title=?, author=?, date=?, userID=? where id=?;";
+            // If you had parameters, it would look something like
+            // String sql = "select id, first, last, phone from person where id = ?";
+
+            // Create an object with all the info about our SQL statement to run.
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, title);
+            stmt.setString(2, author);
+            stmt.setString(3, date);
+            stmt.setString(4, userID);
+            stmt.setString(5, puzzleID);
+
+            // Execute the SQL and get the results
+            stmt.executeUpdate();
+
+
+        } catch (SQLException se) {
+            log.log(Level.SEVERE, "SQL Error", se );
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Error", e );
+        } finally {
+            // Ok, close our result set, statement, and connection
+            try { if(stmt != null) stmt.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+
+            try { if(conn != null) conn.close(); }
+            catch (Exception e) { log.log(Level.SEVERE, "Error", e ); }
+        }
+    }
+
+    public static void deletePuzzleContent(String puzzleID) {
+        log.log(Level.FINE, "Allow Email called");
+
+        // Create an empty linked list to put the people we get from the
+        // database into.
+
+        // Declare our variables
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        // Databases are unreliable. Use some exception handling
+        try {
+            // Get our database connection
+            conn = DBHelper.getConnection();
+
+            // This is a string that is our SQL query.
+            // Update for all our fields
+            String sql = "delete from wordList where id=?;";
+            // If you had parameters, it would look something like
+            // String sql = "select id, first, last, phone from person where id = ?";
+
+            // Create an object with all the info about our SQL statement to run.
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, puzzleID);
 
             // Execute the SQL and get the results
             stmt.executeUpdate();

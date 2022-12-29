@@ -260,6 +260,7 @@ function submit() {
             }
             else {
                 alert("Error: Not able to update.")
+                return;
             }
 
         } else {
