@@ -398,7 +398,7 @@ public class PuzzleInfoDAO {
         }
     }
 
-    public static void updatePuzzleInfo(PuzzleInfo puzzleInfo, String puzzleID) {
+    public static void updatePuzzleInfo(PuzzleInfo puzzleInfo, String puzzleID, String userID) {
         log.log(Level.FINE, "Allow Email called");
 
         // Create an empty linked list to put the people we get from the
@@ -418,7 +418,6 @@ public class PuzzleInfoDAO {
             String title = puzzleInfo.getTitle();
             String author = puzzleInfo.getAuthor();
             String date = puzzleInfo.getDate();
-            String userID = puzzleInfo.getUserID();
             String sql = "update puzzle set title=?, author=?, date=?, userID=? where id=?;";
             // If you had parameters, it would look something like
             // String sql = "select id, first, last, phone from person where id = ?";

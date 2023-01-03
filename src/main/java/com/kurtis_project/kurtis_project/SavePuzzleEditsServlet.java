@@ -121,7 +121,10 @@ public class SavePuzzleEditsServlet extends HttpServlet {
                 checkedID = "0";
             }
             if (checkedID.equals(userID) || userID.equals("41") || userID.equals("45")) {
-                PuzzleInfoDAO.updatePuzzleInfo(puzzleInfo, puzzleID);
+                if (checkedID == "0") {
+                    checkedID = null;
+                }
+                PuzzleInfoDAO.updatePuzzleInfo(puzzleInfo, puzzleID, checkedID);
                 PuzzleInfoDAO.deletePuzzleContent(puzzleID);
                 PuzzleInfoDAO.insertPuzzleContent(puzzleInfo, puzzleInfoDetails.get(0).getId());
                 out.println("{\"success\": \"" + puzzleID + "\"}");
