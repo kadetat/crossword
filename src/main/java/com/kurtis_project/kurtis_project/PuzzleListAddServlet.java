@@ -15,12 +15,12 @@ import java.util.regex.Pattern;
 @WebServlet(name = "PuzzleListAdd", value = "/api/puzzle_add")
 public class PuzzleListAddServlet extends HttpServlet {
     private final static Logger log = Logger.getLogger(PuzzleListAddServlet.class.getName());
-    private Pattern titleValidationPattern;
-//    private Pattern lastValidationPattern;
-//    private Pattern phoneValidationPattern;
-//    private Pattern emailValidationPattern;
-//    private Pattern birthdayValidationPattern;
-//    private Pattern idValidationPattern;
+    private final Pattern titleValidationPattern;
+    private final Pattern authorValidationPattern;
+    private final Pattern wordValidationPattern;
+    private final Pattern clueValidationPattern;
+    private final Pattern dateValidationPattern;
+    private final Pattern idValidationPattern;
 
 
     /**
@@ -28,12 +28,13 @@ public class PuzzleListAddServlet extends HttpServlet {
      */
     public PuzzleListAddServlet() {
 //        // --- Compile and set up all the regular expression patterns here ---
-        titleValidationPattern = Pattern.compile("^[A-Za-z]{1,20}$");
-//        lastValidationPattern = Pattern.compile("^[A-Za-z]{1,18}$");
-//        phoneValidationPattern = Pattern.compile("^[0-9]{3}-?[0-9]{3}-?[0-9]{4}$");
-//        emailValidationPattern = Pattern.compile("^[\\w.]+@[\\w.]+$");
-//        birthdayValidationPattern = Pattern.compile("^[0-9]{4}-[0-9]{2}-[0-9]{2}$");
-//        idValidationPattern = Pattern.compile("^[0-9]{0,10}$");
+        titleValidationPattern = Pattern.compile("^[A-Za-z0-9]{1,20}$");
+        authorValidationPattern = Pattern.compile("^[A-Za-z0-9]{1,20}$");
+        wordValidationPattern = Pattern.compile("^[A-Za-z]{1,20}$");
+        clueValidationPattern = Pattern.compile("^[A-Za-z \\-+_,.=0-9]{1,250}$");
+//      emailValidationPattern = Pattern.compile("^[\\w.]+@[\\w.]+$");
+        dateValidationPattern = Pattern.compile("^[0-9]{4}-[0-9]{2}-[0-9]{2}$");
+        idValidationPattern = Pattern.compile("^[0-9]{0,10}$");
 //
     }
 
@@ -60,54 +61,43 @@ public class PuzzleListAddServlet extends HttpServlet {
         Jsonb jsonb = JsonbBuilder.create();
         PuzzleInfo formTestObject = jsonb.fromJson(requestString, PuzzleInfo.class);
 
-//        Matcher mid = idValidationPattern.matcher(formTestObject.getId());
-//
-//        if (!mid.find()) {
-//            out.println("{\"error\" : \"Error validating ID.\"}");
-//            return;
-//        }
-//
-//        Matcher mTitle = titleValidationPattern.matcher(formTestObject.getTitle());
+        Matcher mid = idValidationPattern.matcher(formTestObject.getId());
+        if (!mid.find()) {
+            out.println("{\"error\" : \"Error validating ID.\"}");
+            return;
+        }
 
-//        if (mTitle.find()) {
-//            PuzzleInfoDAO.addPuzzle(formTestObject);
-//            out.println("{\"success\": \"Successful insert.\"}");
-//            return;
-//        } else {
-//            PuzzleInfoDAO.addPuzzle(formTestObject);
-//            out.println("{\"success\": \"Successful insert.\"}");
-//            return;
-//        }
-//
-//        Matcher mLast = lastValidationPattern.matcher(formTestObject.getLast());
-//
-//        if (!mLast.find()) {
-//            out.println("{\"error\" : \"Error validating last name.\"}");
-//            return;
-//        }
-//
-//        Matcher mPhone = phoneValidationPattern.matcher(formTestObject.getPhone());
-//
-//        if (!mPhone.find()) {
-//            out.println("{\"error\" : \"Error validating phone number.\"}");
-//            return;
-//        }
-//
-//        Matcher mEmail = emailValidationPattern.matcher(formTestObject.getEmail());
-//
-//        if (!mEmail.find()) {
-//            out.println("{\"error\" : \"Error validating email.\"}");
-//            return;
-//        }
-//
-//        Matcher mBirthday = birthdayValidationPattern.matcher(formTestObject.getBirthday());
-//
-//        if (!mBirthday.find()) {
-//            out.println("{\"error\" : \"Error validating Birthday.\"}");
-//            return;
-//        }
-        System.out.println(formTestObject.toString());
-        //if (formTestObject.getId().equals("")){
+        Matcher mTitle = titleValidationPattern.matcher(formTestObject.getTitle());
+        if (!mTitle.find()) {
+            out.println("{\"error\": \"Error validating title.\"}");
+            return;
+        }
+
+        Matcher mAuthor = authorValidationPattern.matcher(formTestObject.getAuthor());
+        if (!mAuthor.find()) {
+            out.println("{\"error\": \"Error validating author.\"}");
+            return;
+        }
+
+        for (int i = 0; i < formTestObject.getwords().size(); i++) {
+            Matcher mWord = wordValidationPattern.matcher(formTestObject.getwords().get(i));
+            if (!mWord.find()) {
+                out.println("{\"error\" : \"Error validating a word.\"}");
+                return;
+            }
+            Matcher mClue = clueValidationPattern.matcher(formTestObject.getclues().get(i));
+            if (!mClue.find()) {
+                out.println("{\"error\" : \"Error validating a clue.\"}");
+                return;
+            }
+        }
+
+        Matcher mDate = dateValidationPattern.matcher(formTestObject.getDate());
+        if (!mDate.find()) {
+            out.println("{\"error\" : \"Error validating Date.\"}");
+            return;
+        }
+
         HttpSession session = request.getSession();
         String loginObject = (String)session.getAttribute("loggedIn");
         if (loginObject!=null){

@@ -124,7 +124,7 @@ function saveChanges() {
     }
     //clue
     let clueTemp = clueField.val();
-    let regClue = /^\D+/;
+    let regClue = /^[A-Za-z \-+_,.=0-9]{1,250}$/;
     if (regClue.test(clueTemp)) {
         clueField.removeClass("is-invalid");
         clueField.addClass("is-valid");
@@ -206,12 +206,11 @@ let newWordButton = $('#addWord');
 newWordButton.on("click", addWord);
 
 function submit() {
-    let reg = /^[A-Za-z]{1,20}$/;
-    let regClue = /^\D+/;
+    let reg = /^[A-Za-z0-9]{1,20}$/;
     let title = $('#title');
     let author = $('#author');
     let validatedFirst = true;
-    if (regClue.test(title.val())) {
+    if (reg.test(title.val())) {
         title.removeClass("is-invalid");
         title.addClass("is-valid");
     } else {
@@ -219,7 +218,7 @@ function submit() {
         title.addClass("is-invalid");
         validatedFirst = false;
     }
-    if (regClue.test(author.val())) {
+    if (reg.test(author.val())) {
         author.removeClass("is-invalid");
         author.addClass("is-valid");
     } else {
@@ -272,7 +271,7 @@ function submit() {
                     words: wordArray,
                     clues: clueArray,
                 };
-                let url2 = "api/puzzle_add";
+                url2 = "api/puzzle_add";
         }
 
         $.ajax({
@@ -332,127 +331,110 @@ function previewClick() {
         data: JSON.stringify(dataToServer),
         success: function (dataFromServer) {
             console.log(dataFromServer);
-            let result = JSON.parse(dataFromServer)
-            if ('error' in result) {
+            let json_result = JSON.parse(dataFromServer)
+            if ('error' in json_result) {
                 // JavaScript alert the error.
                 errorEdit = true;
                 validCrossword = false;
-                alert(result.error);
+                alert(json_result.error);
             }else {
-                postPreview()
+                console.log(json_result);
+                console.log(json_result.jsonArray2);
+                console.log(json_result.jsonArray1);
+                questionObjectArray = json_result.jsonArray2;
+                gridObjectArray = json_result.jsonArray1;
+                console.log(questionObjectArray)
+
+
+// change any value
+                let columns = json_result.jsonArray1[0].length;
+                let rows = json_result.jsonArray1.length;
+                let counter = 0;
+                const colorArray = ["#121212", "#46a4cc", "#a63e4b"];
+
+// figure the new svg width/height
+                const svgWidth = width * columns;
+                const svgHeight = height * rows;
+                let reg = /^[A-Za-z]$/;
+
+                gsap.set(svg, {
+                    attr: {
+                        width: svgWidth,
+                        height: svgHeight,
+                        //viewBox: "0 0 " + svgWidth + " " + svgHeight
+                    }
+                });
+
+                for (let jaxis = 1; jaxis < json_result.jsonArray1.length; jaxis++) {
+                    for (let iaxis = 0; iaxis < json_result.jsonArray1[jaxis].length; iaxis++) {
+                        if (reg.test(json_result.jsonArray1[jaxis][iaxis])) {
+                            if (counter < letterCount) {
+                                console.log("here" + letterCount.toString() + counter.toString());
+                                gsap.to(svg.childNodes.item(2 * counter),1,{
+                                    attr: {
+                                        x: iaxis * width,
+                                        y: jaxis * height,
+                                        width: width,
+                                        height: height,
+                                        fill: "#FFFFFF",
+                                        stroke: colorArray[0]
+                                    }
+                                });
+
+                                // let txt = document.createElementNS(svgns, "text");
+                                svg.childNodes.item((2*counter)+1).textContent = json_result.jsonArray1[jaxis][iaxis];
+                                // svg.appendChild(txt);
+                                gsap.to(svg.childNodes.item((2 * counter) + 1), 1, {
+                                    x: iaxis * width + width / 3,
+                                    y: (jaxis * height) + (height*2 /3) ,
+                                });
+                                counter++;
+                            } else {
+                                console.log("here_new" + letterCount.toString() + counter.toString());
+
+                                let newRect = document.createElementNS(svgns, "rect");
+                                letterCount++;
+                                counter++;
+                                gsap.to(newRect, 1,{
+                                    attr: {
+                                        x: iaxis * width,
+                                        y: jaxis * height,
+                                        width: width,
+                                        height: height,
+                                        fill: "#FFFFFF",
+                                        stroke: colorArray[0]
+                                    }
+                                });
+
+                                svg.appendChild(newRect);
+
+                                let txt = document.createElementNS(svgns, "text");
+                                txt.textContent = json_result.jsonArray1[jaxis][iaxis];
+                                svg.appendChild(txt);
+                                gsap.to(txt, 1, {
+                                    x: iaxis * width + width / 3,
+                                    y: (jaxis * height) + (height*2 /3) ,
+                                });
+                            }
+
+                        }
+                    }
+                } if(letterCount < letterCountMax){
+                    for (i = letterCount; i < letterCountMax; i++){
+                        svg.childNodes.item(svg.childNodes.length - 1).remove();
+                        svg.childNodes.item(svg.childNodes.length - 1).remove();
+                    }
+                }
+                console.log("letterCount= " + letterCount);
+                console.log("letterCountMax= " + letterCountMax);
+                letterCountMax = letterCount;
+                console.log("letterCount= " + letterCount);
+                console.log("letterCountMax= " + letterCountMax);
                 validCrossword = true;
             }
         },
         contentType: "application/json",
         dataType: 'text', // Could be JSON or whatever too
-    });
-}
-
-function postPreview(){
-
-// Define a URL
-    let url2 = "api/previewcrossword";
-
-    console.log("call updateTable")
-    let reg = /^[A-Za-z]$/;
-
-    // Start a web call. Specify:
-    // URL
-    // Data to pass (nothing in this case)
-    // Function to call when we are done
-    $.getJSON(url2, null, function(json_result) {
-        console.log(json_result);
-        console.log(json_result.jsonArray2);
-        console.log(json_result.jsonArray1);
-        questionObjectArray = json_result.jsonArray2;
-        gridObjectArray = json_result.jsonArray1;
-        console.log(questionObjectArray)
-
-
-// change any value
-        let columns = json_result.jsonArray1[0].length;
-        let rows = json_result.jsonArray1.length;
-        let counter = 0;
-        const colorArray = ["#121212", "#46a4cc", "#a63e4b"];
-
-// figure the new svg width/height
-        const svgWidth = width * columns;
-        const svgHeight = height * rows;
-
-
-        gsap.set(svg, {
-            attr: {
-                width: svgWidth,
-                height: svgHeight,
-                //viewBox: "0 0 " + svgWidth + " " + svgHeight
-            }
-        });
-
-        for (let jaxis = 1; jaxis < json_result.jsonArray1.length; jaxis++) {
-            for (let iaxis = 0; iaxis < json_result.jsonArray1[jaxis].length; iaxis++) {
-                if (reg.test(json_result.jsonArray1[jaxis][iaxis])) {
-                    if (counter < letterCount) {
-                        console.log("here" + letterCount.toString() + counter.toString());
-                        gsap.to(svg.childNodes.item(2 * counter),1,{
-                            attr: {
-                                x: iaxis * width,
-                                y: jaxis * height,
-                                width: width,
-                                height: height,
-                                fill: "#FFFFFF",
-                                stroke: colorArray[0]
-                            }
-                        });
-
-                        // let txt = document.createElementNS(svgns, "text");
-                        svg.childNodes.item((2*counter)+1).textContent = json_result.jsonArray1[jaxis][iaxis];
-                        // svg.appendChild(txt);
-                        gsap.to(svg.childNodes.item((2 * counter) + 1), 1, {
-                            x: iaxis * width + width / 3,
-                            y: (jaxis * height) + (height*2 /3) ,
-                        });
-                        counter++;
-                    } else {
-                        console.log("here_new" + letterCount.toString() + counter.toString());
-
-                        let newRect = document.createElementNS(svgns, "rect");
-                        letterCount++;
-                        counter++;
-                        gsap.to(newRect, 1,{
-                            attr: {
-                                x: iaxis * width,
-                                y: jaxis * height,
-                                width: width,
-                                height: height,
-                                fill: "#FFFFFF",
-                                stroke: colorArray[0]
-                            }
-                        });
-
-                        svg.appendChild(newRect);
-
-                        let txt = document.createElementNS(svgns, "text");
-                        txt.textContent = json_result.jsonArray1[jaxis][iaxis];
-                        svg.appendChild(txt);
-                        gsap.to(txt, 1, {
-                            x: iaxis * width + width / 3,
-                            y: (jaxis * height) + (height*2 /3) ,
-                        });
-                    }
-
-                }
-            }
-        } if(letterCount < letterCountMax){
-            for (i = letterCount; i < letterCountMax; i++){
-                svg.childNodes.item(svg.childNodes.length - 1).remove();
-                svg.childNodes.item(svg.childNodes.length - 1).remove();
-            }
-        }
-        console.log("letterCount= " + letterCount);
-        console.log("letterCountMax= " + letterCountMax);
-        letterCountMax = letterCount;
-        console.log("letterCount= " + letterCount);
-        console.log("letterCountMax= " + letterCountMax);
     });
 }
 

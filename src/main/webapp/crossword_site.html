@@ -199,12 +199,31 @@
 <!--            <h1><pre id="getTitleResult"></pre></h1>-->
 <!--            <svg id = "svgelem" xmlns="http://www.w3.org/2000/svg"></svg>-->
 <!--        </div>-->
-        <form>
-            <label for="guessForm">Enter a guess:</label>
-            <input type="text" name="Guess" class="form-control col-md-4" id="guessForm" placeholder="Enter here"><br/>
+        <form style="background-color: white; border: black; padding: 2%; margin-top: 2%;">
+            <div class="row d-flex justify-content-center">
+                <div class="col-sm-push-2" style="padding-right: 6%">
+                    <button type="button" id="previous" class="btn btn-primary"><</button>
+                </div>
+                <div class="col-sm-push-8">
+                    <label id="questionDisplay" style="font-size: xx-large;"></label><br/>
+                </div>
+                <div class="col-sm-2" style="padding-left: 6%">
+                    <button type="button" id="next" class="btn btn-primary">></button>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center" style="margin-top: 2%;">
+                <div class="col-sm-push-4">
+                    <label style="font-size: large;">Enter a Guess:</label><br/>
+                </div>
+                <div class="col-sm-push-6" style="padding-left: 1%;">
+                    <input type="text" name="Guess" class="form-control col-lg-12" id="guessForm" placeholder="Enter here"><br/>
+                </div>
+                <div class="col-sm-2" style="padding-left: 1%;">
+                    <button type="button" id="Guess" class="btn btn-primary">Guess</button>
+                </div>
+            </div>
         </form>
         <!-- Button to add a new data item -->
-        <button type="button" id="Guess" class="btn btn-primary">Guess</button>
         <div id="printPart2">
             <div class="row">
                 <div class="col-sm-3 col-md-6">

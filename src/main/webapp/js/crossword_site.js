@@ -1,9 +1,11 @@
 // Main Javascript File
 
-
+let questionOn = 0;
 let questionObjectArray;
 let gridObjectArray;
-
+let questionToBlockArray;
+let numberCorrect = 0;
+let questionsCorrectArray;
 const svg = document.querySelector("svg");
 
 const svgns = "http://www.w3.org/2000/svg";
@@ -62,7 +64,7 @@ function updateTable() {
 // change any value
             let columns = result.jsonArray1[1].length;
             let rows = result.jsonArray1.length;
-            let counter = 0;
+            let counter = 1;
             const colorArray = ["#121212", "#46a4cc", "#a63e4b"];
 
 // figure the new svg width/height
@@ -76,11 +78,28 @@ function updateTable() {
                     //viewBox: "0 0 " + svgWidth + " " + svgHeight
                 }
             });
+            questionToBlockArray = new Array(result.jsonArray2.length); // create an empty array of length n
+            questionsCorrectArray = new Array(result.jsonArray2.length);
+            for (var i = 0; i < result.jsonArray2.length; i++) {
+                questionToBlockArray[i] = [] // make each element an array
+                questionsCorrectArray[i] = 0;
+            }
+            nextQuestion();
             for (let j = 1; j < result.jsonArray1.length; j++) {
                 for (let i = 0; i < result.jsonArray1[j].length; i++) {
-                    counter++;
-                    let newRect = document.createElementNS(svgns, "rect");
                     if (result.jsonArray1[j][i] !== " ") {
+                        let name = "";
+                        for (let wordInd = 0; wordInd < result.jsonArray2.length; wordInd++) {
+                            if ((result.jsonArray2[wordInd].vertical === 0) && (result.jsonArray2[wordInd].row === j) && (0 <= i+1 - result.jsonArray2[wordInd].col) && (i+1 - result.jsonArray2[wordInd].col <= result.jsonArray2[wordInd].length)){
+                                questionToBlockArray[result.jsonArray2[wordInd].number-1].push(counter);
+                            }
+                            if ((result.jsonArray2[wordInd].vertical === 1) && (result.jsonArray2[wordInd].col === i+1) && (0 <= j - result.jsonArray2[wordInd].row) && (j - result.jsonArray2[wordInd].row <= result.jsonArray2[wordInd].length)){
+                                questionToBlockArray[result.jsonArray2[wordInd].number-1].push(counter);
+                            }
+                        }
+                        counter++;
+                        console.log(result.jsonArray1[j][i] + " " + name + " j =" + j + "i=" + i);
+                        let newRect = document.createElementNS(svgns, "rect");
                         gsap.set(newRect, {
                             attr: {
                                 x: i * width,
@@ -102,32 +121,31 @@ function updateTable() {
                     }
                 }
             }
-            for (let j = 1; j < result.jsonArray2.length + 1; j++) {
-                for (let k = 0; k < result.jsonArray2.length; k++)
-                    if (result.jsonArray2[k].number === j) {
-                        if (result.jsonArray2[k].vertical === 0){
-                            console.log(result.jsonArray2[k].word)
-                            $("#across tbody").append("<tr><td>" + j + ". " + result.jsonArray2[k].clue + "</td></tr>");
+            for (let j = 0; j < result.jsonArray2.length; j++) {
+                        if (result.jsonArray2[j].vertical === 0){
+                            console.log(result.jsonArray2[j].word)
+                            let number = j+1;
+                            $("#across tbody").append("<tr><td>" + number + ". " + result.jsonArray2[j].clue + "</td></tr>");
                             let txt = document.createElementNS(svgns, "text");
-                            txt.textContent = result.jsonArray2[k].number;
+                            txt.textContent = j+1;
                             svg.appendChild(txt);
                             gsap.set(txt, {
-                                x: (result.jsonArray2[k].col - 1) * width + 2,
-                                y: result.jsonArray2[k].row * height + height / 2,
+                                x: (result.jsonArray2[j].col - 1) * width + 2,
+                                y: result.jsonArray2[j].row * height + height / 2,
                             });
                         }
                         else {
-                            console.log(result.jsonArray2[k].word)
-                            $("#vertical tbody").append("<tr><td>" + j + ". " + result.jsonArray2[k].clue + "</td></tr>");
+                            console.log(result.jsonArray2[j].word)
+                            let number = j+1;
+                            $("#vertical tbody").append("<tr><td>" + number + ". " + result.jsonArray2[j].clue + "</td></tr>");
                             let txt = document.createElementNS(svgns, "text");
-                            txt.textContent = result.jsonArray2[k].number;
+                            txt.textContent = j+1;
                             svg.appendChild(txt);
                             gsap.set(txt, {
-                                x: (result.jsonArray2[k].col - 1) * width + 2,
-                                y: result.jsonArray2[k].row * height + height - 2,
+                                x: (result.jsonArray2[j].col - 1) * width + 2,
+                                y: result.jsonArray2[j].row * height + height - 2,
                             });
                         }
-                    }
             }
         },
         contentType: "application/json",
@@ -142,41 +160,60 @@ updateTable();
 function myUpdateFunction(event) {
     let correct = false;
     let playerGuess = $("#guessForm").val();
-    for (let index = 0; index < questionObjectArray.length; index++) {
+    let index = questionOn - 1
         if (questionObjectArray[index].word.toLowerCase() === playerGuess.toLowerCase()) {
-            correct = true;
-            $("#toast-body").html("Correct!");
-            // Set the delay in ms. Defaults to 500.
-            let myToast = $('#myToast')
-            myToast.toast({delay: 2500});
-            // Show it
-            myToast.toast('show');
-            console.log(playerGuess);
-            console.log(index);
-            // console.log(questionObjectArray[index].word)
-            if (questionObjectArray[index].vertical === 0) {
-                for (let wordindex = 0; wordindex < questionObjectArray[index].word.length; wordindex++) {
-                    let txt = document.createElementNS(svgns, "text");
-                    txt.textContent = gridObjectArray[questionObjectArray[index].row][questionObjectArray[index].col + wordindex - 1];
-                    svg.appendChild(txt);
-                    gsap.set(txt, {
-                        x: (questionObjectArray[index].col + wordindex - 1) * width + width / 2,
-                        y: (questionObjectArray[index].row) * height + height / 2,
+            if (questionsCorrectArray[index] === 0) {
+                numberCorrect += 1;
+                questionsCorrectArray[index] = 1;
+                correct = true;
+                $("#toast-body").html("Correct!");
+                for (let letterIndex = 0; letterIndex < questionToBlockArray[questionObjectArray[index].number - 1].length; letterIndex++) {
+                    console.log(questionToBlockArray[questionObjectArray[index].number - 1][letterIndex])
+                    gsap.to(svg.childNodes.item(questionToBlockArray[questionObjectArray[index].number - 1][letterIndex] - 1), 2, {
+                        attr: {
+                            fill: "#00FF00",
+                        }
                     });
                 }
-            } else {
-                for (let wordindex = 0; wordindex < questionObjectArray[index].word.length; wordindex++) {
-                    let txt = document.createElementNS(svgns, "text");
-                    txt.textContent = gridObjectArray[questionObjectArray[index].row + wordindex][questionObjectArray[index].col - 1];
-                    svg.appendChild(txt);
-                    gsap.set(txt, {
-                        x: (questionObjectArray[index].col - 1) * width + width / 2,
-                        y: (questionObjectArray[index].row + wordindex) * height + height / 2,
-                    });
+                // Set the delay in ms. Defaults to 500.
+                let myToast = $('#myToast')
+                myToast.toast({delay: 2500});
+                // Show it
+                myToast.toast('show');
+                console.log(playerGuess);
+                console.log(index);
+                // console.log(questionObjectArray[index].word)
+                if (questionObjectArray[index].vertical === 0) {
+                    for (let wordindex = 0; wordindex < questionObjectArray[index].word.length; wordindex++) {
+                        let txt = document.createElementNS(svgns, "text");
+                        txt.textContent = gridObjectArray[questionObjectArray[index].row][questionObjectArray[index].col + wordindex - 1];
+                        svg.appendChild(txt);
+                        gsap.set(txt, {
+                            x: (questionObjectArray[index].col + wordindex - 1) * width + width / 2,
+                            y: (questionObjectArray[index].row) * height + height / 2,
+                        });
+                    }
+                } else {
+                    for (let wordindex = 0; wordindex < questionObjectArray[index].word.length; wordindex++) {
+                        let txt = document.createElementNS(svgns, "text");
+                        txt.textContent = gridObjectArray[questionObjectArray[index].row + wordindex][questionObjectArray[index].col - 1];
+                        svg.appendChild(txt);
+                        gsap.set(txt, {
+                            x: (questionObjectArray[index].col - 1) * width + width / 2,
+                            y: (questionObjectArray[index].row + wordindex) * height + height / 2,
+                        });
+                    }
+                }
+                if (numberCorrect === questionObjectArray.length) {
+                    $('#previous').hide();
+                    $('#next').hide();
+                    document.getElementById('questionDisplay').innerHTML
+                        = 'You solved the crossword! Congrats!';
+                } else {
+                    nextQuestion();
                 }
             }
         }
-    }
     if (!correct) {
         $("#toast-body").html("Wrong guess :(");
         // Set the delay in ms. Defaults to 500.
@@ -254,4 +291,46 @@ function allowFunction() {
             });
         }
     });
+}
+
+let nextButton = $('#next');
+nextButton.on("click", nextQuestion);
+
+function nextQuestion(){
+    if (questionOn === questionsCorrectArray.length){
+        questionOn = 0;
+    }
+    for (let questionIndex = questionOn; questionIndex <= questionsCorrectArray.length + 1; questionIndex++){
+        if (questionsCorrectArray[questionIndex] === 0){
+            questionOn = questionIndex + 1;
+            break;
+        } else if (questionIndex === questionsCorrectArray.length ){
+            questionIndex = -1;
+        }
+        console.log(questionIndex);
+    }
+    document.getElementById('questionDisplay').innerHTML
+        ='    ' + questionOn + '. '  + questionObjectArray[questionOn - 1].clue + '   ';
+}
+
+let previousButton = $('#previous');
+previousButton.on("click", previousQuestion);
+
+function previousQuestion(){
+    if (questionOn === 1){
+        questionOn = questionsCorrectArray.length + 1;
+    }
+    for (let questionIndex = questionOn - 2; questionIndex <= questionsCorrectArray.length + 1; questionIndex--){
+        if (questionsCorrectArray[questionIndex] === 0){
+            questionOn = questionIndex + 1;
+            break;
+        } else if (questionIndex <= 0){
+            questionIndex = questionsCorrectArray.length + 1;
+        }
+        console.log(questionIndex);
+    }
+
+    document.getElementById('questionDisplay').innerHTML
+            ='    ' + questionOn + '. '  + questionObjectArray[questionOn - 1].clue + '   ';
+
 }
