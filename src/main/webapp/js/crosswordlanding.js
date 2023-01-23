@@ -36,7 +36,7 @@ function addWord() {
         }
         //clue
         let clueTemp1 = clueField1.val();
-        let regClue = /^\D+/;
+        let regClue = /^[A-Za-z \-+_,.=0-9]{1,250}$/;
         if (regClue.test(clueTemp1)) {
             clueField1.removeClass("is-invalid");
             clueField1.addClass("is-valid");
@@ -206,7 +206,7 @@ let newWordButton = $('#addWord');
 newWordButton.on("click", addWord);
 
 function submit() {
-    let reg = /^[A-Za-z0-9]{1,20}$/;
+    let reg = /^[A-Za-z .0-9]{1,20}$/;
     let title = $('#title');
     let author = $('#author');
     let validatedFirst = true;

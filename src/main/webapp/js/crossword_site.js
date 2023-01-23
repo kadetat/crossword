@@ -310,7 +310,7 @@ function nextQuestion(){
         console.log(questionIndex);
     }
     document.getElementById('questionDisplay').innerHTML
-        ='    ' + questionOn + '. '  + questionObjectArray[questionOn - 1].clue + '   ';
+        = questionOn + '. '  + questionObjectArray[questionOn - 1].clue;
 }
 
 let previousButton = $('#previous');
@@ -331,6 +331,6 @@ function previousQuestion(){
     }
 
     document.getElementById('questionDisplay').innerHTML
-            ='    ' + questionOn + '. '  + questionObjectArray[questionOn - 1].clue + '   ';
+            = questionOn + '. '  + questionObjectArray[questionOn - 1].clue;
 
 }
