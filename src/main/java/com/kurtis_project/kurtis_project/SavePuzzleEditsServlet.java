@@ -29,12 +29,12 @@ public class SavePuzzleEditsServlet extends HttpServlet {
      */
     public SavePuzzleEditsServlet() {
 //        // --- Compile and set up all the regular expression patterns here ---
-        titleValidationPattern = Pattern.compile("^[A-Za-z0-9]{1,20}$");
-        authorValidationPattern = Pattern.compile("^[A-Za-z0-9]{1,20}$");
+        titleValidationPattern = Pattern.compile("^[A-Za-z .0-9]{1,20}$");
+        authorValidationPattern = Pattern.compile("^[A-Za-z .0-9]{1,20}$");
         wordValidationPattern = Pattern.compile("^[A-Za-z]{1,20}$");
         clueValidationPattern = Pattern.compile("^[A-Za-z \\-+_,.=0-9]{1,250}$");
 //      emailValidationPattern = Pattern.compile("^[\\w.]+@[\\w.]+$");
-        dateValidationPattern = Pattern.compile("^[0-9]{4}-[0-9]{2}-[0-9]{2}$");
+        dateValidationPattern = Pattern.compile("^[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}$");
         idValidationPattern = Pattern.compile("^[0-9]{0,10}$");
 //
     }
