@@ -23,6 +23,11 @@ function showLinkModel(e) {
 let linkModelButton = $('#Link');
 linkModelButton.on("click", showLinkModel);
 
+function showEmbedModel(e) {
+    $('#EmbedModel').modal('show');
+}
+let embedModelButton = $('#Embed');
+embedModelButton.on("click", showEmbedModel);
 
 function updateTable() {
     // Here's where your code is going to go.

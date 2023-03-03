@@ -8,11 +8,19 @@ function buildCrossword() {
     window.location.href = 'https://crosswordcreators.com/crossword_landing.html'
 }
 
+function featuredCrossword() {
+    //window.location.href = 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_landing.html';
+    window.location.href = 'https://crosswordcreators.com/crossword_site.html?id=81'
+}
+
 let playCrosswordButton = $('#playCrossword');
 playCrosswordButton.on("click", playCrossword);
 
 let buildCrosswordButton = $('#buildCrossword');
 buildCrosswordButton.on("click", buildCrossword);
+
+let featuredCrosswordButton = $('#featured');
+featuredCrosswordButton.on("click", featuredCrossword);
 
 let allowButton = $('#allow');
 allowButton.on("click", allowFunction);

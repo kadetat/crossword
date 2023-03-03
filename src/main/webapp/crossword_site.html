@@ -16,7 +16,15 @@
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cosmo/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="crossword_css.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KRZ35V7G92"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
+        gtag('config', 'G-KRZ35V7G92');
+    </script>
     <style>
         text {
             font-size: 12px;
@@ -55,6 +63,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="crossword_landing.html">Build</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="how_to.html">How To</a>
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -184,6 +195,7 @@
         <div class="text-right">
             <button type="button" id="Link" class="btn btn-secondary" style="display: inline-block">Share Link</button>
             <button type="button" id="Print" class="btn btn-primary" style="display: inline-block">Print</button>
+            <button type="button" id="Embed" class="btn btn-success" style="display: inline-block">Embed</button>
         </div>
         <div class="scrollbar square scrollbar-lady-lips">
             <div id="printPart" style="overflow-x: auto;">
@@ -321,7 +333,32 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
+<!-- This is a hidden "pop up" window that we'll use to enter new data -->
+<div class="modal fade" tabindex="-1" role="dialog" id="EmbedModel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- Window Title -->
+                <h4 class="modal-title">Embed Crossword to a Website</h4>
+                <!-- Close button -->
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>You can embed this crossword to your website by including the html code below in the html source page.</p>
+                <div style="background-color: darkkhaki; border-radius: 0.25%; font-size: x-small;">
+                    <p id="modalShareEmbed"></p>
+                </div>
+                <p>Just adjust the width and height to fit well on your website. </p>
+            </div>
+            <!-- Footer where we put our save/close buttons -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <!-- Load JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
@@ -334,6 +371,7 @@
 <script src="js/session.js"></script>
 <script>
     document.getElementById("modalShareLink").innerHTML = window.location.href;
+    document.getElementById("modalShareEmbed").innerHTML = '&lt;iframe src= \"'  + window.location.href + '\" style=\"height:500px;width:700px\";&gt;&lt;/iframe&gt;';
     var url = "api/check_session_attribute_servlet";
     $.post(url, null, function (dataFromServer) {
         let result = JSON.parse(dataFromServer)
