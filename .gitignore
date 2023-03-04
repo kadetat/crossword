@@ -2,4 +2,5 @@
 /.idea/
 /build/
 /src/main/webapp/META-INF/context.xml
+/src/main/java/com/kurtis_project/kurtis_project/passwords.java
 .DS_Store

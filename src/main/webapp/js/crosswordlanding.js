@@ -554,4 +554,44 @@ function tryEdit(){
     }
 }
 
+let askGPTButton = $('#askGPT');
+askGPTButton.on("click", generateClue);
+
+function generateClue(){
+    let wordField1 = $('#word1');
+    let validatedWord = false;
+    let wordTemp1 = wordField1.val();
+        //word
+    let reg = /^[A-Za-z]{1,12}$/;
+    if (reg.test(wordTemp1)) {
+        validatedWord = true;
+    } else {
+        alert("Not a valid word to generate a clue from.")
+        validatedWord = false;
+    }
+    if (validatedWord ){
+        let dataToServer = {OneWord     : wordTemp1};
+        console.log(dataToServer);
+        let url = "api/askOpenAI";
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: JSON.stringify(dataToServer),
+            success: function(dataFromServer) {
+                let result = JSON.parse(dataFromServer)
+                console.log(result);
+                if ('error' in result) {
+                    alert('error, not correctly logged in to edit selected crossword.');
+                    return;
+                }
+                let clueField1 = $('#clue1');
+                clueField1.val(result.generatedClue);
+            },
+            contentType: "application/json",
+            dataType: 'text', // Could be JSON or whatever too
+        });
+    }
+
+}
+
 tryEdit();

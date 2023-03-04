@@ -14,6 +14,8 @@ public class PuzzleInfo {
     private String date;
     private String completed;
     private String userID;
+    private Object[] choices;
+    private String text;
 
 
     public ArrayList<String> getclues() {return clues; }
@@ -45,4 +47,8 @@ public class PuzzleInfo {
 
     public String getUserID() {return userID; }
     public void setUserID(String userID) { this.userID = userID; }
+
+    public Object[] getChoices() {return choices; }
+
+    public String getText() {return text; }
 }
