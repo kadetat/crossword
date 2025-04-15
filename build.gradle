@@ -26,8 +26,8 @@ dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
     compile group: 'org.apache.httpcomponents', name: 'fluent-hc', version: '4.5.13'
     compile 'com.google.api-client:google-api-client:1.33.0'
-    testImplementation('org.junit.jupiter:junit-jupiter-api:${junitVersion}')
-    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:${junitVersion}')
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 
     implementation('javax.json.bind:javax.json.bind-api:1.0')
     implementation('org.glassfish:jakarta.json:1.1.5')

@@ -47,12 +47,12 @@ public class openAIServlet extends HttpServlet {
             out.println("{\"error\" : \"Error validating a word.\"}");
             return;
         }
-
+        String valueKey = System.getenv("OpenAI_Key");
         URL obj = new URL("https://api.openai.com/v1/completions");
         HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json");
-        con.setRequestProperty("Authorization", "Bearer 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");
+        con.setRequestProperty("Authorization", "Bearer " + valueKey);
         con.setDoOutput(true);
         JsonObject jsonObj = new JsonObject();
         jsonObj.addProperty("model", "gpt-3.5-turbo-instruct");
