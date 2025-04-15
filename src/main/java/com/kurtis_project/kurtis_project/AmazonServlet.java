@@ -1,23 +1,14 @@
 package com.kurtis_project.kurtis_project;
 
 import com.google.gson.Gson;
-import com.google.gson.*;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonWriter;
-import sun.jvm.hotspot.utilities.Assert;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
-import java.io.File;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.BufferedReader;
@@ -29,7 +20,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
-import java.net.URLEncoder;
+
 import java.util.Map;
 
 
@@ -106,7 +97,7 @@ public class AmazonServlet extends HttpServlet {
             }
 
 
-
+            String pictureURL = "https://mdbootstrap.com/img/Photos/Avatars/avatar-5.webp";
             // exchange the access token for user profile
             c = Request.Get("https://api.amazon.com/user/profile?access_token="+ URLEncoder.encode(accessToken, "UTF-8"))
                     .execute()
@@ -118,6 +109,7 @@ public class AmazonServlet extends HttpServlet {
             session.setAttribute("loginID", m2.get("user_id"));
             session.setAttribute("loginName", m2.get("name"));
             session.setAttribute("userEmail", m2.get("email"));
+            session.setAttribute("pictureURL", pictureURL);
             Boolean exists = PuzzleInfoDAO.checkIfUserExists((String) m2.get("user_id"));
 
             if (!exists){
@@ -125,11 +117,13 @@ public class AmazonServlet extends HttpServlet {
                 if (added) {
                     out.println("{\"added\": \"good insert.\",");
                     out.println("\"name\": \"" + m2.get("name") +"\",");
+                    out.println("\"pictureURL\":\"" + pictureURL + "\",");
                     out.println("\"email\": \"" + m2.get("email") +"\"}");
                 }
             }else {
                 out.println("{\"exists\": \"good exists.\",");
                 out.println("\"name\": \"" + m2.get("name") +"\",");
+                out.println("\"pictureURL\":\"" + pictureURL + "\",");
                 out.println("\"email\": \"" + m2.get("email") +"\"}");
             }
         }

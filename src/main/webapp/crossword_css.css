@@ -76,6 +76,13 @@ article {
             0 -2px 0 #000000; /* Terminate with a semi-colon */
 }
 
+@media screen and (min-width: 600px) {
+    .navbar-toggle {
+        display: none; /* Hide the navigation links by default */
+        text-align: left;
+    }
+}
+
 @media (max-width: 800px) {
     section {
         /*background-color: green;*/
@@ -119,3 +126,4 @@ h2{
 h1{
     font-size: 250%;
 }
+

@@ -1,9 +1,9 @@
 package com.kurtis_project.kurtis_project;
 
 import com.google.gson.Gson;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.GeneralSecurityException;
@@ -76,6 +76,7 @@ public class GoogleServlet extends HttpServlet {
             session.setAttribute("loginID", userId);
             session.setAttribute("loginName", name);
             session.setAttribute("userEmail", email);
+            session.setAttribute("pictureURL", pictureUrl);
             Boolean exists = PuzzleInfoDAO.checkIfUserExists(userId);
 
             if (!exists){
@@ -83,11 +84,13 @@ public class GoogleServlet extends HttpServlet {
                 if (added) {
                     out.println("{\"added\":\"good insert.\",");
                     out.println("\"name\":\"" + name + "\",");
+                    out.println("\"pictureURL\":\"" + pictureUrl + "\",");
                     out.println("\"email\":\"" + email + "\"}");
                 }
             }else {
                 out.println("{\"exists\":\"good exists.\",");
                 out.println("\"name\":\"" + name +"\",");
+                out.println("\"pictureURL\":\"" + pictureUrl + "\",");
                 out.println("\"email\":\"" + email +"\"}");
             }
 

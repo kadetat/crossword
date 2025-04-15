@@ -89,7 +89,6 @@ function updateTable() {
                 questionToBlockArray[i] = [] // make each element an array
                 questionsCorrectArray[i] = 0;
             }
-            nextQuestion();
             for (let j = 1; j < result.jsonArray1.length; j++) {
                 for (let i = 0; i < result.jsonArray1[j].length; i++) {
                     if (result.jsonArray1[j][i] !== " ") {
@@ -97,9 +96,11 @@ function updateTable() {
                         for (let wordInd = 0; wordInd < result.jsonArray2.length; wordInd++) {
                             if ((result.jsonArray2[wordInd].vertical === 0) && (result.jsonArray2[wordInd].row === j) && (0 <= i+1 - result.jsonArray2[wordInd].col) && (i+1 - result.jsonArray2[wordInd].col <= result.jsonArray2[wordInd].length)){
                                 questionToBlockArray[result.jsonArray2[wordInd].number-1].push(counter);
+                                name = wordInd;
                             }
                             if ((result.jsonArray2[wordInd].vertical === 1) && (result.jsonArray2[wordInd].col === i+1) && (0 <= j - result.jsonArray2[wordInd].row) && (j - result.jsonArray2[wordInd].row <= result.jsonArray2[wordInd].length)){
                                 questionToBlockArray[result.jsonArray2[wordInd].number-1].push(counter);
+                                name = wordInd;
                             }
                         }
                         counter++;
@@ -115,6 +116,7 @@ function updateTable() {
                                 stroke: colorArray[0]
                             }
                         });
+                        newRect.onclick = function() {clickListner(name)};
                         svg.appendChild(newRect);
                         // let txt = document.createElementNS(svgns, "text");
                         // txt.textContent = json_result.jsonArray1[j][i];
@@ -126,6 +128,7 @@ function updateTable() {
                     }
                 }
             }
+
             for (let j = 0; j < result.jsonArray2.length; j++) {
                         if (result.jsonArray2[j].vertical === 0){
                             console.log(result.jsonArray2[j].word)
@@ -152,6 +155,7 @@ function updateTable() {
                             });
                         }
             }
+            nextQuestion();
         },
         contentType: "application/json",
         dataType: 'text', // Could be JSON or whatever too
@@ -242,6 +246,37 @@ $(document).keydown(function(e){
     }
 });
 
+function clickListner(questionNumber) {
+    console.log("Question: " + questionNumber);
+    if (questionsCorrectArray[questionNumber] === 0) {
+        let index = questionOn - 1;
+        for (let letterIndex = 0; letterIndex < questionToBlockArray[questionObjectArray[index].number - 1].length; letterIndex++) {
+            if (svg.childNodes.item(questionToBlockArray[questionObjectArray[index].number - 1][letterIndex] - 1).getAttribute("fill") !== "#00FF00"){
+                gsap.to(svg.childNodes.item(questionToBlockArray[questionObjectArray[index].number - 1][letterIndex] - 1), 0.25, {
+                    attr: {
+                        fill: "#FFFFFF",
+                    }
+                });
+            }
+        }
+        questionOn = questionNumber;
+        questionOn = questionOn + 1;
+        document.getElementById('questionDisplay').innerHTML
+            = questionOn + '. ' + questionObjectArray[questionOn - 1].clue;
+
+        index = questionOn - 1;
+        for (let letterIndex = 0; letterIndex < questionToBlockArray[questionObjectArray[index].number - 1].length; letterIndex++) {
+            if (svg.childNodes.item(questionToBlockArray[questionObjectArray[index].number - 1][letterIndex] - 1).getAttribute("fill") !== "#00FF00"){
+                gsap.to(svg.childNodes.item(questionToBlockArray[questionObjectArray[index].number - 1][letterIndex] - 1), 0.25, {
+                    attr: {
+                        fill: "#FFFF99",
+                    }
+                });
+            }
+        }
+    }
+    $("#guessForm").focus();
+}
 
 let printButton1 = $("#Print");
 printButton1.on("click", printDiv);
@@ -303,19 +338,51 @@ nextButton.on("click", nextQuestion);
 
 function nextQuestion(){
     if (questionOn === questionsCorrectArray.length){
+        let index = questionOn - 1;
+        for (let letterIndex = 0; letterIndex < questionToBlockArray[questionObjectArray[index].number - 1].length; letterIndex++) {
+            if (svg.childNodes.item(questionToBlockArray[questionObjectArray[index].number - 1][letterIndex] - 1).getAttribute("fill") !== "#00FF00") {
+                gsap.to(svg.childNodes.item(questionToBlockArray[questionObjectArray[index].number - 1][letterIndex] - 1), 0.25, {
+                    attr: {
+                        fill: "#FFFFFF",
+                    }
+                });
+            }
+        }
         questionOn = 0;
     }
     for (let questionIndex = questionOn; questionIndex <= questionsCorrectArray.length + 1; questionIndex++){
         if (questionsCorrectArray[questionIndex] === 0){
+            if (questionOn !== 0) {
+                let index = questionOn - 1;
+                for (let letterIndex = 0; letterIndex < questionToBlockArray[questionObjectArray[index].number - 1].length; letterIndex++) {
+                    if (svg.childNodes.item(questionToBlockArray[questionObjectArray[index].number - 1][letterIndex] - 1).getAttribute("fill") !== "#00FF00") {
+                        gsap.to(svg.childNodes.item(questionToBlockArray[questionObjectArray[index].number - 1][letterIndex] - 1), 0.25, {
+                            attr: {
+                                fill: "#FFFFFF",
+                            }
+                        });
+                    }
+                }
+            }
             questionOn = questionIndex + 1;
+            index = questionOn - 1;
+            for (let letterIndex = 0; letterIndex < questionToBlockArray[questionObjectArray[index].number - 1].length; letterIndex++) {
+                if (svg.childNodes.item(questionToBlockArray[questionObjectArray[index].number - 1][letterIndex] - 1).getAttribute("fill") !== "#00FF00"){
+                    gsap.to(svg.childNodes.item(questionToBlockArray[questionObjectArray[index].number - 1][letterIndex] - 1), 0.25, {
+                        attr: {
+                            fill: "#FFFF99",
+                        }
+                    });
+                }
+            }
             break;
         } else if (questionIndex === questionsCorrectArray.length ){
             questionIndex = -1;
         }
-        console.log(questionIndex);
     }
     document.getElementById('questionDisplay').innerHTML
         = questionOn + '. '  + questionObjectArray[questionOn - 1].clue;
+    $("#guessForm").focus();
 }
 
 let previousButton = $('#previous');
@@ -323,11 +390,44 @@ previousButton.on("click", previousQuestion);
 
 function previousQuestion(){
     if (questionOn === 1){
+        let index = questionOn - 1;
+        for (let letterIndex = 0; letterIndex < questionToBlockArray[questionObjectArray[index].number - 1].length; letterIndex++) {
+            if (svg.childNodes.item(questionToBlockArray[questionObjectArray[index].number - 1][letterIndex] - 1).getAttribute("fill") !== "#00FF00") {
+                gsap.to(svg.childNodes.item(questionToBlockArray[questionObjectArray[index].number - 1][letterIndex] - 1), 0.25, {
+                    attr: {
+                        fill: "#FFFFFF",
+                    }
+                });
+            }
+        }
         questionOn = questionsCorrectArray.length + 1;
     }
     for (let questionIndex = questionOn - 2; questionIndex <= questionsCorrectArray.length + 1; questionIndex--){
         if (questionsCorrectArray[questionIndex] === 0){
+            console.log(questionOn);
+            if (questionOn !== 10) {
+                let index = questionOn - 1;
+                for (let letterIndex = 0; letterIndex < questionToBlockArray[questionObjectArray[index].number - 1].length; letterIndex++) {
+                    if (svg.childNodes.item(questionToBlockArray[questionObjectArray[index].number - 1][letterIndex] - 1).getAttribute("fill") !== "#00FF00") {
+                        gsap.to(svg.childNodes.item(questionToBlockArray[questionObjectArray[index].number - 1][letterIndex] - 1), 0.25, {
+                            attr: {
+                                fill: "#FFFFFF",
+                            }
+                        });
+                    }
+                }
+            }
             questionOn = questionIndex + 1;
+            index = questionOn - 1;
+            for (let letterIndex = 0; letterIndex < questionToBlockArray[questionObjectArray[index].number - 1].length; letterIndex++) {
+                if (svg.childNodes.item(questionToBlockArray[questionObjectArray[index].number - 1][letterIndex] - 1).getAttribute("fill") !== "#00FF00"){
+                    gsap.to(svg.childNodes.item(questionToBlockArray[questionObjectArray[index].number - 1][letterIndex] - 1), 0.25, {
+                        attr: {
+                            fill: "#FFFF99",
+                        }
+                    });
+                }
+            }
             break;
         } else if (questionIndex <= 0){
             questionIndex = questionsCorrectArray.length + 1;
@@ -337,5 +437,6 @@ function previousQuestion(){
 
     document.getElementById('questionDisplay').innerHTML
             = questionOn + '. '  + questionObjectArray[questionOn - 1].clue;
+    $("#guessForm").focus();
 
 }

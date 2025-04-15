@@ -2,28 +2,19 @@ package com.kurtis_project.kurtis_project;
 
 import com.google.gson.Gson;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.net.ssl.HttpsURLConnection;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
-import javax.sql.DataSource;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
+
 import java.io.*;
 import java.net.URL;
-import java.security.GeneralSecurityException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 
@@ -61,24 +52,23 @@ public class openAIServlet extends HttpServlet {
         HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json");
-        con.setRequestProperty("Authorization", "Bearer " + passwords.OpenAIpassword);
+        con.setRequestProperty("Authorization", "Bearer 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");
         con.setDoOutput(true);
         JsonObject jsonObj = new JsonObject();
-        jsonObj.addProperty("model", "text-davinci-003");
+        jsonObj.addProperty("model", "gpt-3.5-turbo-instruct");
         jsonObj.addProperty("prompt", "Create a crossword clue for the word " + word);
         jsonObj.addProperty("temperature", 0.4);
         jsonObj.addProperty("max_tokens", 10);
-        //jsonObj.addProperty("top_p", "0");
-        jsonObj.addProperty("n", 1);
+        jsonObj.addProperty("top_p", "1");
+        jsonObj.addProperty("frequency_penalty", 0);
+        jsonObj.addProperty("presence_penalty", 0);
         //jsonObj.addProperty("stop", "\n");
-        System.out.println(jsonObj.toString());
         OutputStream os = con.getOutputStream();
         os.write(jsonObj.toString().getBytes());
         os.flush();
         os.close();
 
         int responseCode = con.getResponseCode();
-        System.out.println(responseCode);
         if (responseCode == HttpsURLConnection.HTTP_OK) { //success
             BufferedReader in2 = new BufferedReader(new InputStreamReader(
                     con.getInputStream()));
@@ -86,19 +76,12 @@ public class openAIServlet extends HttpServlet {
 
             for (String line; (line = in2.readLine()) != null; requestString2 += line) ;
             in2.close();
-            System.out.println(requestString2);
             Gson gson2 = new Gson();
-            System.out.println("Here0");
             PuzzleInfo wordInfo2 = gson2.fromJson(requestString2, PuzzleInfo.class);
-            System.out.println("Here1");
             Object[] choicesString = wordInfo2.getChoices();
-            System.out.println("Here2");
-            System.out.println(Arrays.stream(choicesString).toArray()[0]);
-            System.out.println("Here3");
             Gson gson3 = new Gson();
             PuzzleInfo wordInfo3 = gson3.fromJson(Arrays.stream(choicesString).toArray()[0].toString(), PuzzleInfo.class);
             String generatedClue = wordInfo3.getText();
-            System.out.println(generatedClue);
             out.println("{\"generatedClue\": \"" + generatedClue + "\"}");
         }
 

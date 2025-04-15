@@ -1,21 +1,16 @@
 package com.kurtis_project.kurtis_project;
 
 import com.google.gson.Gson;
-import com.google.gson.*;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonWriter;
-import sun.jvm.hotspot.utilities.Assert;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
-import java.io.File;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

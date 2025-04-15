@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!--    <meta http-equiv="x-ua-compatible" content="ie=edge">-->
 
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#00aba9">
+    <meta name="theme-color" content="#ffffff">
+
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
@@ -51,21 +59,16 @@
 </script>
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarSupportedContent">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#">Crossword Creators</a>
-    </div>
+    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">☰
+        <span class="sr-only">Toggle navigation</span>
+    </button>
+
+    <a class="navbar-brand" href="#"> Crossword Creators</a>
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">Home</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="crossword_browse.html">Play</a>
@@ -73,8 +76,11 @@
             <li class="nav-item">
                 <a class="nav-link" href="crossword_landing.html">Build</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="how_to.html">How To</a>
+            </li>
         </ul>
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right nav-flex-icons">
             <div id="g_id_onload"
                  data-client_id="161771154815-4t5i72diha2hkfl0nb2pjgv547e276hc.apps.googleusercontent.com"
                  data-callback="handleCredentialResponse"
@@ -95,11 +101,16 @@
                      src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
                      width="156" height="32" />
             </a>
-            <div id="profileSection" style="display: inline-block">
-                <li class="nav-item" style="display: inline-block;">
-                    <a class="nav-link" id="profileNameRibbon" style="color: white;" href="profile.html"></a>
+            <div id="profileSection">
+                <li class="nav-item avatar dropdown">
+                    <a class="nav-link dropdown-toggle" href="#"
+                       id="profileNameRibbon" data-toggle="dropdown">
+                    </a>
+                    <div class="dropdown-menu">
+                        <button id="Profile" type="button" class="btn btn-light" style="display: block">My Profile</button>
+                        <button id="Logout" type="button" class="btn btn-light" style="display: block">Logout</button>
+                    </div>
                 </li>
-                <button id="Logout" type="button" class="btn btn-light">Logout</button>
             </div>
         </ul>
     </div>
@@ -277,8 +288,8 @@
             $('#googleButton').hide();
             $('#profileSection').show();
             document.getElementById("profileNameRibbon").innerHTML = result.name;
-            document.getElementById("modalEmail2").innerHTML = " " + result.email;
-            $('#changeEmailModal').modal('show');
+            document.getElementById("profileNameRibbon").innerHTML = "<u>  " + result.name + "</u>  <img src=\"" +  result.pictureURL + "\" class=\"rounded-circle z-depth-0\"\n" +
+                "                             alt=\"avatar image\" height=\"35\">";
         }
     });
 </script>

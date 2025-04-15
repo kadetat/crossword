@@ -8,6 +8,14 @@
     <meta name="keywords" content="crossword, crossword creator, online crossword creator, make your own crossword" />
 <!--    <meta http-equiv="x-ua-compatible" content="ie=edge">-->
 
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#00aba9">
+    <meta name="theme-color" content="#ffffff">
+
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
@@ -21,6 +29,8 @@
     <link rel="stylesheet" type="text/css" href="crossword_css.css">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-KRZ35V7G92"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3677400511802531"
+            crossorigin="anonymous"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -48,34 +58,28 @@
 </script>
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarSupportedContent">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#">Crossword Creators</a>
-    </div>
+    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">☰
+        <span class="sr-only">Toggle navigation</span>
+    </button>
+
+    <a class="navbar-brand" href="#"> Crossword Creators</a>
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Home </a>
+                <a class="nav-link" href="index.html">Home</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="crossword_browse.html">Play</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="crossword_landing.html">Build</a>
+                <a class="nav-link" href="#">Build <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="how_to.html">How To</a>
             </li>
         </ul>
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right nav-flex-icons">
             <div id="g_id_onload"
                  data-client_id="161771154815-4t5i72diha2hkfl0nb2pjgv547e276hc.apps.googleusercontent.com"
                  data-callback="handleCredentialResponse"
@@ -96,11 +100,16 @@
                      src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
                      width="156" height="32" />
             </a>
-            <div id="profileSection" style="display: inline-block">
-                <li class="nav-item" style="display: inline-block;">
-                    <a class="nav-link" id="profileNameRibbon" style="color: white;" href="profile.html"></a>
+            <div id="profileSection">
+                <li class="nav-item avatar dropdown">
+                    <a class="nav-link dropdown-toggle" href="#"
+                       id="profileNameRibbon" data-toggle="dropdown">
+                    </a>
+                    <div class="dropdown-menu">
+                        <button id="Profile" type="button" class="btn btn-light" style="display: block">My Profile</button>
+                        <button id="Logout" type="button" class="btn btn-light" style="display: block">Logout</button>
+                    </div>
                 </li>
-                <button id="Logout" type="button" class="btn btn-light">Logout</button>
             </div>
         </ul>
     </div>
@@ -186,16 +195,17 @@
     <h2>Generate crossword puzzles using your own words and your own clues, then play your crossword or share with friends!</h2>
     </article>
     <article style="border: none;">
-    <h3 style="text-align: center"><b>How to create your own crossword:</b></h3>
+    <h3 style="text-align: center"><b><u>How to create your own crossword:</u></b></h3>
         <p>
         <ol style="font-size: 1.5em;">
-            <li>Sign up and log in</li>
-            <li>Enter the title and author of your new Crossword Puzzle</li>
-            <li>Add a Word and Clue</li>
-            <li>Click 'Add Word' and Check out the preview</li>
-            <li>Add additional words and clues and edit previously added words and clues.</li>
-            <li>Once satisfied with your crossword, click Go! to generate your crossword!</li>
-            <li>Play, Print, Share, or Embed your new crossword!</li>
+            <li>Sign up or login to be able to edit your crossword in the future.</li>
+            <li>Enter the title and author of your new Crossword Puzzle.</li>
+            <li>Add a Word and Clue.</li>
+            <li>Click 'Add Word' to add the word/clue to your crossword, then check out the preview.</li>
+            <li>Continue adding additional words and clues, or edit previously added words and clues in the table below.</li>
+            <li>Once satisfied with your crossword, click "Create Crossword!" to generate your crossword!</li>
+            <li>Generated Crosswords are saved in the <a href="https://crosswordcreators.com/crossword_browse.html">Play</a> section for anyone to play anytime, anywhere.</li>
+            <li>Play your crossword interactively online using our Crossword Player Software, where you can Print, Share, or Embed your new crossword!</li>
         </ol>
         </p>
         <p style="text-align: center">To see and play existing Crossword Puzzles built by others, click on
@@ -214,18 +224,24 @@
                     <label for="word1">Word:</label>
                     <input type="text" id="word1" name="word1" class="form-control"
                          placeholder="Enter a word here"><br>
-                    <button id="addWord" type="button" class="btn btn-info">Add Word</button>
-                    <button id="askGPT" type="button" class="btn btn-info">Generate Clue</button>
+                    <div style="text-align: right;">
+                        <button id="addWord" type="button" class="btn btn-primary" style="background-color: aquamarine; color: black;">Add Word, Clue to Crossword</button>
+                    </div>
                 </div>
                 <div class="col-sm-3 col-md-6">
                     <label for="title">Author:</label>
                     <input type="text" id="author" name="author" class="form-control"
                            placeholder="Input Name"><br>
                     <label for="clue1">Clue:</label>
-                    <input type="text" id="clue1" name="clue1" class="form-control"
-                           placeholder="Enter the clue here"><br>
+                    <div class="input-group">
+                        <input type="text" id="clue1" name="clue1" class="form-control"
+                           placeholder="Enter the clue here">
+                        <button id="askGPT" type="button" class="btn btn-success">Generate Clue</button>
+                    </div>
+                    <p style="font-size: medium; margin-top: 2%; background-color: yellow;">New! Use OpenAI's AI model ChatGPT to generate clues to help with your crossword building!</p>
                 </div>
             </div>
+            <p style="color: red; font-size: medium; text-align: center">*Warning: All progress is lost if user leaves page. Make sure to login to save progress or to be able to edit the crossword after it's created.</p>
         </div>
         <div id="picture" style="child-align: middle">
             <h4>Preview:</h4>
@@ -249,11 +265,14 @@
                 </table>
             </div>
         </div>
-        <div class="form-group" style="margin-top: 5% ;">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button id="submit" type="button" class="btn btn-primary">GO!</button>
+        <div class="form-group" style="margin-top: 5% ; text-align: center; padding: 1%;">
+            <div class="col-sm-offset-2 col-lg-12">
+                <button id="submit" type="button" class="btn btn-primary" style="background-color: aquamarine; color: black;">Create Crossword!</button>
             </div>
+            <p style="font-size: large; text-align: center; margin-top: 1%">Click "Create Crossword!" to save/finish creating your crossword! After creating, you'll be navigated to our Crossword Player Software to play, share, print, or embed your new crossword!</p>
+            <p style="font-size: large; text-align: center;">To continue editing your crossword after creating, log in to your profile and click edit on your profile page.</p>
         </div>
+        <p style="font-size: small; text-align: center; border-top: solid; padding-top: 2%;">*Note: By clicking "Create Crossword!", the user agrees to allow CrosswordCreators.com to save the user's crossword for the purpose of allowing any other user of CrosswordCreators.com to play, print, or share the crossword. If any offensive content is contained in a crossword, CrosswordCreators.com reserves the right to delete the crossword at their own discretion.</p>
     </form>
     </article>
     <article class="footer">
@@ -381,7 +400,8 @@
             $('#LoginWithAmazon').hide();
             $('#googleButton').hide();
             $('#profileSection').show();
-            document.getElementById("profileNameRibbon").innerHTML = result.name;
+            document.getElementById("profileNameRibbon").innerHTML = "<u>  " + result.name + "</u>  <img src=\"" +  result.pictureURL + "\" class=\"rounded-circle z-depth-0\"\n" +
+                "                             alt=\"avatar image\" height=\"35\">";
         }
 
     });

@@ -22,7 +22,7 @@ public class DBHelper {
 
             // Grab a source of database connection. Note how this matches the name
             // field in context.xml.
-            DataSource ds = (DataSource) envContext.lookup("jdbc/cis320");
+            DataSource ds = (DataSource) envContext.lookup("jdbc/awseb-e-xjhtp9mg8h-stack-awsebrdsdatabase-4ver7qyznqnw");
 
             // Hey, now we've got a datasource for connections. Let's get a connection.
             Connection conn = ds.getConnection();

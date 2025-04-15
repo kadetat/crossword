@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 <!--    <meta http-equiv="x-ua-compatible" content="ie=edge">-->
 
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#00aba9">
+    <meta name="theme-color" content="#ffffff">
+
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
@@ -20,6 +28,8 @@
     <link rel="stylesheet" type="text/css" href="crossword_css.css">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-KRZ35V7G92"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3677400511802531"
+            crossorigin="anonymous"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -50,24 +60,19 @@
 </script>
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarSupportedContent">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#">Crossword Creators</a>
-    </div>
+    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">☰
+        <span class="sr-only">Toggle navigation</span>
+    </button>
+
+    <a class="navbar-brand" href="#"> Crossword Creators</a>
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Home </a>
+                <a class="nav-link" href="index.html">Home</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="crossword_browse.html">Play</a>
+                <a class="nav-link" href="#">Play <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="crossword_landing.html">Build</a>
@@ -76,7 +81,7 @@
                 <a class="nav-link" href="how_to.html">How To</a>
             </li>
         </ul>
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right nav-flex-icons">
             <div id="g_id_onload"
                  data-client_id="161771154815-4t5i72diha2hkfl0nb2pjgv547e276hc.apps.googleusercontent.com"
                  data-callback="handleCredentialResponse"
@@ -97,11 +102,16 @@
                      src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
                      width="156" height="32" />
             </a>
-            <div id="profileSection" style="display: inline-block">
-                <li class="nav-item" style="display: inline-block;">
-                    <a class="nav-link" id="profileNameRibbon" style="color: white;" href="profile.html"></a>
+            <div id="profileSection">
+                <li class="nav-item avatar dropdown">
+                    <a class="nav-link dropdown-toggle" href="#"
+                       id="profileNameRibbon" data-toggle="dropdown">
+                    </a>
+                    <div class="dropdown-menu">
+                        <button id="Profile" type="button" class="btn btn-light" style="display: block">My Profile</button>
+                        <button id="Logout" type="button" class="btn btn-light" style="display: block">Logout</button>
+                    </div>
                 </li>
-                <button id="Logout" type="button" class="btn btn-light">Logout</button>
             </div>
         </ul>
     </div>
@@ -250,6 +260,12 @@
                         <!-- Data -->
                         <tbody>
                         <tr>
+                            <td>NFL teams</td>
+                            <td>Aidan</td>
+                            <td>2024-7-23</td>
+                            <td><button type='button' name='play' class='playButton btn btn-danger' value=240> Play </button></td>
+                        </tr>
+                        <tr>
                             <td>MLB Teams</td>
                             <td>kadetat</td>
                             <td>2022-07-10</td>
@@ -265,7 +281,19 @@
                             <td>NBA Teams</td>
                             <td>Tat</td>
                             <td>2022-07-24</td>
+                            <td><button type='button' name='play' class='playButton btn btn-danger' value=83> Play </button></td>
+                        </tr>
+                        <tr>
+                            <td>Super Bowl Winners</td>
+                            <td>Football Fan</td>
+                            <td>2023-01-22</td>
                             <td><button type='button' name='play' class='playButton btn btn-danger' value=9> Play </button></td>
+                        </tr>
+                        <tr>
+                            <td>20 Different Sports</td>
+                            <td>Kade</td>
+                            <td>2023-07-17</td>
+                            <td><button type='button' name='play' class='playButton btn btn-danger' value=105> Play </button></td>
                         </tr>
                         </tbody>
                     </table>
@@ -307,6 +335,12 @@
                             <td>2022-07-24</td>
                             <td><button type='button' name='play' class='playButton btn btn-danger' value=12> Play </button></td>
                         </tr>
+                        <tr>
+                            <td>The Suffix Able</td>
+                            <td>Lucy Wilson</td>
+                            <td>2023-08-29</td>
+                            <td><button type='button' name='play' class='playButton btn btn-danger' value=110> Play </button></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -315,7 +349,7 @@
         <div class="row">
             <div class="col-md-4">
                 <div style="text-align: center; vertical-align: middle;"><h2 style="text-align: center; display: inline-block";>Spanish</h2>
-<!--                    <img src="images/cd.jpg" class="img-fluid" alt = "intro" style="text-align: center; height: 50px; display: inline-block">-->
+                    <!--                    <img src="images/cd.jpg" class="img-fluid" alt = "intro" style="text-align: center; height: 50px; display: inline-block">-->
                 </div>
                 <div class="table-responsive-sm">
                     <table class="table table-hover">
@@ -361,7 +395,7 @@
 
             <div class="col-md-4">
                 <div style="text-align: center; vertical-align: middle;"><h2 style="text-align: center; display: inline-block";>High School</h2>
-<!--                    <img src="images/football.jpg" class="img-fluid" alt = "intro" style="text-align: center; height: 50px; display: inline-block">-->
+<!--                                        <img src="images/HighSchool.jpg" class="img-fluid" alt = "intro" style="text-align: center; height: 50px; display: inline-block">-->
                 </div>
                 <div class="table-responsive-sm">
                     <table class="table table-hover">
@@ -407,7 +441,7 @@
 
             <div class="col-md-4">
                 <div style="text-align: center; vertical-align: middle;"><h2 style="text-align: center; display: inline-block";>Elementary</h2>
-<!--                    <img src="images/kids.jpg" class="img-fluid" alt = "intro" style="text-align: center; height: 50px; display: inline-block">-->
+                    <img src="images/elementary.jpg" class="img-fluid" alt = "intro" style="text-align: center; height: 50px; display: inline-block">
                 </div>
                 <div class="table-responsive-sm">
                     <table class="table table-hover">
@@ -433,6 +467,127 @@
                             <td>Matthew Mitchell</td>
                             <td>2022-09-12</td>
                             <td><button type='button' name='play' class='playButton btn btn-danger' value=28> Play </button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div style="text-align: center; vertical-align: middle;"><h2 style="text-align: center; display: inline-block";>English</h2>
+                    <img src="images/english.jpg" class="img-fluid" alt = "intro" style="text-align: center; height: 50px; display: inline-block">
+                </div>
+                <div class="table-responsive-sm">
+                    <table class="table table-hover">
+                        <!-- Header Lines-->
+                        <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <!-- Data -->
+                        <tbody>
+                        <tr>
+                            <td>To compare suffixes</td>
+                            <td>Miss Elliott</td>
+                            <td>2023-4-24</td>
+                            <td><button type='button' name='play' class='playButton btn btn-danger' value=98> Play </button></td>
+                        </tr>
+                        <tr>
+                            <td>Poetic Devices</td>
+                            <td>Megan lake</td>
+                            <td>2023-4-25</td>
+                            <td><button type='button' name='play' class='playButton btn btn-danger' value=99> Play </button></td>
+                        </tr>
+                        <tr>
+                            <td>AICE EGP</td>
+                            <td>Madden</td>
+                            <td>2023-03-02</td>
+                            <td><button type='button' name='play' class='playButton btn btn-danger' value=93> Play </button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div style="text-align: center; vertical-align: middle;"><h2 style="text-align: center; display: inline-block";>College</h2>
+                    <img src="images/college.jpg" class="img-fluid" alt = "intro" style="text-align: center; height: 50px; display: inline-block">
+                </div>
+                <div class="table-responsive-sm">
+                    <table class="table table-hover">
+                        <!-- Header Lines-->
+                        <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <!-- Data -->
+                        <tbody>
+                        <tr>
+                            <td>Momentum Vocabulary</td>
+                            <td>Brennan Koeller</td>
+                            <td>2022-09-22</td>
+                            <td><button type='button' name='play' class='playButton btn btn-danger' value=36> Play </button></td>
+                        </tr>
+                        <tr>
+                            <td>CPG Crossword</td>
+                            <td>CPG</td>
+                            <td>2022-09-12</td>
+                            <td><button type='button' name='play' class='playButton btn btn-danger' value=30> Play </button></td>
+                        </tr>
+                        <tr>
+                            <td>Pol Gov</td>
+                            <td>Willian A. Torres</td>
+                            <td>2023-03-06</td>
+                            <td><button type='button' name='play' class='playButton btn btn-danger' value=96> Play </button></td>
+                        </tr>
+                        <tr>
+                            <td>Biological Theories</td>
+                            <td>meg</td>
+                            <td>2023-03-02</td>
+                            <td><button type='button' name='play' class='playButton btn btn-danger' value=90> Play </button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div style="text-align: center; vertical-align: middle;"><h2 style="text-align: center; display: inline-block";>Business</h2>
+<!--                    <img src="images/kids.jpg" class="img-fluid" alt = "intro" style="text-align: center; height: 50px; display: inline-block">-->
+                </div>
+                <div class="table-responsive-sm">
+                    <table class="table table-hover">
+                        <!-- Header Lines-->
+                        <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <!-- Data -->
+                        <tbody>
+                        <tr>
+                            <td>Entrepreneurs Crossword</td>
+                            <td>Kurtis</td>
+                            <td>2022-09-26</td>
+                            <td><button type='button' name='play' class='playButton btn btn-danger' value=39> Play </button></td>
+                        </tr>
+                        <tr>
+                            <td>Business Vocab</td>
+                            <td>Miss. Sky</td>
+                            <td>2023-9-16</td>
+                            <td><button type='button' name='play' class='playButton btn btn-danger' value=185> Play </button></td>
                         </tr>
                         </tbody>
                     </table>
@@ -527,7 +682,8 @@
             $('#LoginWithAmazon').hide();
             $('#googleButton').hide();
             $('#profileSection').show();
-            document.getElementById("profileNameRibbon").innerHTML = result.name;
+            document.getElementById("profileNameRibbon").innerHTML = "<u>  " + result.name + "</u>  <img src=\"" +  result.pictureURL + "\" class=\"rounded-circle z-depth-0\"\n" +
+                "                             alt=\"avatar image\" height=\"35\">";
         }
 
     });

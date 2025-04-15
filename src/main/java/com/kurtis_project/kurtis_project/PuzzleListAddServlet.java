@@ -2,9 +2,9 @@ package com.kurtis_project.kurtis_project;
 
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;

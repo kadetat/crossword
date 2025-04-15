@@ -19,7 +19,8 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compileOnly('javax.servlet:javax.servlet-api:4.0.1')
+    compileOnly('javax.json.bind:javax.json.bind-api:1.0')
+    compileOnly('jakarta.servlet:jakarta.servlet-api:5.0.0')
     compile group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.13.3'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'

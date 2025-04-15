@@ -43,12 +43,12 @@ function getSessionJava() {
     });
 }
 
-// function profile() {
-//     //window.location.href = 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_landing.html';
-//     window.location.href = 'https://crosswordcreators.com/profile.html'
-// }
-//
-// let profileLinkButton = $('#profileButton');
-// profileLinkButton.on("click", profile);
+function profile() {
+    //window.location.href = 'http://localhost:8080/Gradle___com_kurtis_project___kurtis_project_1_0_SNAPSHOT_war/crossword_landing.html';
+    window.location.href = 'https://crosswordcreators.com/profile.html'
+}
+
+let profileLinkButton = $('#Profile');
+profileLinkButton.on("click", profile);
 
 getSessionJava();

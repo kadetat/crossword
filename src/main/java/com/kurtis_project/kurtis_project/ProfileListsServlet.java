@@ -1,39 +1,19 @@
 package com.kurtis_project.kurtis_project;
 
 import com.google.gson.Gson;
-import com.google.gson.*;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonWriter;
-import sun.jvm.hotspot.utilities.Assert;
 
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
-import java.io.File;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
+
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import javax.net.ssl.HttpsURLConnection;
-import java.net.URL;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.client.fluent.Content;
-import org.apache.http.client.fluent.Request;
-import java.util.Map;
-
-
 
 
 @WebServlet(name = "ProfileListsServlet", value = "/api/profile_Lists")
