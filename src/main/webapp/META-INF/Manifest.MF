@@ -1,1 +1,0 @@
-Main-Class: com.kurtis_project.kurtis_project
