@@ -60,14 +60,6 @@ public class AmazonServlet extends HttpServlet {
         OutputStream os = con.getOutputStream();
         os.write(postData.getBytes());
 
-
-        //os.write("grant_type=authorization_code".getBytes());
-        //os.write(amazonCode.getBytes());
-        //os.write("&client_id=amzn1.application-oa2-client.502697efea7f490fb123f130c00bd2cf".getBytes());
-        //os.write("&client_secret=d10c740527f8d6704e54d0c1461bacfc68ad429d99526e468906a7863465069e".getBytes());
-        //os.write("&client_secret=d10c740527f8d6704e54d0c1461bacfc68ad429d99526e468906a7863465069e".getBytes());
-
-
         os.flush();
         os.close();
 

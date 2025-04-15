@@ -52,7 +52,7 @@ public class openAIServlet extends HttpServlet {
         HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json");
-        //con.setRequestProperty("Authorization", "Bearer " + valueKey);
+        con.setRequestProperty("Authorization", "Bearer " + valueKey);
         con.setDoOutput(true);
         JsonObject jsonObj = new JsonObject();
         jsonObj.addProperty("model", "gpt-3.5-turbo-instruct");
