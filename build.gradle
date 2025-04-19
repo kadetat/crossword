@@ -22,25 +22,36 @@ dependencies {
     compileOnly('javax.json.bind:javax.json.bind-api:1.0')
     compileOnly('jakarta.servlet:jakarta.servlet-api:5.0.0')
     implementation("com.google.code.gson:gson:2.8.5")
-    implementation("com.fasterxml.jackson.core:jackson-core:2.13.3")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.13.3")
-    implementation("org.apache.httpcomponents:fluent-hc:4.5.13")
     implementation("com.google.api-client:google-api-client:1.33.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
-
+    //implementation('com.github.jsimone:webapp-runner:10.1.17')
+    implementation group: 'com.heroku', name: 'webapp-runner-parent', version: '10.1.36.0', ext: 'pom'
     implementation('javax.json.bind:javax.json.bind-api:1.0')
     implementation('org.glassfish:jakarta.json:1.1.5')
     implementation('org.eclipse:yasson:1.0.3')
     implementation('mysql:mysql-connector-java:8.0.23')
     implementation('org.apache.httpcomponents:fluent-hc:4.5.13')
     implementation('com.fasterxml.jackson.core:jackson-core:2.13.3')
-    implementation('com.fasterxml.jackson.core:jackson-databind:2.13.3')
     implementation('com.google.api-client:google-api-client-jackson2:1.20.0')
 
 
 }
 
+task stage() {
+    dependsOn clean, war
+}
+war.mustRunAfter clean
+
+task copyToLib(type: Copy) {
+    into "$buildDir/server"
+    from(configurations.compile) {
+        include "webapp-runner*"
+    }
+}
+
+stage.dependsOn(copyToLib)
 
 test {
     useJUnitPlatform()
